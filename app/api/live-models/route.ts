@@ -51,7 +51,13 @@ export const PROVIDER_LOOKUPS: Record<string, string> = {
   // compared the GA record's $1.32/$3.96 to whatever the April preview still costs.
   "deepseek-v4-flash": "deepseek/deepseek-v4-flash-0731",
   "deepseek-v4-pro": "deepseek/deepseek-v4-pro-0813",
-  "qwen3.8-max": "qwen/qwen3.8-max",
+  // The provider retired the bare id `qwen/qwen3.8-max` on 2026-09-03 and now serves the dated
+  // snapshot `qwen/qwen3.8-max-0902` ("updated snapshot of Qwen3.8 Max", same $2/$6 per M). A
+  // retired id resolves to nothing, so until this line moved the live price card silently fell
+  // back to the archived price for every visitor. Same shape as the DeepSeek dated-snapshot
+  // entries below: the record holds the snapshot upstream actually serves, because that is the
+  // deployment the catalog's archived $2/$6 was measured on.
+  "qwen3.8-max": "qwen/qwen3.8-max-0902",
   "qwen3.7-plus": "qwen/qwen3.7-plus",
   "qwen3.7-max": "qwen/qwen3.7-max",
   "qwen3.6-plus": "qwen/qwen3.6-plus",
