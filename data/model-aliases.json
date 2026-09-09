@@ -2020,6 +2020,13 @@
       "reason": "ADOPTED 2026-08-19, once the record became the GA release this column measures. Six cells: hle-no-tools 42.7, hle-tools 60.0 (the second number of the same published row, split out reproducibly by the capture script's `dualColumn` — see that script, not a hand edit), terminal 87.9, deepswe 62.7, toolathlon 74.1, ale 25.7. It changes no published number: `SOURCE_RANK` in app/model-data.ts ranks vendor LAST, so `terminal` still shows Vals' 54.682 and `deepswe` still shows DeepSWE's own 62.8; the vendor figures are second readings in those two cells and the primary in the four the catalog had empty. ⚠ `terminal` disagrees with Vals by 61% — the ruling is the `acknowledgedDisagreements` entry for deepseek-v4-pro/terminal, which is the only place it is written down, because the cross-source gate buckets by `harness|effort` and these two rows are in different buckets. Do not read that silence as agreement. The other seven columns in this batch stay refused: five competitors and Flash's two."
     },
     {
+      "modelRaw": "deepseek-ai/DeepSeek-V4-Pro-0813",
+      "effort": "*",
+      "file": "batch-44-dsv4pro-open-license",
+      "modelId": "deepseek-v4-pro",
+      "reason": "The HF `org/repo` name of the GA release, used by batch 44 as the model_raw for its one open_weights row so the string cannot collide with any existing alias spelling. Scoped to that batch because the org-qualified string has only been observed there; if a board later publishes this exact spelling for scores, that source gets its own entry with its own evidence, not this one."
+    },
+    {
       "modelRaw": "DeepSeek-V4-Pro (Preview)",
       "effort": "*",
       "file": "batch-35-deepseek-v4-pro-ga-release",
