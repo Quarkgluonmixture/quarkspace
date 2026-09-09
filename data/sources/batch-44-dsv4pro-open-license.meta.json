@@ -1,0 +1,13 @@
+{
+  "batch": "44 · DeepSeek-V4-Pro-0813 open-weights evidence (Hugging Face license)",
+  "retrievedDate": "2026-09-09",
+  "retrievedDateIsMeasurement": false,
+  "collectedWith": "Direct read of the model card's License section and the repository API (cardData.license, gated flag, published weight files) on huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813.",
+  "filtered": false,
+  "schema": "Model operating parameters, NOT benchmark scores. This batch provides only open_weights for the GA release — one row, one field. It exists to back the catalog's open=true for deepseek-v4-pro after the 2026-08-19 GA flip left the record without an archive row for the flag: batch-06/08's open_weights=true were published under the preview strings (`deepseek-v4-pro`, `DeepSeek-V4-Pro`), which the flip refused by string.",
+  "sources": [
+    "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813",
+    "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Pro-0813"
+  ],
+  "note": "TODO.md's preview→GA section anticipated exactly this batch: '补法 = 采一行,不是手打一个 tag (这个仓库为手打 tag 付过一次代价)'. The HF repository is the maker's own distribution: MIT license stated in the card body and in cardData, weights published as 66 safetensors shards totalling ~1.78 TB, not gated, 164k downloads in the last month. The model_raw is the full `org/repo` string so it cannot collide with any existing alias spelling; it is mapped by a file-scoped alias in data/model-aliases.json with its reason. evaluation_date is the GA release date (repo created 2026-08-13); retrievedDate is today's read. This row supplies no benchmark score and no price, so nothing on the board can move because of it."
+}
