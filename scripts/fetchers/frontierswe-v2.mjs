@@ -79,7 +79,6 @@ export const frontierSwe = {
     // Mean@5 is the headline the page renders (verified: Fable 5.1 56.3 on the page = 56.29 here).
     // Best@5/Worst@5 stay in the note — the catalog carries one metric per cell, and best-of-5
     // would read as a pass rate nobody publishes as the score.
-    const byModel = new Map(stats.mean.map((row) => [keyOf(row), row]));
     const best = new Map(stats.best.map((row) => [keyOf(row), row]));
     const worst = new Map(stats.worst.map((row) => [keyOf(row), row]));
 
