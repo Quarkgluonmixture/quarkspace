@@ -141,10 +141,9 @@ preview,名字是对的。
 
 翻转留下的两件(都不急,都是编辑判断):
 
-- [ ] **`deepseek-v4-pro` 的 `open` 现在无据**(`check:models` 那节唯一的第三条,报告不失败)。
-      原来的据是 batch-06/08 里 preview 的 `open_weights: true`,已随裸串一起拒收。GA 有自己的
-      HF 仓库(`deepseek-ai/DeepSeek-V4-Pro-0813`,batch-35 的 `sources` 记着),但归档里**没有一行
-      断言它的许可**。补法 = 采一行,不是手打一个 tag(这个仓库为手打 tag 付过一次代价)。
+~~`deepseek-v4-pro` 的 `open` 现在无据~~ **2026-09-09 做完**(batch 44,GA 仓库 MIT license 一行,
+`open=true` 重新有据;`check:models` 319→320/322)。剩余两条 unsourced 只有 `deepseek-v4-flash`
+的 intelligence/costTask,即下面「小口子」里那条编辑判断。
 - [ ] **`value` 这个 tag 还算不算数**:价格从 $0.435/$0.87 涨到 $1.32/$3.96(3 倍),
       而 `costTask` 现在是 null ⇒ 它已经**不在 value lens 里**,但 chip 还挂着。留还是摘是编辑判断。
 

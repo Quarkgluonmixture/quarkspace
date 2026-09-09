@@ -761,3 +761,24 @@ version 2.0.0 全部未变，每行位移恰好 = 1/41（astra 39/41→40/41，f
 claude-fable-5/frontiermath-t4 87.8→90.2（位移在一个 stderr 内）；gpt-6-astra 无目录记录。
 提议仿 #122 nemotron 先例写 restatedRows（钉死 from→to），但与那次的差别已点名：这次的
 cell 读者看得见，需要 owner 裁决是否接受 87.8→90.2，未裁前不动 archive。
+
+### 2026-09-09 · 第二班:batch 44 补上 deepseek-v4-pro `open` 的据
+
+**Tier-B,四条件全绿,自合(PR #129)。** TODO 里 preview→GA 那节预留的活:GA 翻转(08-19)拒掉
+preview 裸串后,`deepseek-v4-pro open=true` 在 `check:models` 的 no-archive-row 清单上挂着,
+TODO 写明「补法 = 采一行,不是手打一个 tag」。本班照做:batch 44 一行,来自 GA 自己的 HF 仓库
+`deepseek-ai/DeepSeek-V4-Pro-0813` —— 卡片 License 节原文 + API `cardData.license:"mit"` /
+`gated:false` / 66 片 safetensors(~1.78TB)。`model_raw` 用完整 `org/repo` 串,天然不撞任何
+现有 alias 拼写;file-scoped alias 带理由。**零数字移动**(describe-change: 0 moved / 0
+observation-cells-moved;ingest 后 generated.ts 无 diff —— operating-parameters 批,不进观测)。
+`check:models` 319→**320/322**;剩两条 unsourced 是 `deepseek-v4-flash` 的 intelligence/costTask,
+即「小口子」里那条已知的编辑判断(cfg 无名 operating point)。
+
+**同班核掉的三件(只读,无改动):** ① Upstream job 09-08/09-09 连红两天 = FrontierMath v2 重述,
+上一班已在 #128 调查完毕并提议 restatedRows,等 owner 裁决 —— 不是新故障,也别重推。
+② TODO 顶部三条观察项:#122 已按设计自动关闭(09-05),restatedRows 当天起静默(09-05 log 无
+restat note,只有 gemini 价格 term note);`auto/refresh-aa` 的 output 传递与 source-availability
+streak 两项**仍未等到首跑**(AA-refresh 自 09-04 起没再被触发 —— upstream.yml 的条件判断
+「参数都已归档,无需刷新」每天为真,是设计行为)。③ gaps issue 的 mrcr/charxiv/browsecomp 等
+「Worth collecting」全部在 08-18 审计与 §9 判词里封死(等新源,不是重读能补的),唯一未提的
+`imo-answer` 也在 §9(唯一源是 2025 年的 IMO-Bench 论文)。本班无可收的新格。
