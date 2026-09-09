@@ -740,3 +740,24 @@ owner 裁决「按推荐修、自动合」后合的。batch-38 = CAIS AI Dashboa
 ⛔ 照抄 withdrawnRows 那句「no longer matches — delete it」会每天早上打印一次「删掉我」。
 
 ⇒ `TODO.md` 顶部那节从此**没有「要你定」**,每日 drift job 也**不再红**。
+
+### 2026-09-09 · FrontierSWE V2 脚本化合入（batch 43）+ Epoch FrontierMath tier-C 调查
+
+**FrontierSWE V2（tier-B，四条件全绿后自合，846e2ba）。** 上一班（09-08）在工作区留下了
+完成的 fetcher 与 batch-43 未提交——本班 stash→pull→pop 保住工作，验证 `--check` 10 格全对
+上游后走完合同。V2 与 V1 是两个 benchmark（V1 各厂 CLI + Dominance 榜、V2 统一 proximus
+脚手架 + Mean@5；Kimi K3 V1 读 81.2、V2 读 25.87），按 FrontierMath Tier 4 / Terminal-Bench
+2.0 同一先例走 `benchmarkSplits` 拿独立 id `frontierswe-v2`。板上 10 串只有 3 串有目录记录
+（kimi-k3 25.87 / qwen3.8-max 15.81 / inkling 4.12），其余 7 串按预期留在 archive 不计数。
+`describe-change`（对 e6658e1）：3 新格、0 moved、below-floor 0。附带修正：fetcher 头注释与
+meta note 里的"第八次推翻"序数是错的（Vals 才是第 8、SWE-Pro 第 9），§9 的行现在是权威；
+README 覆盖块更新为本次实跑值（2224 观测 / 1405/2117 格 / 66.4%）；§9 的"30 批中 16 个
+脚本批"实测已是 43 批中 18 个。
+
+**Epoch FrontierMath v2 重述（tier-C，调查完毕，提议在 issue #128 comment）。** 每日 job
+09-08/09-09 连红两天：4 cell 在冻结版本下改值。查证今日 CSV：四行 started_at 与 task
+version 2.0.0 全部未变，每行位移恰好 = 1/41（astra 39/41→40/41，fable-5 36/41→37/41）——
+同一批 run 被重新判分、每行恰好多对一题，不是重跑。唯一读者可见的 cell 是
+claude-fable-5/frontiermath-t4 87.8→90.2（位移在一个 stderr 内）；gpt-6-astra 无目录记录。
+提议仿 #122 nemotron 先例写 restatedRows（钉死 from→to），但与那次的差别已点名：这次的
+cell 读者看得见，需要 owner 裁决是否接受 87.8→90.2，未裁前不动 archive。

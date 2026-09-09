@@ -46,11 +46,11 @@ Epoch 的 zip 确实发布 FrontierMath，读进来的却是退役题集（见 `
 候选（按对覆盖率的价值排）：
 
 - [ ] OSWorld 2.0 / Toolathlon / MCP-Atlas（agent 轴，目前全靠手抄）
-- [ ] FrontierSWE / ProgramBench（后者官方分与厂商表差 70 分，注意别混指标）
-- [ ] APEX-Agents
+- [ ] ProgramBench（官方分与厂商表差 70 分，注意别混指标）
 
 ARC Prize 三个 split（batch 23/24/25）已全部脚本化并接上目录，见 `LOG.md` 2026-08-07 第四轮。
-探测细节住在 `scripts/fetchers/arcprize.mjs` 的头注释里，不在这。
+FrontierSWE V2 已脚本化（batch 43，2026-09-09 合入；V2 与 V1 是两个 benchmark，见 §9 该行），
+探测细节住在 `scripts/fetchers/frontierswe-v2.mjs` 的头注释里，不在这。
 
 ## 个人站 `/`(2026-08-26 从 quark-space 迁进来的两条)
 
