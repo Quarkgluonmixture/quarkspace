@@ -2325,6 +2325,12 @@
       "benchmarkVersion": "2.0",
       "benchmarkId": "terminal-20",
       "reason": "Terminal-Bench 2.0 and 2.1 are different task sets and the architecture forbids merging them. 2.0 gets its own legacy-tier benchmark so the 2.1 column stays clean."
+    },
+    {
+      "benchmark": "frontierswe",
+      "benchmarkVersion": "V2",
+      "benchmarkId": "frontierswe-v2",
+      "reason": "FrontierSWE V2 is a different benchmark from the archived V1 column, not a new snapshot of it: V1 ran every model on its maker's own CLI (Claude Code, Codex, Kimi CLI…) under a Dominance/AVG RANK headline; V2 runs one harness (proximus) for all models across 34 tasks × 5 trials × 20-hour budget, headline Mean@5. The readings are not comparable — Kimi K3 is 81.2 on V1's vendor dominance reading and 25.87 Mean@5 here — so V2 gets its own column the same way FrontierMath Tier 4 and Terminal-Bench 2.0 did. batch-02's 'Mean@5' versionAlias points at the V1 column and is untouched: that label was the V1 board's own metric name, recorded before V2 existed, and the vendor release tables' 'Dominance as of <date>' rows route to V1 the same way."
     }
   ],
   "versionAliases": [

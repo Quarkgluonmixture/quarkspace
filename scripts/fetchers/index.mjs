@@ -15,6 +15,7 @@ import { artificialAnalysis } from "./artificial-analysis.mjs";
 import { deepswe } from "./deepswe.mjs";
 import { epoch } from "./epoch.mjs";
 import { epochFrontierMath } from "./epoch-frontiermath.mjs";
+import { frontierSwe } from "./frontierswe-v2.mjs";
 import { gdpval } from "./gdpval.mjs";
 import { hle } from "./hle.mjs";
 import { livebench } from "./livebench.mjs";
@@ -23,6 +24,6 @@ import { swePro } from "./swe-pro.mjs";
 import { terminalBench } from "./terminal-bench.mjs";
 import { vals } from "./vals.mjs";
 
-export const FETCHERS = [livebench, deepswe, epoch, epochFrontierMath, terminalBench, ale, gdpval, mmmu, arena, arcprize, arcprizeV1, arcprizeV3, artificialAnalysis, aaEvaluations, vals, swePro, hle];
+export const FETCHERS = [livebench, deepswe, epoch, epochFrontierMath, frontierSwe, terminalBench, ale, gdpval, mmmu, arena, arcprize, arcprizeV1, arcprizeV3, artificialAnalysis, aaEvaluations, vals, swePro, hle];
 
 export const fetcherById = (id) => FETCHERS.find((fetcher) => fetcher.id === id);
