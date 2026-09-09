@@ -1,7 +1,7 @@
 // FrontierSWE V2 leaderboard, read from the RSC flight stream the page server-renders.
 //
 // §9 of docs/ARCHITECTURE.md used to say this board "publishes nothing machine-readable" — that
-// verdict is now the eighth in that table to be overturned by looking again. The page is a
+// verdict is overturned (2026-09-08), as that table's "no path" rows keep being. The page is a
 // server-rendered Next.js App Router document (463KB), and the full leaderboard travels inside a
 // `self.__next_f.push([1,"…"])` island: chunk `17:[\"$\",\"$L24\",null,{"entries":{"abs":{"best|
 // mean|worst":[…]}},"note":…}]`. Decoding is two JSON.parse hops — the script-tag literal, then the
@@ -144,7 +144,7 @@ export const frontierSwe = {
           "page's own rendering on 2026-09-08: Claude Fable 5.1 shows 56.3% on the page against " +
           "56.29 in the island, GPT-5.6 32.2 = 32.2. Two JSON.parse hops: script literal, then the " +
           "RSC array's props element. This overturns §9's 'nothing machine-readable' verdict for " +
-          "this board — the eighth reversal in that table. V2 is a DIFFERENT benchmark from the " +
+          "this board — see that table's FrontierSWE row, updated the same day. V2 is a DIFFERENT benchmark from the " +
           "archived V1 column (maker-CLI harnesses, Dominance/AVG RANK headline): it gets its own " +
           "catalog id `frontierswe-v2` via benchmarkSplits, same precedent as FrontierMath Tier 4 " +
           "and Terminal-Bench 2.0 — Kimi K3 reads 81.2 on V1's vendor dominance and 25.87 Mean@5 " +
