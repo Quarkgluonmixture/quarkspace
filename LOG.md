@@ -782,3 +782,32 @@ streak 两项**仍未等到首跑**(AA-refresh 自 09-04 起没再被触发 —�
 「参数都已归档,无需刷新」每天为真,是设计行为)。③ gaps issue 的 mrcr/charxiv/browsecomp 等
 「Worth collecting」全部在 08-18 审计与 §9 判词里封死(等新源,不是重读能补的),唯一未提的
 `imo-answer` 也在 §9(唯一源是 2025 年的 IMO-Bench 论文)。本班无可收的新格。
+
+### 2026-09-10 · batch 45:DeepSeek V4.1-Flash 价目卡入档 + pro 重路由挂 scheduled term;生产部署冻结诊断
+
+**Tier-B,四条件全绿,自合。** 今晨 DeepSeek 发 V4.1-Flash(新架构 552B MoE,8B in/16B out
+active,MIT 开源,HF 今日建仓),价目卡 04:00 UTC 生效。batch 45 两行:
+- `deepseek-flash` 列 PEAK($0.30/$1.20/$0.006)**留档 unmapped** —— MODEL VERSION 行钉死它是
+  V4.1-Flash,目录无此记录;挂到 deepseek-v4-flash 上正是本项目要防的错误归属(0731 已退役,
+  价从 $0.44/$1.32 变了)。bank evidence,等 V4.1-Flash 记录存在那天用(batch-33 pro 行的
+  08-16→08-19 先例)。open_weights/context_k 用 HF API 佐证。
+- `deepseek-v4-pro` 列 PEAK($1.32/$3.96/$0.044)与 08-16 卡完全一致,本行=file-scoped alias,
+  作用是「生效日重读=目录现值成立」的当日证据。页脚 (2):**09-14 12:00 北京时间起 pro 请求
+  全部按 flash 价计费直到 V4.1 Pro 发布** —— 写进 meta `priceTerms`(list $1.32/$3.96 →
+  scheduled $0.30/$1.20,effectiveFrom 2026-09-14),`check:prices` 打出 note「4 天后生效」,
+  到日自己红,正是 batch-31 设计的机制。
+
+describe-change:0 moved / 0 observation-cells-moved;observations.generated.ts 无 diff
+(operating 批)。check:models 320/322 不变;发布帖的 benchmark 表全是 PNG,故意不入档。
+
+**生产部署自 08-26 冻结(tier-C 性质的运维发现,已诊断+挂 #7,需要 owner 控制台)。**
+gaps issue 每日那条「behind main」实际规模:**15 天 / 53 个 commit 没上线**。
+`Last-Modified: Wed, 26 Aug 2026 14:47:34 GMT`、`Age ≈ 14.6 天`、`EO-Cache-Status: Cache Hit`;
+frontierswe-v2 缺席、Kimi K3 GDPval-AA 仍 1668(main 已 1644)。最后成功构建对应改名
+(#116)当天下午最后一个 commit —— **改名后 webhook 只活了一个构建就死了**。main 可构建
+(本地 + CI 全绿),是没触发,不是失败。修法=LOG 08-17 先例:`CreatePagesDeployment`
+ReDeploy + Github + 最新 main,顺带核对 Pages 项目的 Git 绑定是否还指旧 slug。本机无
+EdgeOne CLI/控制台,修不了,已把完整诊断贴进 #7 comment。
+
+**其余核掉(只读):** #128 FrontierMath 重述等 owner 裁决(A/B 选项都在 issue 里,LOG 09-09
+明确「不重推」);上游 job 三连红全是这一件事,无新故障。

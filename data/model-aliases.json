@@ -2176,6 +2176,13 @@
       "reason": "The pricing page pins its own column headers: the MODEL VERSION row reads `DeepSeek-V4-Flash-0731 | DeepSeek-V4-Pro-0813`, so the bare column name in this batch means the GA in the source's own words (batch 33's meta records the sentence verbatim). This is the row that backs the record's peak list price of $1.32/$3.96 with cache-hit $0.044, archived on the effective day 2026-08-16 and deliberately left unmapped until the record's identity was settled. Settled 2026-08-19; this entry is what the batch-31 price term meant by 'update the record, then retire this term'."
     },
     {
+      "modelRaw": "deepseek-v4-pro",
+      "effort": "*",
+      "file": "batch-45-deepseek-v41flash-pricing",
+      "modelId": "deepseek-v4-pro",
+      "reason": "Batch 45 re-read the pricing page on 2026-09-10, the day the new rate card took effect. The MODEL VERSION row now reads `DeepSeek-V4.1-Flash | DeepSeek-V4-Pro-0813` — the pro column still names the 0813 GA, which is this record's identity since 2026-08-19, so the row is this model. Its purpose is confirmation, not movement: the pro peak prices are unchanged ($1.32/$3.96/$0.044) and this row re-evidences the values the catalog already quotes, on the day the flash column beside it changed model. Scoped to the file for the same reason as batch-33's entry — the bare string stays refused globally (the April-preview refusal of 2026-08-19) and only this page's own MODEL VERSION row buys the GA reading."
+    },
+    {
       "modelRaw": "claude-fable-5-high",
       "effort": "*",
       "modelId": "claude-fable-5",
