@@ -12,7 +12,7 @@
 
 import { strict as assert } from "node:assert";
 import { execFileSync, execFileSync as run } from "node:child_process";
-import { mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
@@ -57,7 +57,19 @@ const syntheticTerm = { file: `${fixtureDir}/fixture.meta.json`, term: { modelId
 const scheduledTerms = readdirSync(SOURCE_DIR)
   .filter((name) => name.endsWith(".meta.json"))
   .flatMap((file) => (JSON.parse(readFileSync(`${SOURCE_DIR}/${file}`, "utf8")).priceTerms ?? []).map((term) => ({ file, term })))
-  .filter(({ term }) => term.scheduled);
+  .filter(({ term }) => term.scheduled)
+  // Each real term is asserted in a directory holding ONLY its own meta, the same trick as the
+  // synthetic fixture below. Written 2026-09-10, the first day two live scheduled terms existed at
+  // once: replaying gemini's day-before (2026-12-31) against the full data/sources also replayed
+  // deepseek's 2026-09-14 term as 108 days overdue, and the day-before assertion failed red on a
+  // term that was not even the one under test. A term's guard is about ITS date; other terms'
+  // dates must not be able to make it fire. The third test below still runs the real, whole
+  // directory today, so cross-term state on the actual clock stays covered.
+  .map(({ file, term }) => {
+    const dir = mkdtempSync(join(tmpdir(), "price-term-"));
+    copyFileSync(join(SOURCE_DIR, file), join(dir, file));
+    return { file, term, dir };
+  });
 
 // The synthetic term is always in this list, so neither assertion can pass vacuously; real terms
 // join it whenever any are live.

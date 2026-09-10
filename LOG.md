@@ -811,3 +811,14 @@ EdgeOne CLI/控制台,修不了,已把完整诊断贴进 #7 comment。
 
 **其余核掉(只读):** #128 FrontierMath 重述等 owner 裁决(A/B 选项都在 issue 里,LOG 09-09
 明确「不重推」);上游 job 三连红全是这一件事,无新故障。
+
+**同班补丁(接上条):scheduled-prices 自测在双 term 并存首日红 —— 测试缺陷,非数据缺陷。**
+batch 45 合入后 CI 红:`every scheduled price term is quiet the day before it applies` 对
+gemini(batch-37,生效 2027-01-01)的 day-before=2026-12-31 重放时,把整个 data/sources 都
+喂了进去,deepseek(batch-45,生效 2026-09-14)的 term 在那个模拟日期已是 108 天逾期 →
+不是被测的那个 term 红,是被它人日期连坐红。此前从未有两个 live scheduled term 并存
+(batch-31 两条同日,retire 后才来了 gemini),所以这个测试今天才第一次踩到。修法=真实
+term 也各自隔离进只含自己 meta 的临时目录(合成 fixture 的既有手法),assertion 语义不变:
+每个 term 仍双侧断言(前一天静默 + 当天必红并点名模型),第三条测试仍跑完整真目录的
+「今天」。隔离版 3/3 绿;另手工 --as-of 2026-09-14 验证 deepseek term 当天红且点名
+deepseek-v4-pro。CI 的红是本班合入触发,同班修掉。
