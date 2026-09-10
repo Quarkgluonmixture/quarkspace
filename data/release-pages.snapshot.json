@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-09",
+  "checkedAt": "2026-09-10",
   "pages": {
     "openai": [
       "https://openai.com/index/1-million-businesses-putting-ai-to-work",
@@ -49,6 +49,7 @@
       "https://openai.com/index/ai-literacy-resources-for-teens-and-parents",
       "https://openai.com/index/ai-mental-health-research-grants",
       "https://openai.com/index/ai-native-company-workflows",
+      "https://openai.com/index/ai-policy-window",
       "https://openai.com/index/ai-progress-and-recommendations",
       "https://openai.com/index/ai-safety-needs-social-scientists",
       "https://openai.com/index/altera",
@@ -420,6 +421,7 @@
       "https://openai.com/index/gpt-5-system-card-sensitive-conversations",
       "https://openai.com/index/gpt-5-system-card-update-gpt-5-2",
       "https://openai.com/index/gpt-6-astra",
+      "https://openai.com/index/gpt-6-astra-next-generation-work",
       "https://openai.com/index/gpt-oss-model-card",
       "https://openai.com/index/gpt-oss-safeguard-technical-report",
       "https://openai.com/index/gpts-are-gpts",
@@ -846,6 +848,7 @@
       "https://openai.com/index/partnership-with-american-journalism-project-to-support-local-news",
       "https://openai.com/index/patch-the-planet",
       "https://openai.com/index/path-to-astra",
+      "https://openai.com/index/paul-christiano-joins-openai-foundation-board",
       "https://openai.com/index/people-first-ai-fund",
       "https://openai.com/index/people-first-ai-fund-grantees",
       "https://openai.com/index/personal-finance-chatgpt",
@@ -1235,7 +1238,7 @@
       "/news/news251201",
       "/news/news260424",
       "/news/news260813",
-      "/news/news260821"
+      "/news/news260910"
     ],
     "x-ai": [
       "/news/grok-4-1-fast",
