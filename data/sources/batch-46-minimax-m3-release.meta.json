@@ -1,0 +1,11 @@
+{
+  "batch": "46 · MiniMax M3 release page",
+  "collectedWith": "hand (page has no <table>; hero stats are body text, comparison grids are images)",
+  "filtered": false,
+  "release": "minimax-m3",
+  "sources": [
+    "https://www.minimax.io/blog/minimax-m3"
+  ],
+  "note": "MiniMax M3 release(2026-06-01)发布页,5 行手抄:页面与此前所有 release capture 不同——零个 <table> 元素(2026-09-11 CDP 渲染 15s 后实测),五个 hero 统计数以正文文本打印(SWE-Bench Pro 59.0% / Terminal-Bench 2.1 66.0% / SWE-fficiency 34.8% / KernelBench Hard 28.8% / MCP Atlas 74.2%),全部详细对比表是 <img>;因此 capture-release-tables.mjs 不适用,本批是手抄而非可复跑抓取,页面文本 24,073 字符已通读,五个数各核对脚注。采纳 2 行(swe-pro 59 / terminal 66),留档 3 行(MCP Atlas 是 Public Set 口径、SWE-fficiency 与 KernelBench Hard 目录无列)。⚠ 这一页罕见地在脚注里给了 harness:SWE-Bench Pro 声明 Claude Code、Terminal-bench 2.1 声明 Terminus 2(8C16G、2h 超时、128K max output),且都具体到行,所以采纳行的 harness 记实际值不记 null(batch-39 Kimi K3 先例);reasoning effort 仍未标注,记 null。⚠ terminal 66 与同格 AA 读数 65.17 相差 1.2%(闸门内),本行是 vendor 第二读数,主显不变。⚠ MiniMax M3 发布于 2026-06-01 但页面持续维护:正文含 Claude Code Dynamic Workflows(2026-08 后的提法)与 Claude Opus 4.7 竞品行,五个 hero 数与 2026-06 的 batch-32 转引互证,视为发布日数字。竞品对比表全为图片,零行可抄,无竞品拒收问题。",
+  "retrievedDate": "2026-09-11"
+}
