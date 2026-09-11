@@ -3117,6 +3117,24 @@
       "to": 16.667,
       "noticedOn": "2026-09-04",
       "reason": "LiveBench re-ran nemotron-3-ultra-550b-a55b's three mini-SWE-agent tasks under the frozen 2026-06-25 release and raised all three (javascript 27.273->54.545, python 15->45, typescript 6.667->16.667). Owner ruling 2026-09-04: accept upstream's restatement. It is safe to accept unattended-by-nobody here because the cells are invisible to readers -- this catalog carries no nemotron record and none of these rows resolve into app/observations.generated.ts (measured: `grep -c nemotron app/model-data.ts app/observations.generated.ts` prints 0 and 0) -- and because the three moves are one coherent event: same model, same harness, same direction, one release. Both values are pinned deliberately. This excuses THIS restatement and not the next one: if LiveBench moves any of these cells to a third value, `to` stops matching and the integrity check fails again, which is what `versioning: \"live\"` would have thrown away for the whole source."
+    },
+    {
+      "file": "batch-28-frontiermath",
+      "modelRaw": "gpt-6-astra",
+      "benchmark": "frontiermath",
+      "from": 95.12,
+      "to": 97.6,
+      "noticedOn": "2026-09-08",
+      "reason": "Epoch AI rescored four FrontierMath v2 runs between 2026-09-07 and 2026-09-08 (UTC): every run identity is unchanged (same started_at, task version 2.0.0) and every move is exactly +1/41 (2.44 points) -- gpt-6-astra high/xhigh/max 95.12->97.6 (39/41->40/41) and claude-fable-5 max 87.8->90.2 (36/41->37/41) on Tier 4. Four rows moving the same direction by exactly one question is a scorer correction, not a rerun. Owner ruling 2026-09-11 (WeChat): accept upstream's restatement. Unlike #122 these are not all invisible: gpt-6-astra has no catalog record so its three rows do not resolve, but claude-fable-5's frontiermath-t4 87.8 IS a published cell (app/observations.generated.ts, stderr +-5.17, the 2.44 move is within one standard error) -- which is exactly why this needed the owner's explicit ruling rather than an unattended merge. Accepting moves that published number 87.8->90.2. Both values are pinned deliberately: this excuses THIS restatement and not the next one -- if Epoch moves any of these cells to a third value, `to` stops matching and the integrity check fails again. Investigation and evidence: issue #128 comment 2026-09-09."
+    },
+    {
+      "file": "batch-28-frontiermath",
+      "modelRaw": "claude-fable-5",
+      "benchmark": "frontiermath",
+      "from": 87.8,
+      "to": 90.2,
+      "noticedOn": "2026-09-08",
+      "reason": "Epoch AI rescored four FrontierMath v2 runs between 2026-09-07 and 2026-09-08 (UTC): every run identity is unchanged (same started_at, task version 2.0.0) and every move is exactly +1/41 (2.44 points) -- gpt-6-astra high/xhigh/max 95.12->97.6 (39/41->40/41) and claude-fable-5 max 87.8->90.2 (36/41->37/41) on Tier 4. Four rows moving the same direction by exactly one question is a scorer correction, not a rerun. Owner ruling 2026-09-11 (WeChat): accept upstream's restatement. Unlike #122 these are not all invisible: gpt-6-astra has no catalog record so its three rows do not resolve, but claude-fable-5's frontiermath-t4 87.8 IS a published cell (app/observations.generated.ts, stderr +-5.17, the 2.44 move is within one standard error) -- which is exactly why this needed the owner's explicit ruling rather than an unattended merge. Accepting moves that published number 87.8->90.2. Both values are pinned deliberately: this excuses THIS restatement and not the next one -- if Epoch moves any of these cells to a third value, `to` stops matching and the integrity check fails again. Investigation and evidence: issue #128 comment 2026-09-09."
     }
   ],
   "modelWindows": [],
