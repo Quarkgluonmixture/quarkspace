@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ricochet Mech Arena</title>
+  <style>
+    /* Self-hosted OFL fonts (public/fonts/CREDITS.txt). Declared here, not in the bundled CSS, so the
+       document-relative URLs work in dev and under the Pages sub-path alike. */
+    @font-face { font-family: 'Chakra Petch'; font-weight: 700; font-display: swap; src: url(fonts/chakra-petch-700.woff2) format('woff2'); }
+    @font-face { font-family: 'Chakra Petch'; font-weight: 600; font-display: swap; src: url(fonts/chakra-petch-600.woff2) format('woff2'); }
+    @font-face { font-family: 'Rajdhani'; font-weight: 600; font-display: swap; src: url(fonts/rajdhani-600.woff2) format('woff2'); }
+    @font-face { font-family: 'Rajdhani'; font-weight: 500; font-display: swap; src: url(fonts/rajdhani-500.woff2) format('woff2'); }
+  </style>
+  <script type="module" crossorigin src="./assets/index-CkFBnCuT.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CXeUh718.css">
+</head>
+<body>
+  <div id="app">
+    <div id="view"></div>
+    <div id="vignette"></div>
+    <div id="killcam"><i class="bar top"></i><i class="bar bottom"></i><span class="cap" data-i18n="hud.killcam"></span></div>
+    <div id="hud">
+      <div id="crosshair"><i></i></div>
+      <canvas id="threat" width="420" height="420"></canvas>
+      <canvas id="radar" width="220" height="220"></canvas>
+      <div id="score"><span id="score-you">0</span><span class="vs">·</span><span id="score-ai">0</span></div>
+      <div id="damage"></div>
+      <div id="shield"></div>
+      <div id="lives"></div>
+      <div id="status">
+        <div id="shells"></div>
+        <div id="dash"><i></i></div>
+      </div>
+      <div id="banner"></div>
+      <div id="hint"></div>
+      <div id="ai-debug"></div>
+      <div id="feed"></div>
+      <div id="cam-mode">1st</div>
+      <div id="spec-help" data-i18n-html="spec.help"></div>
+    </div>
+    <div id="overlay">
+      <div id="splash"></div>
+      <div class="scan"></div>
+      <section class="menu-left">
+        <header class="brand">
+          <div class="eyebrow" data-i18n="menu.eyebrow"></div>
+          <h1><span>Ricochet</span><span>Mech Arena</span></h1>
+          <p class="lede" data-i18n="menu.lede"></p>
+        </header>
+        <nav class="menu-list" id="menu-list" aria-label="Main menu">
+          <button id="play" class="item is-active"><span class="idx">01</span><span class="label" data-i18n="menu.play"></span><span class="hint" data-i18n="menu.play.hint"></span></button>
+          <button id="watch" class="item"><span class="idx">02</span><span class="label" data-i18n="menu.watch"></span><span class="hint" data-i18n="menu.watch.hint"></span></button>
+          <button id="settings-btn" class="item"><span class="idx">03</span><span class="label" data-i18n="menu.settings"></span><span class="hint" data-i18n="menu.settings.hint"></span></button>
+        </nav>
+        <div id="loading"><i id="loading-bar"></i><span id="loading-text"></span></div>
+        <ul class="keys">
+          <li><kbd>W A S D</kbd><span data-i18n="key.move"></span></li><li><kbd data-i18n="key.mouse"></kbd><span data-i18n="key.aim"></span></li><li><kbd data-i18n="key.click"></kbd><span data-i18n="key.fire"></span></li><li><kbd>Shift</kbd><span data-i18n="key.dash"></span></li>
+          <li><kbd>V</kbd><span data-i18n="key.camera"></span></li><li><kbd>T</kbd><span data-i18n="key.spectate"></span></li><li><kbd>R</kbd><span data-i18n="key.reset"></span></li>
+        </ul>
+        <footer class="foot"><span id="build">—</span><span data-i18n="foot.sound"></span><span id="music-status"></span></footer>
+      </section>
+      <aside id="settings" class="panel hidden" aria-label="Settings">
+        <h2 data-i18n="set.title"></h2>
+        <label><span data-i18n="set.language"></span>
+          <select id="set-lang"><option value="zh">中文</option><option value="en">English</option></select>
+        </label>
+        <label><span data-i18n="set.match"></span>
+          <select id="set-match"><option value="1" data-i18n="set.m.1"></option><option value="2" data-i18n="set.m.2"></option><option value="3" data-i18n="set.m.3"></option></select>
+        </label>
+        <label><span data-i18n="set.quality"></span>
+          <select id="set-quality"><option value="low" data-i18n="set.q.low"></option><option value="medium" data-i18n="set.q.medium"></option><option value="high" data-i18n="set.q.high"></option></select>
+        </label>
+        <label><span data-i18n="set.sfx"></span><input id="set-sfx" type="range" min="0" max="1" step="0.05" /></label>
+        <label><span data-i18n="set.music"></span><input id="set-music" type="range" min="0" max="1" step="0.05" /></label>
+        <label><span data-i18n="set.mouse"></span><input id="set-sens" type="range" min="0.3" max="3" step="0.1" /></label>
+        <label class="check"><input id="set-fps" type="checkbox" /><span data-i18n="set.fps"></span></label>
+        <p class="note" data-i18n-html="set.note"></p>
+        <button id="settings-close" class="ghost" data-i18n="set.done"></button>
+      </aside>
+    </div>
+    <div id="fps"></div>
+  </div>
+</body>
+</html>

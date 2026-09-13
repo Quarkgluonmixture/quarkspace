@@ -477,6 +477,13 @@ serves a fourth. Reversing the decision is one file: add a small filing link to
 `public/deepseek/index.html` and assert that file in `check:beian` too, reading the number from
 `app/beian-filing.ts` so a second copy cannot drift.
 
+**`/ricochet-mech-arena` is the second static game** (2026-09-13, on the owner's request to publish it
+here): the `dist/` of `../ricochet-mech-arena` (Vite, `base: './'`; 50 files, 12 MB, 9.9 MB of it audio)
+copied whole into `public/ricochet-mech-arena/`, with the same 307 to `index.html` in `next.config.ts` and
+the same eslint ignore. Everything above applies unchanged: exact-path serving, relative asset paths, and
+no ICP filing on the route — so `check:beian`'s denominator is now short by two, not one. The copy does
+not track its source repository: updating it is rebuild there → re-copy → commit here.
+
 ## 7. Change playbooks
 
 ### Add a model

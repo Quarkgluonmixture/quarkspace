@@ -17,6 +17,8 @@ const eslintConfig = defineConfig([
     // emits 627 warnings and 0 errors — so it would not have failed the job, it would have buried
     // every real warning under a minified file nothing here can edit.
     "public/deepseek/**",
+    // Same shape: the Vite bundle of ../ricochet-mech-arena, copied in whole (2026-09-13).
+    "public/ricochet-mech-arena/**",
   ]),
 ]);
 

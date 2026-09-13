@@ -14,8 +14,14 @@ const nextConfig: NextConfig = {
   //
   // 307, not 308: the shareable URL is `/deepseek`, and a permanent redirect would be cached in
   // every phone that ever opened it, making the shape of this route impossible to change later.
+  //
+  // `/ricochet-mech-arena` (2026-09-13) is the second static game and gets the identical treatment: a
+  // Vite build with `base: './'`, every asset path relative, copied whole into `public/ricochet-mech-arena/`.
   async redirects() {
-    return [{ source: "/deepseek", destination: "/deepseek/index.html", permanent: false }];
+    return [
+      { source: "/deepseek", destination: "/deepseek/index.html", permanent: false },
+      { source: "/ricochet-mech-arena", destination: "/ricochet-mech-arena/index.html", permanent: false },
+    ];
   },
 };
 

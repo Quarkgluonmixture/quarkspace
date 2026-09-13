@@ -822,3 +822,12 @@ term 也各自隔离进只含自己 meta 的临时目录(合成 fixture 的既�
 每个 term 仍双侧断言(前一天静默 + 当天必红并点名模型),第三条测试仍跑完整真目录的
 「今天」。隔离版 3/3 绿;另手工 --as-of 2026-09-14 验证 deepseek term 当天红且点名
 deepseek-v4-pro。CI 的红是本班合入触发,同班修掉。
+
+## [2026-09-13] 第二个静态游戏 `/ricochet-mech-arena` 上线,沿用 `/deepseek` 的形状  #ship
+- owner:「把他部署到我的站点 www.quarkspace.top/ricochet-mech-arena」。做法与 2026-08-15 的 `/deepseek` 完全同形:
+  `../ricochet-mech-arena` 的 Vite `dist/`(`base: './'`,50 个文件,12 MB,其中音频 9.9 MB)整份拷进
+  `public/ricochet-mech-arena/`;`next.config.ts` 加一条 307 `/ricochet-mech-arena` → `/ricochet-mech-arena/index.html`;
+  eslint 忽略该目录。
+- 没有另行决定备案页脚:游戏全屏,沿用坑 **35** 的处理;`check:beian` 的分母现在少两条。要反过来就照坑 35 写的一文件改法。
+- ⚠ 这份拷贝**不跟源仓自动更新**:源仓改完 `npm run build` → 重拷 → 这里 commit。源仓 CHECKPOINT 已写同一句。
+- 本地生产构建实测见下一条(`/ricochet-mech-arena` 307 → `index.html` 200,资源 200)。
