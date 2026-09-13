@@ -831,3 +831,13 @@ deepseek-v4-pro。CI 的红是本班合入触发,同班修掉。
 - 没有另行决定备案页脚:游戏全屏,沿用坑 **35** 的处理;`check:beian` 的分母现在少两条。要反过来就照坑 35 写的一文件改法。
 - ⚠ 这份拷贝**不跟源仓自动更新**:源仓改完 `npm run build` → 重拷 → 这里 commit。源仓 CHECKPOINT 已写同一句。
 - 本地生产构建实测见下一条(`/ricochet-mech-arena` 307 → `index.html` 200,资源 200)。
+
+## [2026-09-13] `/ricochet-mech-arena`:本地生产构建全通,线上 404 是 08-26 起的部署冻结,不是本次的错  #measure #incident
+- 本地 `next build` + `next start -p 3111` 实测:`/ricochet-mech-arena` 307 → `/ricochet-mech-arena/index.html` 200;
+  `/ricochet-mech-arena/` 308 回裸路径(Next 默认无尾斜杠);JS / CSS / `audio/menu.mp3` / `textures/keyart.jpg` /
+  `fonts/rajdhani-600.woff2` 全 200;`/deepseek`、`/models` 不受影响。CI(c22bb88)全绿。
+- push 后轮询 `https://quarkspace.top/ricochet-mech-arena/index.html` 30 分钟仍 404;首页 `Last-Modified: Wed, 26 Aug 2026 14:47:34 GMT`、
+  `Age ≈ 18 天`——与 09-10 挂在 #7 的诊断一致:**改名后 EdgeOne webhook 死了,main 不再自动上线**。本机无 EdgeOne CLI /
+  腾讯云凭据,修不了;修法仍是 #7 写的:owner 控制台 `CreatePagesDeployment` ReDeploy + Github + 最新 main,并核对 Pages
+  项目的 Git 绑定是否还指旧 slug。ReDeploy 之后这条路由会随其余 50+ 个积压 commit 一起上线。
+- 顺带:本机 push 该仓撞 403(keychain 默认工作号),仓库本地 `credential.helper` 已钉成「空条目 + 个人号 token helper」。
