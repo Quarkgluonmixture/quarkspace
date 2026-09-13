@@ -2598,6 +2598,10 @@
       "reason": "The retired v1 board of a column the catalog already has at v1.1 (`vals-public-benefits`). Not a missing column and not a second reading: v1 and v1.1 are different question sets and rule 4 forbids merging them, and batch 05's own v1.1 rows are already superseded by batch 29. Archived as the record of what the v1 board published; nothing wants it in a cell."
     },
     {
+      "benchmark": "vals-terminal-bench-science",
+      "reason": "Terminal-Bench Science, first seen on Vals' index 2026-09-13 (board updated 2026-09-11, version 0.1, 24 models). Refused for three reasons, each sufficient alone. (1) It is NOT Terminal-Bench 2.x: a different task set ('research workflow tasks contributed by practicing scientists across five domains'), so the terminal column cannot take it and rule 4 forbids a new version in an old cell. (2) It is a version-0.1 board — the first unmapped Vals board to publish a real version — and a v0.1 question set under development is not something this catalog publishes; the version field is exactly why these rows reached the store at all instead of being dropped for having no version like every other unmapped Vals board. (3) Agentic mode with NO harness published on any row (null throughout, where Vals' own Terminal-Bench 2.1 board names Terminus 2 per row) — the same unstated-scaffold refusal as vals-cyberbench-poc/patch, and rule 6 says a system result is model + scaffold. Archived so opening a column later costs no re-collection; 15 of its 24 models are catalog models, so the day Vals finalises the task set and names a harness, this becomes a live taxonomy decision."
+    },
+    {
       "benchmarks": [
         "AIME 2026",
         "HMMT Nov. 2025",
