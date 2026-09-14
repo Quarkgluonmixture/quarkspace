@@ -75,7 +75,7 @@ Snapshot for the next session. One page. 现场状态在这里;**动手前的自
 | 溯源 | **319 / 322**（99%；3 格有值无据 = `deepseek-v4-flash` 两格 + `deepseek-v4-pro` 的 `open`，都在 `TODO.md`）⚠ 分母是**解析得到的行** |
 | 归档 | **34 个带行的批次**（+ `batch-31` 只有 meta，是纯价格条款；编号到 **35**），其中 **20** 个 `collectedWith` 指向 `scripts/`、再加 batch-33 那条 curl（8-20 实测，复算 = 数 `data/sources/*.meta.json` 的 `collectedWith`）⚠ 「裸奔行数」引用前先钉定义 → `TODO.md` |
 | 归档里收了不入库 | **3582 行**（8-09 实测），全部带写明理由（`droppedBenchmarks` / 未映射 / 已退役）——拒绝也要可审计 ⚠ 只增不减地长过两次（batch 35 之后至少 +76；8-19 又加进 V4 Pro preview 的全部 132 行）；这个数的取数口径没写下来，引用前先钉定义，别在它上面做减法或加法 |
-| 站点 | **`https://quarkspace.top`**（+ `www`，两个都 200）· `/` 个人站 · `/models` 观测台 · **`/deepseek` 静态游戏**（不走 `app/layout.tsx` ⇒ **没有备案页脚**，owner 明确选的，坑 **35**）· **`/ricochet-mech-arena` 静态游戏**（2026-09-13 已进 `main`，同一处理，`public/` 里的拷贝不跟源仓自动更新；⚠ 线上仍 404——生产部署自 08-26 冻结，等 owner 控制台 ReDeploy，见 #7），同一个仓库，EdgeOne Pages |
+| 站点 | **`https://quarkspace.top`**（+ `www`，两个都 200）· `/` 个人站 · `/models` 观测台 · **`/deepseek` 静态游戏**（不走 `app/layout.tsx` ⇒ **没有备案页脚**，owner 明确选的，坑 **35**）· **`/ricochet-mech-arena` 静态游戏**（同一处理，`public/` 里的拷贝不跟源仓自动更新；2026-09-14 owner 手动 ReDeploy 后上线；webhook 是否恢复看下一次 push 后线上哈希），同一个仓库，EdgeOne Pages |
 | Persona Lab | **`https://quarkspace.top/persona` 已上线**（2026-08-17 实测）：`qwen3.7-flash` 快速候选编译 + 候选筛选后直接探针；服务端凭据已配置且访问口令受保护。线上保存浏览器本地历史，完整 SQLite/JSONL 研究实验仍走本地 Encode Persona harness。 |
 
 ⚠ **三个数字一起读，别只读百分比**——加一个基准会同时放大分母。

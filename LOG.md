@@ -841,3 +841,11 @@ deepseek-v4-pro。CI 的红是本班合入触发,同班修掉。
   腾讯云凭据,修不了;修法仍是 #7 写的:owner 控制台 `CreatePagesDeployment` ReDeploy + Github + 最新 main,并核对 Pages
   项目的 Git 绑定是否还指旧 slug。ReDeploy 之后这条路由会随其余 50+ 个积压 commit 一起上线。
 - 顺带:本机 push 该仓撞 403(keychain 默认工作号),仓库本地 `credential.helper` 已钉成「空条目 + 个人号 token helper」。
+
+## [2026-09-14] `/ricochet-mech-arena` 上线(owner 控制台 ReDeploy),随后按源仓反馈更新拷贝  #ship
+- owner 在 EdgeOne 控制台手动 ReDeploy 后,`/ricochet-mech-arena` 307 → `index.html` 200、线上 JS 哈希 = 当时的拷贝(`index-CkFBnCuT.js`)。
+  首页 `Last-Modified` 从 08-26 走出来了 ⇒ 08-26 起积压的 commit 一并上线。**webhook 是否已修未知**:本条 push 之后看线上是否
+  自动变成 `index-X3RGpoC6.js`,不变就还得手动 ReDeploy(见 #7)。
+- 源仓三条线上反馈(开站被 autoplay 拦、慢放提前到命中前、AI 对 AI 默认 2v2)已在源仓修完并重新 build,拷贝整份替换
+  (`assets/index-X3RGpoC6.js`,50 个文件)。其中「开站无声」是 Chrome 按 origin 放行 autoplay 的策略,新域名首访必静音——
+  不是本站配置问题,源仓 GOTCHAS #19。
