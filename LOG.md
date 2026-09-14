@@ -856,3 +856,6 @@ deepseek-v4-pro。CI 的红是本班合入触发,同班修掉。
   ReDeploy 之后**连 webhook 一起好了**,`AGENTS.md` 的「合并即发布」重新成立;#7 里每日重写的 ⚠ 应自行消失,不消失再查。
 - 复算:`curl -s https://quarkspace.top/ricochet-mech-arena/index.html | grep -o 'assets/index-[^"]*\.js'` 与
   `public/ricochet-mech-arena/index.html` 里的哈希对照。
+
+## [2026-09-14] `/ricochet-mech-arena` 拷贝更新:开站 BGM 提前、战斗曲 0.8、两首曲子 128 kbps  #ship
+- 源仓按用户线上反馈改完重 build,拷贝整份替换(`assets/index-CEI8_5Xd.js`,音频从 9.9 MB 降到 6.4 MB,目录 12 → 10 MB)。原因与量法在源仓 LOG 同日条。
