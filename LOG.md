@@ -849,3 +849,10 @@ deepseek-v4-pro。CI 的红是本班合入触发,同班修掉。
 - 源仓三条线上反馈(开站被 autoplay 拦、慢放提前到命中前、AI 对 AI 默认 2v2)已在源仓修完并重新 build,拷贝整份替换
   (`assets/index-X3RGpoC6.js`,50 个文件)。其中「开站无声」是 Chrome 按 origin 放行 autoplay 的策略,新域名首访必静音——
   不是本站配置问题,源仓 GOTCHAS #19。
+
+## [2026-09-14 12:13] EdgeOne 自动部署已恢复:push `main` 后约 7 分钟线上换新  #measure #incident
+- 0ac847c push 后逐分钟轮询 `/ricochet-mech-arena/index.html`:前 6 次仍是旧哈希 `index-CkFBnCuT.js`,第 7 次(≈7 分钟)变成
+  `index-X3RGpoC6.js`;首页 `Last-Modified: Mon, 14 Sep 2026 11:11:41 GMT`、`Age: 0`。⇒ 08-26 起的部署冻结(#7)在 owner 09-14 控制台
+  ReDeploy 之后**连 webhook 一起好了**,`AGENTS.md` 的「合并即发布」重新成立;#7 里每日重写的 ⚠ 应自行消失,不消失再查。
+- 复算:`curl -s https://quarkspace.top/ricochet-mech-arena/index.html | grep -o 'assets/index-[^"]*\.js'` 与
+  `public/ricochet-mech-arena/index.html` 里的哈希对照。
