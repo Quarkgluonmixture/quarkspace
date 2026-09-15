@@ -1,0 +1,11 @@
+{
+  "batch": "47 · Gemini 3.6 Flash model card table",
+  "collectedWith": "scripts/capture-release-tables.mjs gemini36f",
+  "filtered": false,
+  "release": "gemini36f",
+  "sources": [
+    "https://deepmind.google/models/model-cards/gemini-3-6-flash/"
+  ],
+  "note": "Gemini 3.6 Flash model card(2026-07-21)的性能表,整表抄录:54 行,6 个已发布模型列,10 个 benchmark 标签,0 个分区。model card 的表**是服务端渲染的**(curl 直接返回完整 <table>),采集脚本仍走 CDP 但无需等应用画完,因此这是可复跑的抓取。⚠ 与此前所有 release capture 不同,这张表 header 的第 2 列是 **Notes**,不是模型列 —— parser 为此按「header 里第一个数字格起才是模型」对齐,子行(「With tools」「1M (pointwise)」,比 header 少一格)按相对位置右对齐。**只采纳 Gemini 3.6 Flash 自己那列的 6 格**;五个竞品列 file-scoped 拒收(与 batch 17/32/38/39 一致)。⚠ 两行价格(Input/Output price $/1M)不是 benchmark 行,parser 的 Number() 对 `$1.50` 返回 NaN 自然跳过,不 carry。 evaluation_date 记的是发布日(卡片页不标运行日期);百分号后缀 `%` 在 parser 里剥掉后再 Number()。 交叉验证(坑 33,采表前逐格对过目录现值):deepswe 49 vs 官方板 46.7(mini-swe-agent,high,±3.7)= 4.9% 闸门内;terminal 78.0 vs AA 77.53(Terminus-2 vs 未公布 scaffold)= 0.6%;gdpval 1421 vs AA 1331 = 6.8% 正常漂移。⚠ 「GDM-MRCR v2 (8-needle)」行有两行口径:128k (average) 与 1M (pointwise) —— **只有 128k average 进 mrcr 列**,与 batch 38 先例同判(Qwen 页 MRCR-v2 128k 采的就是 8-needle 平均分;DeepSeek 的 1M pointwise 是另一口径,AGENTS.md 坑:不可合并的 context 变体)。1M (pointwise) 子行按相对位置归到各模型列后**留档不 carry**。⚠ 「CharXiv Reasoning」行 No tools / With tools 两行:**No tools 85.2 进 charxiv RQ 列**(目录口径无工具);With tools 子行(89.4)是另一个操作点,目录没有 charxiv-with-tools 列,留档。⚠ 「OSWorld-Verified」拒收:目录 osworld2 列装 OSWorld 2.0,1.0 Verified 是另一个 split(坑 3 同形)。⚠ 「MLE-Bench」目录无列,留档。⚠ SWE-Bench Pro (Public) 58.7 是 3.6 Flash 在 swe-pro 的**第一格**(官方板 batch-30 无 3.6 Flash 行),vendor 读数开局、待官方板补 benchmark-native 行。",
+  "retrievedDate": "2026-09-15"
+}

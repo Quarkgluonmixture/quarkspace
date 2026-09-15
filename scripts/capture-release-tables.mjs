@@ -287,6 +287,57 @@ const RELEASES = {
       "GDPval-AA v2": { id: "gdpval", version: "v2", tools: true },
     },
   },
+  "gemini36f": {
+    label: "Gemini 3.6 Flash model card",
+    maker: "Google",
+    // NOT the launch blog post. deepmind.google/blog/introducing-gemini-3-6-flash-3-5-flash-lite-
+    // and-3-5-flash-cyber (2026-07-21) carries its numbers as prose only — measured 2026-09-14,
+    // 417KB of HTML with zero <table> elements; GDM-MRCR appears once, inside a sentence. The
+    // model card publishes the full model × benchmark grid server-rendered (154KB, 2 tables),
+    // so this is a re-runnable capture that does not need the CDP wait to find its tables.
+    url: "https://deepmind.google/models/model-cards/gemini-3-6-flash/",
+    batch: "batch-47-gemini36f-card",
+    batchLabel: "47 · Gemini 3.6 Flash model card table",
+    // 46 is the MiniMax M3 release batch; batch numbers are never reused.
+    published: "2026-07-21",
+    // Google's card header is "Benchmark | Notes | <models>…" — two label columns before the
+    // models, one more than every earlier release. Declared, not inferred: see the parser comment.
+    labelColumns: 2,
+    noteName: "Gemini 3.6 Flash",
+    keep: "Gemini 3.6 Flash",
+    rowNote:
+      "厂商发布材料:行上不写 reasoning effort 或运行日期;harness 只在 Terminal-bench 一行的 Notes 列声明 " +
+      "Terminus-2,其余行留空;evaluation_date 记的是发布日",
+    adoption:
+      "model card 的表**是服务端渲染的**(curl 直接返回完整 <table>),采集脚本仍走 CDP 但无需等应用画完,因此这是可复跑的抓取。" +
+      "⚠ 与此前所有 release capture 不同,这张表 header 的第 2 列是 **Notes**,不是模型列 —— parser 为此按" +
+      "「header 里第一个数字格起才是模型」对齐,子行(「With tools」「1M (pointwise)」,比 header 少一格)按相对位置右对齐。" +
+      "**只采纳 Gemini 3.6 Flash 自己那列的 6 格**;五个竞品列 file-scoped 拒收(与 batch 17/32/38/39 一致)。" +
+      "⚠ 两行价格(Input/Output price $/1M)不是 benchmark 行,parser 的 Number() 对 `$1.50` 返回 NaN 自然跳过,不 carry。 " +
+      "evaluation_date 记的是发布日(卡片页不标运行日期);百分号后缀 `%` 在 parser 里剥掉后再 Number()。",
+    extraNote:
+      "交叉验证(坑 33,采表前逐格对过目录现值):deepswe 49 vs 官方板 46.7(mini-swe-agent,high,±3.7)= 4.9% 闸门内;" +
+      "terminal 78.0 vs AA 77.53(Terminus-2 vs 未公布 scaffold)= 0.6%;gdpval 1421 vs AA 1331 = 6.8% 正常漂移。" +
+      "⚠ 「GDM-MRCR v2 (8-needle)」行有两行口径:128k (average) 与 1M (pointwise) —— **只有 128k average 进 mrcr 列**," +
+      "与 batch 38 先例同判(Qwen 页 MRCR-v2 128k 采的就是 8-needle 平均分;DeepSeek 的 1M pointwise 是另一口径," +
+      "AGENTS.md 坑:不可合并的 context 变体)。1M (pointwise) 子行按相对位置归到各模型列后**留档不 carry**。" +
+      "⚠ 「CharXiv Reasoning」行 No tools / With tools 两行:**No tools 85.2 进 charxiv RQ 列**(目录口径无工具);" +
+      "With tools 子行(89.4)是另一个操作点,目录没有 charxiv-with-tools 列,留档。" +
+      "⚠ 「OSWorld-Verified」拒收:目录 osworld2 列装 OSWorld 2.0,1.0 Verified 是另一个 split(坑 3 同形)。" +
+      "⚠ 「MLE-Bench」目录无列,留档。⚠ SWE-Bench Pro (Public) 58.7 是 3.6 Flash 在 swe-pro 的**第一格**" +
+      "(官方板 batch-30 无 3.6 Flash 行),vendor 读数开局、待官方板补 benchmark-native 行。",
+    carried: {
+      // Keys are the full rendered labels: Google merges the benchmark name and its description
+      // into ONE cell ("DeepSWE v1.1 Long-horizon software engineering"), so the label this
+      // parser sees is not the short name the page's prose uses.
+      "GDM-MRCR v2 (8-needle) Long context performance": { id: "mrcr", version: "v2 · 8 needle", tools: false, contextLength: "128K" },
+      "CharXiv Reasoning Information synthesis from complex charts": { id: "charxiv", version: "RQ", tools: false },
+      "SWE-Bench Pro (Public) Diverse agentic coding tasks": { id: "swe-pro", version: "Public", tools: true },
+      "DeepSWE v1.1 Long-horizon software engineering": { id: "deepswe", version: "v1.1", tools: true },
+      "Terminal-bench 2.1 Agentic terminal coding": { id: "terminal", version: "2.1", tools: true, harness: "Terminus-2" },
+      "GDPVal-AA v2 Knowledge work": { id: "gdpval", version: "v2", tools: true },
+    },
+  },
   kimik3: {
     label: "Kimi K3 release",
     maker: "Moonshot AI",
@@ -402,7 +453,14 @@ for (const table of tables) {
   // The first row names the models. A table whose header has no model columns is a layout table,
   // not results — Qwen's page has one, and it renders as empty cells.
   const header = (table[0] ?? []).map((cell) => cell.trim());
-  const models = header.slice(1).filter(Boolean);
+  // Google's model card puts a Notes column between the label and the models ("Benchmark | Notes |
+  // Gemini 3.6 Flash | …"), so the model columns start one further right than every earlier
+  // release's. `labelColumns` is declared per release rather than inferred from the header text —
+  // a header cell being non-numeric cannot mean "not a model", because model names ("Opu 4.8")
+  // are non-numeric too, and inferring it that way silently emptied Qwen's tables (measured on
+  // the qwen3.8 replay below). Default 1 = the "Benchmark | <models>…" shape every other page uses.
+  const labelColumns = release.labelColumns ?? 1;
+  const models = header.slice(labelColumns).filter(Boolean);
   if (models.length === 0) continue;
 
   // ...and a table can pass that test and still not be results. Z.AI's post opens with a
@@ -420,15 +478,31 @@ for (const table of tables) {
     // A row with one filled cell is a section heading ("Coding Agent"), not a benchmark.
     if (cells.filter((cell) => cell.trim()).length === 1) { section = label; sectionsSeen += 1; continue; }
 
-    const carried = release.carried[label];
-    for (const [index, model] of models.entries()) {
-      const published = (cells[index + 1] ?? "").trim();
-      // The page writes an unrun cell as "--". It is not a zero and it is not a row.
-      if (!published || published === "--" || published === "-- / --") continue;
+    // Google's card mixes prices into the same table ("Input price $/1M tokens…"). A price is not
+    // an observation and would otherwise survive as a `%` row with score 1.5 — skip the whole row.
+    if (/\bprice\b/i.test(label)) continue;
 
-      const [primary, secondary] = published.split("/").map((part) => part.trim());
-      const score = Number(primary);
+    const carried = release.carried[label];
+    // A continuation row ("With tools", "1M (pointwise)") drops the Notes cell instead of
+    // leaving it empty — the row is one cell short and its values still belong under the model
+    // columns, i.e. aligned to the END of the row. Compute the offset from the row's own length:
+    // a full row starts its models at `labelColumns`, a short row at `cells.length - models.length`.
+    // For labelColumns 1 the two formulas agree on every row shape seen before Google's card,
+    // so earlier releases are unaffected (verified by the byte-identical replays).
+    const offset = cells.length === header.length ? labelColumns : cells.length - models.length;
+    for (const [index, model] of models.entries()) {
+      const published = (cells[index + offset] ?? "").trim();
+      // The page writes an unrun cell as "—" or "--". It is not a zero and it is not a row.
+      if (!published || published === "--" || published === "—" || published === "-- / --") continue;
+
+      // Google's card prints "91.8%" and "$1.50"; strip the suffix and separators before Number().
+      // A cell that is still not a number (a price with two figures, a harness name) is skipped —
+      // the same NaN path that always dropped prose cells.
+      const [primaryRaw, secondaryRaw] = published.split("/");
+      const numeric = (part) => Number(part.trim().replace(/^[$]/, "").replace(/%$/, "").replace(/,/g, ""));
+      const score = numeric(primaryRaw);
       if (!Number.isFinite(score)) continue;
+      const secondary = secondaryRaw !== undefined ? secondaryRaw.trim() : undefined;
 
       const baseNote = `${release.noteName} 发布页「${section ?? "performance"}」分区,原样抄录 ${label} 一行`;
       // Every release so far states no harness and no effort, so the row says so. A release that
@@ -462,11 +536,11 @@ for (const table of tables) {
       // ⚠ Only for a second number whose COLUMN is known. Where the second figure is a different
       // metric of the same column (Qwen's partial-credit scores, OSWorld's partial score) it stays
       // a note — `dual` — because the catalog has nowhere to put it.
-      const secondScore = secondary === undefined ? NaN : Number(secondary);
+      const secondScore = secondary === undefined ? NaN : numeric(secondary);
       if (carried?.dualColumn && Number.isFinite(secondScore)) {
         emit(score, carried, [`同格第二个数 ${secondary} 已按 ${carried.dualColumn.id} 单独出行`]);
         emit(secondScore, carried.dualColumn, [
-          `${label} 一行的第二个数(第一个数 ${primary} 在 ${carried.id});` +
+          `${label} 一行的第二个数(第一个数 ${score} 在 ${carried.id});` +
           `同一行装着目录两列,拆行由 capture 脚本的 dualColumn 完成,不是手工补的`,
         ]);
         continue;
