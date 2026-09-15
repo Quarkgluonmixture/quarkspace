@@ -2325,6 +2325,41 @@
       "file": "batch-39-kimik3-release",
       "modelId": null,
       "reason": "Batch 39 is Moonshot's own release table and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no benchmark version for it (Kimi's footnotes describe only Kimi K3's own setup), and source precedence puts it below every board that does. Four of these strings resolve globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving them out."
+    },
+    {
+      "modelRaw": "Gemini 3.5 Flash",
+      "effort": "*",
+      "file": "batch-47-gemini36f-card",
+      "modelId": null,
+      "reason": "Batch 47 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. All five strings resolve globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving them out."
+    },
+    {
+      "modelRaw": "Gemini 3.1 Pro",
+      "effort": "*",
+      "file": "batch-47-gemini36f-card",
+      "modelId": null,
+      "reason": "Batch 47 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. All five strings resolve globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving them out."
+    },
+    {
+      "modelRaw": "GPT-5.6 Luna",
+      "effort": "*",
+      "file": "batch-47-gemini36f-card",
+      "modelId": null,
+      "reason": "Batch 47 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. All five strings resolve globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving them out."
+    },
+    {
+      "modelRaw": "Grok 4.5",
+      "effort": "*",
+      "file": "batch-47-gemini36f-card",
+      "modelId": null,
+      "reason": "Batch 47 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. All five strings resolve globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving them out."
+    },
+    {
+      "modelRaw": "Claude Sonnet 5",
+      "effort": "*",
+      "file": "batch-47-gemini36f-card",
+      "modelId": null,
+      "reason": "Batch 47 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. All five strings resolve globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving them out."
     }
   ],
   "benchmarkSplits": [
