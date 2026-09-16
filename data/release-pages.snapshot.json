@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-15",
+  "checkedAt": "2026-09-16",
   "pages": {
     "openai": [
       "https://openai.com/index/1-million-businesses-putting-ai-to-work",
@@ -1143,7 +1143,6 @@
       "https://deepmind.google/blog/alphafold-five-years-of-impact/",
       "https://deepmind.google/blog/alphagenome-atlas-a-predictive-map-of-every-possible-dna-letter-change-in-the-human-genome/",
       "https://deepmind.google/blog/announcing-our-partnership-with-the-republic-of-korea/",
-      "https://deepmind.google/blog/behind-ancestra-combining-veo-with-live-action-filmmaking/",
       "https://deepmind.google/blog/build-with-nano-banana-pro-our-gemini-3-pro-image-model/",
       "https://deepmind.google/blog/co-scientist-a-multi-agent-ai-partner-to-accelerate-research/",
       "https://deepmind.google/blog/d4rt-teaching-ai-to-see-the-world-in-four-dimensions/",
@@ -1186,6 +1185,7 @@
       "https://deepmind.google/blog/introducing-gemini-3-6-flash-3-5-flash-lite-and-3-5-flash-cyber/",
       "https://deepmind.google/blog/introducing-gemini-3-7-flash/",
       "https://deepmind.google/blog/introducing-gemini-3-8-flash-and-38-flash-cyber/",
+      "https://deepmind.google/blog/introducing-gemini-3-8-live-and-3-8-live-extended-thinking/",
       "https://deepmind.google/blog/introducing-gemini-omni/",
       "https://deepmind.google/blog/introducing-gemma-3n-the-developer-guide/",
       "https://deepmind.google/blog/introducing-gemma-4-12b-a-unified-encoder-free-multimodal-model/",
