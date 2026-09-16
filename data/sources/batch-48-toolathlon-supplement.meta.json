@@ -1,0 +1,10 @@
+{
+  "batch": "48 · Toolathlon-Verified evaluation summary — supplement",
+  "collectedWith": "hand re-read of https://huggingface.co/datasets/hkust-nlp/Toolathlon-Verified_Trajectories/blob/main/README.md",
+  "filtered": false,
+  "sources": [
+    "https://huggingface.co/datasets/hkust-nlp/Toolathlon-Verified_Trajectories/blob/main/README.md"
+  ],
+  "note": "Supplement to batch-03 (read 2026-07-31, 10 rows). The README's evaluation summary gained two rows since then — 'DeepSeek V4 Flash' 70.68 and 'Muse Spark 1.2 (xhigh)' 75.93 — and every one of the original ten numbers is byte-identical on re-read (Kimi K3 76.54, Opus 4.8 76.23, Muse Spark 1.1 75.62, GPT-5.5 73.46, Claude Sonnet 5 71.60, Gemini 3.5 Flash 67.28, Gemini 3.1 Pro Preview 61.11, GLM-5.2 59.88, Kimi K2.7 Code 58.02, DeepSeek V4 Pro 55.86), so this is new data on an append-only board, not a rewrite. The new Muse Spark 1.2 row arrived in commit 67807c1 ('Document Muse Spark 1.2 trajectories and metrics', ~1 month before 2026-09-16); the Flash row's arrival commit is not individually dated but post-dates batch-03's read by construction. Muse Spark 1.2 has no catalog record (33 archived cells, below the 49-cell floor) — the row is archived and refused, not a defect. 'DeepSeek V4 Flash' needs its identity settled on the number because the string is ambiguous across sources: 70.68 sits 0.5% from DeepSeek's own 0731 GA release table (batch-35: 70.3, same benchmark column) and 42% from that table's Preview column (49.7), so it is the 0731 GA, adopted file-scoped — the same pattern as deepseek-v4-pro in batch-11 where the bare string meant the GA on one board and the preview everywhere else. Run IDs corroborate generationally: Flash runs 1-3 sit beside Opus 4.8 runs 1-3 and Muse Spark 1.1/1.2 runs 1-3 (the early cohort), but the number, not the run ID, is the evidence — a run ID is logistics, not identity. effort null on the Flash row: the README states no effort for it (suffixed models carry theirs in the name; the bare string does not).",
+  "retrievedDate": "2026-09-16"
+}
