@@ -1,0 +1,30 @@
+{
+  "batch": "49 · DeepSeek pricing page re-read — the scheduled V4-Pro rerouting was withdrawn on its effective date",
+  "retrievedDate": "2026-09-16",
+  "collectedWith": "curl of the vendor pricing page (server-rendered HTML, no CDP needed)",
+  "schema": "Price terms only. This batch carries NO .jsonl, deliberately — see rowsNotArchived.",
+  "sources": [
+    "https://api-docs.deepseek.com/quick_start/pricing/"
+  ],
+  "rowsNotArchived": "The page's current prices are unchanged from batch-45's read of the same card ($1.32/$3.96/$0.044 peak for the pro column, $0.30/$1.20/$0.006 peak for the flash column), so archiving rows again would add nothing. What changed is a footnote, not a number.",
+  "note": "Batch-45 archived a scheduled term: from 12:00 Beijing on 2026-09-14, all deepseek-v4-pro requests would route to V4.1-Flash at Flash rates ($0.30/$1.20) until a V4.1 Pro launched, and the term said 'the check goes red on its own and the record is re-archived from the page' when the date arrived. It arrived, the check went red exactly as designed — and the page now says the vendor withdrew the change. Footnote (2), verbatim: 'In response to user demand, we have decided to continue providing API services for DeepSeek V4 Pro after September 14, 2026, with the billing method remaining unchanged. We will provide further notice should there be any changes. Thank you for your understanding and support!' The pricing table itself still reads $1.32/$3.96 peak for the pro column with MODEL VERSION pinned to DeepSeek-V4-Pro-0813, so the catalog's current values were never wrong and no record moves. This batch archives the withdrawal as evidence and retires the term — the guard fired, a human (or in this case the vendor) answered, and the term stops asserting. The MODEL VERSION row still reads 'DeepSeek-V4.1-Flash | DeepSeek-V4-Pro-0813', so the batch-45 identity dispositions stand unchanged.",
+  "priceTerms": [],
+  "retiredTermsNote": "The batch-45 term for deepseek-v4-pro retired 2026-09-16: its effective date passed and the vendor withdrew the change on that same date (footnote 2 above), so the catalog's $1.32/$3.96 stays correct and the term has nothing left to guard. A scheduled term is a guard with a job, and check-price-terms.mjs states the ending itself: 'Re-archive from …, update the record, then retire this term.' Re-archived (this batch), record unchanged (correctly), term retired. The term itself is preserved verbatim below in retiredTerms so the decision chain stays auditable.",
+  "retiredTerms": [
+    {
+      "modelId": "deepseek-v4-pro",
+      "retrievedOn": "2026-09-10",
+      "listPrice": {
+        "input": 1.32,
+        "output": 3.96
+      },
+      "scheduled": {
+        "input": 0.3,
+        "output": 1.2,
+        "effectiveFrom": "2026-09-14"
+      },
+      "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "note": "Preserved verbatim from batch-45's priceTerms: Not a promotion — a scheduled string rerouting. From 12:00 Beijing time on 2026-09-14, deepseek-v4-pro requests route to V4.1-Flash and are billed at the Flash price ($0.30/$1.20 peak) until V4.1 Pro launches. This is the exact batch-31 pattern (announced price change with a start date): the catalog keeps quoting $1.32/$3.96 until the effective date, then the check goes red on its own and the record is re-archived from the page. Deliberately NOT applied early — a price that has not taken effect is not a list price. Cache price on the effective date will be $0.006 (flash peak cache-hit); not part of this term's in/out assertion. || OUTCOME 2026-09-16: the effective date arrived, the guard fired red as designed, and the vendor had withdrawn the rerouting on the page by then — footnote (2) as quoted in this batch's note. Record never moved; term retired."
+    }
+  ]
+}

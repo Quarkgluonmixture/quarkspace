@@ -800,6 +800,13 @@
       "modelId": "muse-spark-1.1"
     },
     {
+      "modelRaw": "Muse Spark 1.2 (xhigh)",
+      "effort": "*",
+      "file": "batch-48-toolathlon-supplement",
+      "modelId": null,
+      "reason": "REFUSED 2026-09-16: no catalog record holds Muse Spark 1.2. The report-gaps floor is arithmetic, not editorial — muse-spark-1.2 has 33 archived cells against the 49 the board averages, so a record today would lower cell coverage, the one metric AGENTS.md names. The row is archived as evidence (batch-48: Toolathlon-Verified Pass@1 75.93) and waits for a human to decide whether the board wants the model anyway. Not a defect; the refusal is the intended outcome."
+    },
+    {
       "modelRaw": "DeepSeek V4 Flash 0731 (max)",
       "effort": "*",
       "modelId": "deepseek-v4-flash"
@@ -2167,6 +2174,13 @@
       "file": "batch-11-deepswe",
       "modelId": "deepseek-v4-pro",
       "reason": "DeepSWE does NOT split the two releases: one row, bare string, and it is the GA. Three independent confirmations, none of them the string: the row is dated 2026-08-13 (the GA shipped 08-12), its value is 62.8, and DeepSeek's own GA release table (batch 35) publishes 62.7 for the GA against 12.8 for the preview. GOTCHAS 24 criterion 1 -- the number -- is doing the work here, which is the criterion that file scope exists to encode. Scoped rather than global because the same bare string means the preview on LiveBench, Epoch, Vals, LMArena and Artificial Analysis, all of which do split."
+    },
+    {
+      "modelRaw": "DeepSeek V4 Flash",
+      "effort": "*",
+      "file": "batch-48-toolathlon-supplement",
+      "modelId": "deepseek-v4-flash",
+      "reason": "ADOPTED file-scoped 2026-09-16, same pattern as deepseek-v4-pro in batch-11. Toolathlon-Verified's README spells the family with no suffix, and the string is ambiguous across the archive (bare = preview on LiveBench/Epoch/Vals/LMArena; = 0731 GA on AA), so identity is settled on the number, not the string: this row is 70.68, sitting 0.5% from DeepSeek's own 0731 GA release table (batch-35, toolathlon: 70.3) and 42% from that same table's Preview column (49.7). No other Flash generation produces that pattern. Scoped because the global bare string stays refused per the AA batch-14/26 entries."
     },
     {
       "modelRaw": "deepseek-v4-pro",

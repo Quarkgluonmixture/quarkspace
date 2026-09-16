@@ -14,7 +14,8 @@
     "deepseek-v4-pro": "Off-peak, same windows: $0.022 input cache-hit, $0.66 input cache-miss, $1.98 output per 1M tokens — unchanged from the 08-16 card."
   },
   "identityDisposition": "deepseek-flash: archived UNMAPPED — it names DeepSeek-V4.1-Flash (pinned by the page's own MODEL VERSION row), a model with no catalog record. Mapping it to deepseek-v4-flash would be exactly the wrong-attribution failure this project exists to prevent: the 0731 flash is retired and the prices differ ($0.44/$1.32 → $0.30/$1.20). deepseek-v4-pro: aliased file-scoped (file: batch-45) — on this page the string is pinned by the MODEL VERSION row to DeepSeek-V4-Pro-0813, the record's identity since 2026-08-19; globally the same bare string is REFUSED for the preview (see the 2026-08-19 refusal entry), so scope stays narrow.",
-  "priceTerms": [
+  "priceTerms": [],
+  "retiredTerms": [
     {
       "modelId": "deepseek-v4-pro",
       "retrievedOn": "2026-09-10",
@@ -28,7 +29,8 @@
         "effectiveFrom": "2026-09-14"
       },
       "source": "https://api-docs.deepseek.com/quick_start/pricing/",
-      "note": "Not a promotion — a scheduled string rerouting. From 12:00 Beijing time on 2026-09-14, deepseek-v4-pro requests route to V4.1-Flash and are billed at the Flash price ($0.30/$1.20 peak) until V4.1 Pro launches. This is the exact batch-31 pattern (announced price change with a start date): the catalog keeps quoting $1.32/$3.96 until the effective date, then the check goes red on its own and the record is re-archived from the page. Deliberately NOT applied early — a price that has not taken effect is not a list price. Cache price on the effective date will be $0.006 (flash peak cache-hit); not part of this term's in/out assertion."
+      "note": "Not a promotion — a scheduled string rerouting. From 12:00 Beijing time on 2026-09-14, deepseek-v4-pro requests route to V4.1-Flash and are billed at the Flash price ($0.30/$1.20 peak) until V4.1 Pro launches. This is the exact batch-31 pattern (announced price change with a start date): the catalog keeps quoting $1.32/$3.96 until the effective date, then the check goes red on its own and the record is re-archived from the page. Deliberately NOT applied early — a price that has not taken effect is not a list price. Cache price on the effective date will be $0.006 (flash peak cache-hit); not part of this term's in/out assertion. || OUTCOME 2026-09-16: the effective date arrived, the guard fired red as designed, and the vendor had withdrawn the rerouting by then (footnote 2 on the page, archived as batch-49). Record never moved; term retired."
     }
-  ]
+  ],
+  "retiredTermsNote": "The deepseek-v4-pro term retired 2026-09-16: its effective date passed and the vendor withdrew the change on that date (see batch-49 for the footnote quotation and the re-read). The catalog's $1.32/$3.96 was never wrong. Term preserved verbatim in retiredTerms."
 }
