@@ -10,5 +10,5 @@
     "https://www.tbench.ai/leaderboard/terminal-bench/4.0"
   ],
   "note": "Fetched from the Supabase Edge Function the leaderboard page itself calls, discovered in Harbor's client code; it needs no key. One row per published submission — the board measures a model/scaffold pair, so the agent is recorded as the harness and rows are never merged across scaffolds. Reasoning effort and run date come from the row's own metadata. pass@2..5, trial count and the reward-hacking rate stay in the note because the catalog carries one metric per cell. This endpoint is undocumented and may move without notice; the fetcher throws rather than writing a partial batch. Supersedes the 2.1 rows batch 02 transcribed from the same board — recorded in data/model-aliases.json. The 2.0 rows in batch 02 are a different benchmark id and are untouched. 4.0 is a separate task set and lands in the terminal-40 column via benchmarkSplits; the 4.0 selector (4-0-0 on the bare terminal-bench package) was read from the leaderboard page's own dehydrated query state.",
-  "retrievedDate": "2026-09-17"
+  "retrievedDate": "2026-09-18"
 }
