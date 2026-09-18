@@ -21,7 +21,7 @@ For implementation details and AI-agent handoff, read [`AGENTS.md`](AGENTS.md) a
 - separate rankings for general capability, agent systems, coding systems, human preference, speed, and value
 - selectable model dossier and three-model comparison
 - evidence-backed seven-axis capability radar with explicit `Not ingested` / partial / broad coverage states
-- 72-benchmark catalog spanning reasoning, science, coding, agents, professional work, multimodality, and long context
+- 74-benchmark catalog spanning reasoning, science, coding, agents, professional work, multimodality, and long context
 - multi-model benchmark line charts and raw-score tables by capability family
 - model-capability / best-system toggle to prevent harness results being presented as pure model ability
 - OpenRouter price comparison rather than a live overwrite: the card shows the archived list
@@ -47,7 +47,7 @@ For implementation details and AI-agent handoff, read [`AGENTS.md`](AGENTS.md) a
 ### Connected
 
 - [Artificial Analysis](https://artificialanalysis.ai/leaderboards/models) — independent capability, speed, price, long-context and GDPval references
-- [Vals AI](https://www.vals.ai/benchmarks) — independent finance, legal, medical and coding evaluations, all 37 boards, scripted
+- [Vals AI](https://www.vals.ai/benchmarks) — independent finance, legal, medical and coding evaluations, all boards, scripted
 - [Epoch AI](https://epoch.ai/frontiermath) — FrontierMath Tiers 1-3 and Tier 4, plus an independent GPQA Diamond run
 - [ARC Prize](https://arcprize.org/leaderboard) — verified ARC-AGI-1, 2 and 3 results across reasoning efforts
 - [Artificial Analysis](https://artificialanalysis.ai/methodology/intelligence-benchmarking) — its own runs of GPQA Diamond, HLE, SciCode, AA-LCR, Terminal-Bench 2.1, τ³-Banking and IFBench

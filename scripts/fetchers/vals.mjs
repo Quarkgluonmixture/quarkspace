@@ -63,6 +63,7 @@ const KNOWN_ENTRIES = [
   ["swebench", "vals-swe-bench-verified", "shared"],
   ["terminal-bench-2-1", "vals-terminal-bench-2-1", "shared"],
   ["terminal-bench-2", "vals-terminal-bench-2", "shared"],
+  ["terminal-bench-4", "vals-terminal-bench-4", "shared"],
   // Meta's ProgramBench, not a namesake. The check: Vals' board description and the repository's
   // own GitHub description are the same sentence — "Can Language Models Rebuild Programs From
   // Scratch?" — which is exactly the check that was missing when a namesake last got through here
@@ -104,6 +105,10 @@ const SHARED_VERSION = new Map([
   // Terminal-Bench 2.0 is a different question set from 2.1 and the catalog keeps it in its own
   // `terminal-20` column; `benchmarkSplits` does that routing off this exact version string.
   ["terminal-bench-2", "2.0"],
+  // Terminal-Bench 4.0, same routing shape: this version string sends it to `terminal-40`.
+  // Vals' own board metadata says version 4.0 — recorded here unprefixed like 2.1/2.0 above,
+  // because that is how the shared column family spells it.
+  ["terminal-bench-4", "4.0"],
   // ProgramBench publishes no version. The `program` column declares 2026 and a `versionFallbacks`
   // entry supplies it — see data/model-aliases.json for why that is safe here and was not before.
   ["programbench", null],
