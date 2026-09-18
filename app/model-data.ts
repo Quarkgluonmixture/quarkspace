@@ -443,6 +443,15 @@ export const BENCHMARKS: BenchmarkRecord[] = [
   { id:"vals-ioi", name:"Vals · IOI", axis:"coding", mode:"model", tier:"observe", method:"execution", unit:"%", version:"2026", source:"Vals AI", url:"https://www.vals.ai/benchmarks/ioi", zh:"信息学奥赛题", en:"Olympiad informatics problems" },
   { id:"vals-code-migration", name:"Vals · Code Migration", axis:"coding", mode:"system", tier:"observe", method:"execution", unit:"%", version:"2026", source:"Vals AI", url:"https://www.vals.ai/benchmarks/code_migration", zh:"跨版本代码迁移", en:"Cross-version code migration" },
   { id:"vals-vibe-code-bench", name:"Vals · Vibe Code Bench", axis:"coding", mode:"system", tier:"observe", method:"rubric", unit:"%", version:"2026", source:"Vals AI", url:"https://www.vals.ai/benchmarks/vibe_code_bench", zh:"从零构建可运行应用", en:"Building working apps from scratch" },
+  // Vibe Code Bench 1-100, first seen on Vals' index 2026-09-18 (board v1.0, 19 models). A
+  // different task set from VCB v1.1 — it starts from a complete VCB v1.1 app and measures up to
+  // ten DEPENDENT product iterations with regression tests, where VCB measures zero-to-one
+  // generation — so rule 4 gives it its own column rather than a version row inside
+  // vals-vibe-code-bench. Published v1.0 (not a 0.x board under development) and OpenHands named
+  // on every row, so neither refusal reason from vals-terminal-bench-science applies. 11 catalog
+  // models have cells today. Observe tier like its sibling: one source, and the board leader
+  // (Claude Opus 5, 28.53) is far from saturation.
+  { id:"vals-vcb-1-100", name:"Vals · Vibe Code Bench 1-100", axis:"coding", mode:"system", tier:"observe", method:"execution", unit:"%", version:"v1.0", source:"Vals AI", url:"https://www.vals.ai/benchmarks/vcb-1-100", zh:"多轮依赖需求下持续迭代应用", en:"Sustained multi-turn app evolution" },
   { id:"vals-proofbench", name:"Vals · ProofBench", axis:"math", mode:"model", tier:"observe", method:"rubric", unit:"%", version:"2026", source:"Vals AI", url:"https://www.vals.ai/benchmarks/proofbench", zh:"数学证明书写", en:"Mathematical proof writing" },
   // LiveBench publishes one column per task and computes its category and Global Average in the
   // browser from those columns. Only the task columns are archived, so only tasks appear here —
