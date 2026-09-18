@@ -403,6 +403,12 @@ export const BENCHMARKS: BenchmarkRecord[] = [
   { id:"deepswe", name:"DeepSWE", axis:"coding", mode:"system", tier:"core", method:"execution", unit:"%", version:"v1.1", source:"DataCurve", url:"https://github.com/datacurve-ai/deep-swe", zh:"原创真实仓库长时程开发", en:"Original long-horizon repository work" },
   { id:"terminal", name:"Terminal-Bench", axis:"coding", mode:"system", tier:"core", method:"execution", unit:"%", version:"2.1", source:"Harbor", url:"https://www.tbench.ai/leaderboard/terminal-bench/2.1", zh:"终端、环境与系统执行", en:"Terminal and systems execution" },
   { id:"terminal-20", name:"Terminal-Bench 2.0", axis:"coding", mode:"system", tier:"legacy", method:"execution", unit:"%", version:"2.0", source:"Harbor", url:"https://www.tbench.ai/leaderboard/terminal-bench/2.0", zh:"终端执行（上一代任务集）", en:"Terminal execution, previous task set" },
+  // Frontier-difficulty terminal tasks across seven domains; first read 2026-09-17, board updated
+  // 2026-09-16. A different task set from 2.1 — rule 4 — so its own column, the same shape as
+  // terminal-20. Observe rather than core: 2.1 remains the column with cross-model coverage, and
+  // a frontier-difficulty set where the board leader is at 58% does not yet separate models the
+  // way a core column needs to. Benchmark-native (Harbor's own board, harness on every row).
+  { id:"terminal-40", name:"Terminal-Bench 4.0", axis:"coding", mode:"system", tier:"observe", method:"execution", unit:"%", version:"4.0", source:"Harbor", url:"https://www.tbench.ai/leaderboard/terminal-bench/4.0", zh:"前沿难度终端执行（软件/科学/ML/运维/硬件/安全/媒体）", en:"Frontier-difficulty terminal execution across seven domains" },
   { id:"program", name:"ProgramBench", axis:"coding", mode:"system", tier:"observe", method:"execution", unit:"%", version:"2026", source:"Meta", url:"https://github.com/facebookresearch/programbench", zh:"由二进制与文档重建程序", en:"Rebuild programs from binaries and docs" },
   { id:"swe-pro", name:"SWE-Bench Pro", axis:"coding", mode:"system", tier:"core", method:"execution", unit:"%", version:"2026", source:"Scale AI", url:"https://openreview.net/forum?id=uEVTdoAbnK", zh:"真实代码库问题修复", en:"Real repository issue resolution" },
   { id:"swe-evo", name:"SWE-EVO", axis:"coding", mode:"system", tier:"observe", method:"execution", unit:"%", version:"2026", source:"SWE-EVO", url:"https://github.com/SWE-EVO/SWE-EVO", zh:"跨版本软件演化", en:"Multi-step software evolution" },

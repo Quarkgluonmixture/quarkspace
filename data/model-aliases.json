@@ -2385,6 +2385,12 @@
     },
     {
       "benchmark": "terminal",
+      "benchmarkVersion": "4.0",
+      "benchmarkId": "terminal-40",
+      "reason": "Terminal-Bench 4.0 (first published 2026-09, board updated 2026-09-16) is a different task set from 2.1 — frontier-difficulty tasks across software, science, ML, operations, hardware, security and media — so it gets its own column the same way 2.0 did, and for the same rule-4 reason. The official board is benchmark-native with a named harness on every row (Codex, Claude Code, Grok Build, mini-SWE-agent); this split routes both the scripted reading of Harbor's own board and Vals' independent reading of the same version into terminal-40."
+    },
+    {
+      "benchmark": "terminal",
       "benchmarkVersion": "2.0",
       "benchmarkId": "terminal-20",
       "reason": "Terminal-Bench 2.0 and 2.1 are different task sets and the architecture forbids merging them. 2.0 gets its own legacy-tier benchmark so the 2.1 column stays clean."
@@ -2500,6 +2506,11 @@
       "benchmark": "vals-terminal-bench-2",
       "benchmarkId": "terminal",
       "reason": "Terminal-Bench 2.0, which the catalog keeps in its own `terminal-20` column — this entry routes to `terminal` and `benchmarkSplits` does the rest off the version string `2.0`. 2.0 and 2.1 are different task sets and must never share a cell."
+    },
+    {
+      "benchmark": "vals-terminal-bench-4",
+      "benchmarkId": "terminal",
+      "reason": "Vals' Terminal-Bench 4.0 run (board first seen on the index 2026-09-17, version 4.0, 27 models) is the same benchmark version under an independent evaluator, so it routes to `terminal` + version `4.0`, which `benchmarkSplits` sends to the `terminal-40` column — the same two-step the 2.0 entry above does for `terminal-20`. The official Harbor board (batch-13, benchmark-native, harness named per row) outranks it under source precedence, and Vals' rows carry no harness, so they land in the cell as the independent reading beside it, never above it."
     }
   ],
   "droppedBenchmarks": [
