@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-18",
+  "checkedAt": "2026-09-19",
   "pages": {
     "openai": [
       "https://openai.com/index/1-million-businesses-putting-ai-to-work",
@@ -73,6 +73,7 @@
       "https://openai.com/index/attacking-machine-learning-with-adversarial-examples",
       "https://openai.com/index/atv-big-air-tour",
       "https://openai.com/index/australian-payments-plus",
+      "https://openai.com/index/australian-youth-safety-blueprint",
       "https://openai.com/index/autoscout24",
       "https://openai.com/index/avatarin",
       "https://openai.com/index/aws-and-openai-partnership",
@@ -458,6 +459,7 @@
       "https://openai.com/index/helping-disaster-response-teams-asia",
       "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
       "https://openai.com/index/helping-people-when-they-need-it-most",
+      "https://openai.com/index/hex-gpt-6-astra",
       "https://openai.com/index/hibob",
       "https://openai.com/index/hierarchical-text-conditional-image-generation-with-clip-latents",
       "https://openai.com/index/higgsfield",
@@ -1303,13 +1305,13 @@
       "/cn/guide/models/vlm/glm-ocr"
     ],
     "anthropic": [
+      "/news/accenture-embedded-evaluation",
       "/news/announcing-our-updated-responsible-scaling-policy",
       "/news/claude-text-watermark",
       "/news/enterprise-frontier-safeguards",
       "/news/expanding-support-for-scientists",
       "/news/improving-alignment-security-efforts",
       "/news/improving-fable-5-s-biology-safeguards",
-      "/news/investigating-incidents-cybersecurity-evals",
       "/news/life-sciences-verification-program",
       "/news/model-hardware-standard-research-preview",
       "/news/tino-cuellar",
