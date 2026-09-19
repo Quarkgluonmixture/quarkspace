@@ -313,12 +313,18 @@ for (const fetcher of selected) {
   // on that (the new value is an unacknowledged `changed`), so this only names why.
   for (const entry of restatements) {
     if (usedAcks.has(entry)) continue;
-    const row = (archived ?? []).find((candidate) =>
+    // One benchmark id can hold two boards in a batch (batch-28 carries FrontierMath Tiers 1-3 and
+    // Tier 4 under the same `benchmark: "frontiermath"`, split only by benchmark_version), so a
+    // first-match find() inspects the wrong row: it read the Tiers 1-3 score (93.68) against a
+    // Tier 4 restatement (95.12 -> 97.6) and printed "Upstream moved again" every morning while
+    // the Tier 4 row held the accepted value. The entry cannot name the version, so the
+    // satisfied-check asks whether ANY row under the entry's key holds `to`.
+    const rows = (archived ?? []).filter((candidate) =>
       candidate.model_raw === entry.modelRaw &&
       (entry.benchmark === undefined || candidate.benchmark === entry.benchmark));
-    const held = row ? cellValue(row) : undefined;
-    if (row && String(held) === String(entry.to)) continue; // satisfied: the archive holds the accepted value
-    console.log(`note: restatedRows entry ${fetcher.batch}/${entry.modelRaw}/${entry.benchmark ?? "*"} matches nothing — the archive holds ${held ?? "no such row"}, not ${entry.from} or ${entry.to}. Upstream moved again, or the entry is obsolete.`);
+    const held = rows.map((row) => cellValue(row));
+    if (held.some((value) => String(value) === String(entry.to))) continue; // satisfied: a matching row holds the accepted value
+    console.log(`note: restatedRows entry ${fetcher.batch}/${entry.modelRaw}/${entry.benchmark ?? "*"} matches nothing — the archive holds ${held.length ? [...new Set(held)].join(", ") : "no such row"}, not ${entry.from} or ${entry.to}. Upstream moved again, or the entry is obsolete.`);
   }
 
   // Reported for a pinned source and never failed on: a new release is new data, and the old
