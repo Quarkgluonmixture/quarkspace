@@ -495,10 +495,10 @@
         "zh": "比 90 页 dissertation 更适合快速浏览的视觉研究作品集：问题、方法、主要结果和系统证据放在同一条叙事里。",
         "en": "A visual recruiter-facing research portfolio that compresses the question, method, main result and systems evidence into a fast read."
       },
-      "href": "https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/",
+      "href": "https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/Jiaming-Wei-Phantom-Routing-Defense.pdf",
       "action": {
-        "zh": "查看 Portfolio ↗",
-        "en": "View portfolio ↗"
+        "zh": "打开 4-page PDF ↗",
+        "en": "Open 4-page PDF ↗"
       }
     },
     {
@@ -514,10 +514,10 @@
         "zh": "最终 research poster 已在 UCL × Holistic AI showcase 展示。公开站只展示 public-safe research summary，不复制公司内部材料或客户数据。",
         "en": "The final research poster was presented at the UCL × Holistic AI showcase. This public site exposes only public-safe research context, never private company material or client data."
       },
-      "href": "https://github.com/Quarkgluonmixture/Cost-Aware-Routing-for-Web-Usage-Agents/tree/master/portfolio",
+      "href": "/showcase",
       "action": {
-        "zh": "研究材料 ↗",
-        "en": "Research materials ↗"
+        "zh": "打开 Showcase →",
+        "en": "Open showcase →"
       }
     },
     {
@@ -646,6 +646,128 @@
     "sub": {
       "zh": "主要关注 AI Evaluation / Red Teaming / Agent Reliability，以及 Web / Computer-Use Agent 与 model/post-training evaluation 的研究工程岗位。",
       "en": "I’m focused on research-engineering roles in AI evaluation, red teaming and agent reliability, with continued work on Web / Computer-Use agents and model/post-training evaluation."
+    }
+  },
+  "showcase": {
+    "event": {
+      "zh": "UCL × Holistic AI Showcase · 2026-09-16",
+      "en": "UCL × Holistic AI Showcase · 16 Sep 2026"
+    },
+    "posterTitle": {
+      "zh": "什么时候值得为更昂贵的感知付费？",
+      "en": "When Is Expensive Perception Worth Paying For?"
+    },
+    "posterSubtitle": {
+      "zh": "测试更丰富的 Web-Agent 表征什么时候真的有用，以及这种价值能不能被低成本预测。",
+      "en": "Testing when richer web-agent representations help — and whether their value can be predicted cheaply."
+    },
+    "people": {
+      "zh": "Jiaming Wei · Supervisors: Prof. María Pérez-Ortiz · Zekun Wu",
+      "en": "Jiaming Wei · Supervisors: Prof. María Pérez-Ortiz · Zekun Wu"
+    },
+    "example": {
+      "task": {
+        "zh": "同一个编辑商品任务，两种表征从同一点出发。",
+        "en": "The same listing-edit task, viewed through two representations from the same start."
+      },
+      "read": {
+        "label": "READ · text only",
+        "value": "12 steps · 8 pages · $0.09",
+        "outcome": {
+          "zh": "完成",
+          "en": "solved"
+        }
+      },
+      "look": {
+        "label": "LOOK · screenshot only",
+        "value": "26 steps · 9 pages · $0.10",
+        "outcome": {
+          "zh": "放弃 / 循环",
+          "en": "gave up / looped"
+        }
+      },
+      "note": {
+        "zh": "两个结果在独立 rerun 中都复现。这里展示的是行为差异，不是宣称 text-only 普遍更强。",
+        "en": "Both outcomes repeated on an independent rerun. This is evidence of behavioral difference, not a claim that text-only is universally stronger."
+      }
+    },
+    "findings": [
+      {
+        "no": "01",
+        "title": {
+          "zh": "没有一种视图处处获胜",
+          "en": "No view wins everywhere"
+        },
+        "text": {
+          "zh": "DOM / SoM / vision 的优势依任务而变，单一表征不能覆盖所有成功集合。",
+          "en": "DOM, SoM and vision win on different tasks; no single representation covers the full success set."
+        }
+      },
+      {
+        "no": "02",
+        "title": {
+          "zh": "它们解决的是不同任务子集",
+          "en": "They solve different task subsets"
+        },
+        "text": {
+          "zh": "成功集合有重叠，但并不重合；这是真实 routing headroom 的来源。",
+          "en": "The success sets overlap but do not coincide — the source of real routing headroom."
+        }
+      },
+      {
+        "no": "03",
+        "title": {
+          "zh": "行为轨迹也不同",
+          "en": "Their trajectories differ"
+        },
+        "text": {
+          "zh": "视觉模式在这组分析里滚动约 4× 更多，表征变化会改变 agent 的行动动力学。",
+          "en": "Vision scrolls roughly 4× more in this analysis; representation changes the agent's action dynamics."
+        }
+      },
+      {
+        "no": "04",
+        "title": {
+          "zh": "失败方式也不同",
+          "en": "Their failure modes differ"
+        },
+        "text": {
+          "zh": "text-only 更偏早期 give-up；image-only 更偏 stalled progress。",
+          "en": "Text-only skews toward early give-up; image-only toward stalled progress."
+        }
+      },
+      {
+        "no": "05",
+        "title": {
+          "zh": "有 routing 价值，不等于 router 学得会",
+          "en": "Routing value does not imply a learnable router"
+        },
+        "text": {
+          "zh": "learned routers 往往需要花更多成本才能买到成功，只有 hindsight oracle 稳定进入真正的 win region。",
+          "en": "Learned routers tend to buy success by spending more; only the hindsight oracle reliably reaches the win region."
+        }
+      },
+      {
+        "no": "06",
+        "title": {
+          "zh": "越有上行空间，监督信号反而越稀",
+          "en": "More upside can mean less usable supervision"
+        },
+        "text": {
+          "zh": "核心边界是 value–learnability gap：最值得动态选择的地方，往往正是标签最稀、最难提前预测的地方。",
+          "en": "The core boundary is the value–learnability gap: where adaptive choice matters most, usable labels can be sparsest and prediction hardest."
+        }
+      }
+    ],
+    "publicArtifacts": {
+      "portfolioPage": "https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/",
+      "portfolioPdf": "https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/Jiaming-Wei-Phantom-Routing-Defense.pdf",
+      "demo": "https://raw.githubusercontent.com/Quarkgluonmixture/Cost-Aware-Routing-for-Web-Usage-Agents/master/portfolio/demo.mp4",
+      "repo": "https://github.com/Quarkgluonmixture/Cost-Aware-Routing-for-Web-Usage-Agents"
+    },
+    "disclosure": {
+      "zh": "最终 poster/showcase 的研究结论可以公开；公司内部材料、客户数据和私有实现不在这个页面里。",
+      "en": "The research conclusions shown at the final poster/showcase are public-safe; private company material, client data and internal implementation are excluded."
     }
   }
 }
