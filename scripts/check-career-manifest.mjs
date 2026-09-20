@@ -82,6 +82,12 @@ if (showcaseEvidence?.href !== "/showcase") {
   errors.push("Research Poster & Showcase evidence must resolve to the first-party /showcase surface");
 }
 
+for (const [label, items] of [["experience", manifest?.experience], ["evidence", manifest?.evidence]]) {
+  const ids = (items ?? []).map((item) => item?.id).filter(Boolean);
+  if (ids.length !== (items ?? []).length) errors.push(`${label} entries must all have stable ids`);
+  if (new Set(ids).size !== ids.length) errors.push(`${label} ids must be unique`);
+}
+
 const serialized = JSON.stringify(manifest);
 if (!serialized.includes("EMNLP 2026 Workshop REALM")) {
   errors.push("REALM acceptance must name the workshop explicitly");
