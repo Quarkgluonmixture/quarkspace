@@ -95,14 +95,14 @@ Phase 1:
 - [x] public/private Holistic boundary preserved.
 
 Phase 2–4:
-- [ ] root is fully bilingual;
-- [ ] current Holistic + REALM status rendered;
-- [ ] Experience moves above selected work;
-- [ ] portfolio/poster/showcase evidence surface exists;
-- [ ] root no longer hard-copies live Observatory counts;
-- [ ] `/models` has a home link and shares language preference;
-- [ ] lint/build/mobile/CI green.
+- [x] root is fully bilingual;
+- [x] current Holistic + REALM status rendered;
+- [x] Experience moves above selected work;
+- [x] portfolio/poster/showcase evidence surface exists;
+- [x] root no longer hard-copies live Observatory counts;
+- [x] `/models` has a home link and shares language preference;
+- [x] lint/build/mobile/CI green (CI run 385, including 320/390/430 on both `/models` and `/`).
 
 Phase 5:
-- [ ] PR diff reviewed;
-- [ ] no change to main until acceptance gates are green.
+- [x] PR diff reviewed;
+- [x] no change to main until acceptance gates are green. Production merge remains a separate release action because EdgeOne deploys immediately.
