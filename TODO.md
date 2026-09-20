@@ -52,25 +52,16 @@ ARC Prize 三个 split（batch 23/24/25）已全部脚本化并接上目录，�
 FrontierSWE V2 已脚本化（batch 43，2026-09-09 合入；V2 与 V1 是两个 benchmark，见 §9 该行），
 探测细节住在 `scripts/fetchers/frontierswe-v2.mjs` 的头注释里，不在这。
 
-## 个人站 `/`(2026-08-26 从 quark-space 迁进来的两条)
+## 个人站 `/`
 
-这个文件此前**完全没有个人站那一节** —— 个人站在 live repo 里没有待办的家,它的待办一直
-锁在 `../quark-space/CHECKPOINT.md` 里,而那个仓库正在封存成只读。迁移时对着代码逐条验过:
-原本 7 条里 **5 条已经做掉了**(简历 PDF 死链 —— `app/page.tsx` 里 `href="#"` 现在 **0** 个、
-中英文 PDF 都在 `public/resume/`;项目角色/周期的虚线待补 —— `home-content.ts` 里
-`todo: true` 计数 **0**;三行经历措辞、目标岗位那句话、对外邮箱 —— 2026-08-23 重新定位时全定了)。
-⇒ **只有下面两条还活着**,别再回 quark-space 抄那份 2026-08-11 的清单。
+2026-09-20 portfolio v2 重构已经在 `rebuild/portfolio-v2-20260920` 执行此前两项 owner 决策：
+`/models` 的 Ø logo 回个人主页，个人站做完整中/英文同构版，并与观测台共用语言偏好。
+重构同时把 recruiter-facing career facts 收口到 `data/career-public.json`，避免继续手抄 Career OS 状态。
 
-- [ ] ⭐ **要你定:`/models` 回个人站的入口放哪。** 实测 2026-08-26:`app/models/page.tsx` 里
-      `href="/"` 命中 **0** —— 观测台一个回主页的链接都没有。而 `/persona` 已经有了
-      (`app/persona/page.tsx` 的 brand 和「首页」两处)⇒ 这不是"还没做",是**只漏了 models 这一个路由**。
-      最自然的位置是左侧 rail 那个 `Ø`,但它现在是个纯 `<div className="logo">`(第 546 行附近)不是链接,
-      样式在 `globals.css`(`.logo` 44px 圆形 grid),手机端底部又被固定 rail 占着。
-      ⚠ 位置要你定,**别自己动手机契约**。
-- [ ] ⭐ **要你定:个人站要不要做完整英文版。** 观测台自己是双语的(header 里有 中/EN 切换),
-      个人站是纯中文 —— 实测 `app/home-content.ts` 里语言字段计数 **0**。
-      ⚠ quark-space 的 `projects.json` 里那些 `*_en` 字段是 2026-08-03 的旧译文,
-      **且那份文案已经作废**(2026-08-23 重新定位),⛔ 不能拿来当英文版的底子。
+- [ ] 合并前只剩验收：PR CI 全绿 + 手机 320/390/430 三档无溢出 + 中英文人工扫一遍。
+- [ ] Research Poster 的 canonical PDF 目前只在 private Career OS / Library evidence 中；公开站先展示
+      showcase/evidence 入口，⛔ 不把 private JobFinder raw URL 暴露给 recruiter。若要站内直开 poster，
+      先把 public-safe binary 明确复制进本 public repo，再补链接。
 
 ## ⭐ 要你定:ProgramBench 这一列的口径(2026-08-15 又撞到一次)
 
