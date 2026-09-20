@@ -36,6 +36,7 @@ const checkedFiles = [
   "app/page.tsx",
   "app/layout.tsx",
   "app/resume/page.tsx",
+  "app/showcase/page.tsx",
 ];
 
 const banned = [
@@ -66,6 +67,19 @@ for (const relative of retiredPublicCvs) {
 
 if (!fs.existsSync(path.join(root, "app", "resume", "page.tsx"))) {
   errors.push("current recruiter-facing /resume route is missing");
+}
+
+if (!fs.existsSync(path.join(root, "app", "showcase", "page.tsx"))) {
+  errors.push("research /showcase route is missing");
+}
+
+required(manifest?.showcase?.posterTitle?.en, "showcase.posterTitle.en");
+required(manifest?.showcase?.event?.en, "showcase.event.en");
+required(manifest?.showcase?.publicArtifacts?.portfolioPdf, "showcase.publicArtifacts.portfolioPdf");
+
+const showcaseEvidence = manifest?.evidence?.find((item) => item?.title?.en === "Research Poster & Showcase");
+if (showcaseEvidence?.href !== "/showcase") {
+  errors.push("Research Poster & Showcase evidence must resolve to the first-party /showcase surface");
 }
 
 const serialized = JSON.stringify(manifest);
