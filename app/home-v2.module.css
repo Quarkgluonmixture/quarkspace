@@ -1,6 +1,12 @@
 /* Additive v2 styles for the recruiter-facing homepage.
    Keep this separate from globals.css: /models owns the global mobile contract. */
 
+.brandLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+}
+
 .topActions {
   display: flex;
   align-items: center;
