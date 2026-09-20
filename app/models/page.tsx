@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";\nimport Link from "next/link";
 import {
   DEFAULT_ACTIVE_ID,
   DEFAULT_COMPARE_IDS,
@@ -499,7 +499,7 @@ export default function Home() {
     document.addEventListener("visibilitychange", onVisibility);
     return () => { clearTimeout(initial); clearInterval(timer); document.removeEventListener("visibilitychange", onVisibility); };
   }, []);
-  useEffect(() => { const saved=localStorage.getItem("observatory-language"); const frame=requestAnimationFrame(() => { if(saved === "zh" || saved === "en") setLang(saved); }); return () => cancelAnimationFrame(frame); }, []);
+  useEffect(() => { const saved=localStorage.getItem("quarkspace-language") ?? localStorage.getItem("observatory-language"); const frame=requestAnimationFrame(() => { if(saved === "zh" || saved === "en") { setLang(saved); localStorage.setItem("quarkspace-language",saved); } }); return () => cancelAnimationFrame(frame); }, []);
   useEffect(() => { document.documentElement.lang = lang === "zh" ? "zh-CN" : "en"; }, [lang]);
   useEffect(() => {
     const sectionIds = NAV.map(item => item.id);
@@ -532,7 +532,7 @@ export default function Home() {
     .sort((a,b) => rankScore(b,lens)-rankScore(a,lens)), [models,maker,openOnly,query,lens]);
   const visible = showAll ? ranked : ranked.slice(0,10);
 
-  const changeLang = (next: Lang) => { setLang(next); localStorage.setItem("observatory-language",next); };
+  const changeLang = (next: Lang) => { setLang(next); localStorage.setItem("quarkspace-language",next); };
   const selectModel = (id:string) => { setActiveId(id); if(window.innerWidth < 800) setTimeout(() => document.getElementById("model-detail")?.scrollIntoView({behavior:"smooth",block:"start"}),30); };
   const toggleCompare = (id:string) => setCompareIds(now => now.includes(id) ? now.filter(x => x !== id) : now.length < 2 ? [...now,id] : [now[1],id]);
   const lensName = LENSES.find(x => x.id === lens)?.[lang] ?? "";
@@ -543,7 +543,7 @@ export default function Home() {
   const bestValue = [...models].sort((a,b) => rankScore(b,"value")-rankScore(a,"value"))[0];
 
   return <main className="shell">
-    <aside className="rail"><div className="logo">Ø</div><nav>{NAV.map(item => <a key={item.id} className={activeSection===item.id?"active":""} href={`#${item.id}`} aria-label={item.en} aria-current={activeSection===item.id?"page":undefined} onClick={()=>setActiveSection(item.id)}><i aria-hidden="true">{item.glyph}</i><span>{item[lang]}</span></a>)}</nav></aside>
+    <aside className="rail"><Link className="logo" href="/" aria-label={lang === "zh" ? "返回 Jiaming Wei 首页" : "Back to Jiaming Wei home"}>Ø</Link><nav>{NAV.map(item => <a key={item.id} className={activeSection===item.id?"active":""} href={`#${item.id}`} aria-label={item.en} aria-current={activeSection===item.id?"page":undefined} onClick={()=>setActiveSection(item.id)}><i aria-hidden="true">{item.glyph}</i><span>{item[lang]}</span></a>)}</nav></aside>
     <div className="workspace">
       <header><div><p>{ui.eyebrow}</p><h1>{ui.brand}</h1></div><div className="header-actions"><label className="search"><span aria-hidden="true">⌕</span><input type="search" inputMode="search" enterKeyHint="search" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} aria-label={ui.search} value={query} onChange={e=>setQuery(e.target.value)} placeholder={ui.search}/></label><div className="lang-switch" aria-label="Language"><button className={lang==="zh"?"active":""} onClick={()=>changeLang("zh")}>中</button><button className={lang==="en"?"active":""} onClick={()=>changeLang("en")}>EN</button></div><button className={live?(fresh.length?"live has-fresh":"live"):"live offline"} onClick={refresh}><i/>{live?(fresh.length?ui.liveFresh(fresh.length):ui.live):ui.snapshot}<em>{updated}</em></button></div></header>
 
