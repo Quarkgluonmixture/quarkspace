@@ -35,6 +35,7 @@ const checkedFiles = [
   "app/home-content.ts",
   "app/page.tsx",
   "app/layout.tsx",
+  "app/resume/page.tsx",
 ];
 
 const banned = [
@@ -50,6 +51,21 @@ for (const relative of checkedFiles) {
   for (const stale of banned) {
     if (text.includes(stale)) errors.push(`${relative} still contains stale recruiter-facing claim: ${stale}`);
   }
+}
+
+const retiredPublicCvs = [
+  "public/resume/Jiaming_Wei_CV_EVAL_CN_v1.0.pdf",
+  "public/resume/Jiaming_Wei_CV_EVAL_EN_v1.0.pdf",
+];
+
+for (const relative of retiredPublicCvs) {
+  if (fs.existsSync(path.join(root, relative))) {
+    errors.push(`${relative} is a retired 2026-08 recruiter-facing binary; use /resume until a fresh binary is deliberately published`);
+  }
+}
+
+if (!fs.existsSync(path.join(root, "app", "resume", "page.tsx"))) {
+  errors.push("current recruiter-facing /resume route is missing");
 }
 
 const serialized = JSON.stringify(manifest);
