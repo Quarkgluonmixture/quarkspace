@@ -28,6 +28,7 @@ export type Featured = {
 };
 
 export type Experience = {
+  id: string;
   org: string;
   role: Localized;
   lead: Localized;
@@ -36,6 +37,7 @@ export type Experience = {
 };
 
 export type Evidence = {
+  id: string;
   title: Localized;
   status: Localized;
   text: Localized;
