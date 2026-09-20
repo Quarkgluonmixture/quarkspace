@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";\nimport Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import {
   DEFAULT_ACTIVE_ID,
   DEFAULT_COMPARE_IDS,
