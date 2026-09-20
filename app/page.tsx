@@ -19,8 +19,7 @@ import {
 
 const SHOT_W = 1700;
 const SHOT_H = 1099;
-const RESUME_CN = "/resume/Jiaming_Wei_CV_EVAL_CN_v1.0.pdf";
-const RESUME_EN = "/resume/Jiaming_Wei_CV_EVAL_EN_v1.0.pdf";
+const RESUME = "/resume";
 const LANGUAGE_KEY = "quarkspace-language";
 const OLD_LANGUAGE_KEY = "observatory-language";
 
@@ -269,8 +268,8 @@ export default function Home() {
               <button className={lang === "zh" ? v.active : ""} onClick={() => changeLanguage("zh")} aria-pressed={lang === "zh"}>中</button>
               <button className={lang === "en" ? v.active : ""} onClick={() => changeLanguage("en")} aria-pressed={lang === "en"}>EN</button>
             </div>
-            <a className={s.cv} href={lang === "zh" ? RESUME_CN : RESUME_EN}>
-              {lang === "zh" ? "简历 PDF" : "CV PDF"}
+            <a className={s.cv} href={RESUME}>
+              {lang === "zh" ? "简历 / PDF" : "CV / PDF"}
             </a>
           </div>
         </div>
@@ -291,8 +290,8 @@ export default function Home() {
               <a className={s.btn} href="https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/">
                 Research Portfolio
               </a>
-              <a className={s.btn} href={lang === "zh" ? RESUME_CN : RESUME_EN}>
-                {lang === "zh" ? "简历 PDF" : "CV PDF"}
+              <a className={s.btn} href={RESUME}>
+                {lang === "zh" ? "简历 / PDF" : "CV / PDF"}
               </a>
               <a className={s.btn} href={profile.github}>GitHub</a>
               <a className={s.btn} href={email}>{lang === "zh" ? "邮箱" : "Email"}</a>
@@ -379,8 +378,8 @@ export default function Home() {
               <p className={s.closingSub}>{tr(content.closing.sub, lang)}</p>
             </div>
             <div className={s.cta} style={{ margin: 0 }}>
-              <a className={`${s.btn} ${s.pri}`} href={lang === "zh" ? RESUME_CN : RESUME_EN}>
-                {lang === "zh" ? "简历 PDF" : "CV PDF"}
+              <a className={`${s.btn} ${s.pri}`} href={RESUME}>
+                {lang === "zh" ? "简历 / PDF" : "CV / PDF"}
               </a>
               <a className={s.btn} href={profile.linkedin}>LinkedIn ↗</a>
               <a className={s.btn} href={email}>{lang === "zh" ? "邮件联系" : "Email"}</a>
