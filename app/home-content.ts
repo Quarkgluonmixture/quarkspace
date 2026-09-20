@@ -55,6 +55,27 @@ export type LabItem = {
   href: string;
 };
 
+export type Showcase = {
+  event: Localized;
+  posterTitle: Localized;
+  posterSubtitle: Localized;
+  people: Localized;
+  example: {
+    task: Localized;
+    read: { label: string; value: string; outcome: Localized };
+    look: { label: string; value: string; outcome: Localized };
+    note: Localized;
+  };
+  findings: { no: string; title: Localized; text: Localized }[];
+  publicArtifacts: {
+    portfolioPage: string;
+    portfolioPdf: string;
+    demo: string;
+    repo: string;
+  };
+  disclosure: Localized;
+};
+
 export type CareerContent = {
   release: {
     careerEpoch: string;
@@ -77,6 +98,7 @@ export type CareerContent = {
   experience: Experience[];
   featured: Featured[];
   evidence: Evidence[];
+  showcase: Showcase;
   skills: Skill[];
   lab: LabItem[];
   closing: {
