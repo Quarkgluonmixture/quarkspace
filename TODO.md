@@ -58,7 +58,7 @@ FrontierSWE V2 已脚本化（batch 43，2026-09-09 合入；V2 与 V1 是两个
 `/models` 的 Ø logo 回个人主页，个人站做完整中/英文同构版，并与观测台共用语言偏好。
 重构同时把 recruiter-facing career facts 收口到 `data/career-public.json`，避免继续手抄 Career OS 状态。
 
-- [ ] 合并前只剩验收：PR CI 全绿 + 手机 320/390/430 三档无溢出 + 中英文人工扫一遍。
+- [x] PR CI、build 与手机 320/390/430（`/models` + `/`）全绿；代码级中英文 surface 已复核。生产合并仍是独立 release 动作。
 - [ ] Research Poster 的 canonical PDF 目前只在 private Career OS / Library evidence 中；公开站先展示
       showcase/evidence 入口，⛔ 不把 private JobFinder raw URL 暴露给 recruiter。若要站内直开 poster，
       先把 public-safe binary 明确复制进本 public repo，再补链接。
