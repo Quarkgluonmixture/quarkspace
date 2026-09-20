@@ -258,7 +258,7 @@ export default function Home() {
     <div className={s.home}>
       <div className={s.bar}>
         <div className={s.barIn}>
-          <a className={s.me} href="#top">{profile.name}</a>
+          <a className={`${s.me} ${v.brandLink}`} href="#top">{profile.name}</a>
           <nav className={s.nav}>
             {profile.nav.map((item) => <a key={item.href} href={item.href}>{tr(item.label, lang)}</a>)}
             <Link className={s.sub} href="/persona">Persona Lab ↗</Link>
