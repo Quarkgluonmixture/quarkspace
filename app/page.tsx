@@ -1,156 +1,129 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import s from "./home.module.css";
+import v from "./home-v2.module.css";
 import {
-  closing,
+  content,
   costBars,
-  experience,
-  featured,
-  others,
-  profile,
-  skills,
+  type Evidence,
+  type Experience,
   type Featured,
-  type Meter,
+  type LabItem,
+  type Lang,
+  type Localized,
+  type Skill,
 } from "./home-content";
-
-// The personal site. The observatory moved to /models when this became the root route —
-// see app/models/layout.tsx for the title that used to live in the root layout.
-//
-// Every style lives in home.module.css under .home. Nothing here may reach into
-// globals.css: that file owns the observatory's phone contract (docs/UI.md).
 
 const SHOT_W = 1700;
 const SHOT_H = 1099;
-const EMAIL = "mailto:jimmyenglish@126.com";
 const RESUME_CN = "/resume/Jiaming_Wei_CV_EVAL_CN_v1.0.pdf";
 const RESUME_EN = "/resume/Jiaming_Wei_CV_EVAL_EN_v1.0.pdf";
+const LANGUAGE_KEY = "quarkspace-language";
+const OLD_LANGUAGE_KEY = "observatory-language";
 
-function MeterRow({ m }: { m: Meter }) {
-  const fill = m.tone === "w" ? s.fW : m.tone === "n" ? s.fN : s.fA;
-  return (
-    <div className={s.meter}>
-      <div className={s.meterRow}>
-        <span>{m.label}</span>
-        <b>{m.value}</b>
-      </div>
-      {m.pct > 0 && (
-        <div className={s.track}>
-          <i className={fill} style={{ width: `${m.pct}%`, opacity: m.faint ? 0.55 : 1 }} />
-        </div>
-      )}
-    </div>
-  );
-}
+const tr = (value: Localized, lang: Lang) => value[lang];
 
-function CostChart({ cap }: { cap?: string }) {
+function CostChart({ cap, lang }: { cap?: Localized; lang: Lang }) {
   return (
     <div>
       <div className={s.costwrap}>
         <p className={s.lbl} style={{ marginBottom: 14 }}>
-          六种观测模式的账单成本 / episode
+          {lang === "zh" ? "六种观测模式的账单成本 / episode" : "Billed cost across six observation modes / episode"}
         </p>
         <div className={s.yax}>
           <span>$0.08</span>
-          <span>classifieds 站点</span>
+          <span>{lang === "zh" ? "classifieds 站点" : "Classifieds site"}</span>
         </div>
         <div className={s.cost}>
-          {costBars.heights.map((h, i) => (
-            <i key={i} className={i === costBars.hi ? s.hi : undefined} style={{ height: `${h}%` }} />
+          {costBars.heights.map((height, index) => (
+            <i
+              key={index}
+              className={index === costBars.hi ? s.hi : undefined}
+              style={{ height: `${height}%` }}
+            />
           ))}
         </div>
         <div className={s.costlbl}>
           <span>$0.064 — $0.073</span>
-          <span>六种模式几乎持平</span>
+          <span>{lang === "zh" ? "六种模式几乎持平" : "six modes are close in cost"}</span>
         </div>
       </div>
-      {cap && <p className={s.cap}>{cap}</p>}
+      {cap && <p className={s.cap}>{tr(cap, lang)}</p>}
     </div>
   );
 }
 
-function Ring({ pct, meters }: { pct: number; meters?: Meter[] }) {
-  const r = 29;
-  const c = 2 * Math.PI * r;
-  return (
-    <div className={s.ringRow}>
-      <svg className={s.ring} width="82" height="82" viewBox="0 0 82 82" role="img"
-        aria-label={`格覆盖率 ${pct}%`}>
-        <circle cx="41" cy="41" r={r} fill="none" stroke="#eae6db" strokeWidth="10" />
-        <circle cx="41" cy="41" r={r} fill="none" stroke="#c9a63a" strokeWidth="10"
-          strokeDasharray={`${(c * pct) / 100} ${c}`} transform="rotate(-90 41 41)" />
-        <text x="41" y="46" textAnchor="middle">{pct}%</text>
-      </svg>
-      <div>{meters?.map((m) => <MeterRow key={m.label} m={m} />)}</div>
-    </div>
-  );
-}
-
-function Body({ p }: { p: Featured }) {
+function ProjectBody({ project, lang }: { project: Featured; lang: Lang }) {
   return (
     <>
-      <span className={s.lbl}>{p.kicker}</span>
-      <h2 className={`${s.h2} ${p.bigTitle ? s.h2big : ""}`} style={{ marginTop: 14 }}>
-        {p.title}
+      <span className={s.lbl}>{tr(project.kicker, lang)}</span>
+      <h2 className={`${s.h2} ${project.bigTitle ? s.h2big : ""}`} style={{ marginTop: 14 }}>
+        {tr(project.title, lang)}
       </h2>
       <div className={s.who}>
-        {p.who.map((w) => (
-          <span key={w.text} className={w.todo ? s.todo : undefined}>{w.text}</span>
-        ))}
+        {project.who.map((item) => <span key={item.en}>{tr(item, lang)}</span>)}
       </div>
-      {p.shot && (
+      {project.shot && (
         <>
           <span className={s.shot}>
-            <Image src={p.shot.src} alt={p.shot.alt} width={SHOT_W} height={SHOT_H} sizes="(max-width: 900px) 100vw, 50vw" />
+            <Image
+              src={project.shot.src}
+              alt={tr(project.shot.alt, lang)}
+              width={SHOT_W}
+              height={SHOT_H}
+              sizes="(max-width: 900px) 100vw, 50vw"
+            />
           </span>
-          <p className={s.cap}>{p.shot.cap}</p>
+          <p className={s.cap}>{tr(project.shot.cap, lang)}</p>
         </>
       )}
-      {p.pull && <p className={s.pull}>{p.pull}</p>}
-      <p className={s.lead} style={{ marginTop: p.shot || p.pull ? 14 : 0 }}>{p.lead}</p>
-      {p.chart === "ring" && <Ring pct={p.ringPct ?? 0} meters={p.meters} />}
-      {p.metersLabel && !p.wide && (
-        <p className={s.lbl} style={{ margin: "20px 0 4px" }}>{p.metersLabel}</p>
-      )}
-      {!p.wide && p.chart !== "ring" && p.meters?.map((m) => <MeterRow key={m.label} m={m} />)}
-      {p.points && (
+      {project.pull && <p className={s.pull}>{tr(project.pull, lang)}</p>}
+      <p className={s.lead} style={{ marginTop: project.shot || project.pull ? 14 : 0 }}>
+        {tr(project.lead, lang)}
+      </p>
+      {project.points && (
         <ul className={s.points}>
-          {p.points.map((t) => <li key={t}>{t}</li>)}
+          {project.points.map((item) => <li key={item.en}>{tr(item, lang)}</li>)}
         </ul>
       )}
-      <p className={s.stack}>{p.stack}</p>
-      <span className={s.go}>{p.goLabel ?? "GitHub →"}</span>
+      <p className={s.stack}>{project.stack}</p>
+      <span className={s.go}>{project.goLabel ? tr(project.goLabel, lang) : "GitHub →"}</span>
     </>
   );
 }
 
-function Card({ p }: { p: Featured }) {
-  const inner = p.wide ? (
+function ProjectCard({ project, lang }: { project: Featured; lang: Lang }) {
+  const inner = project.wide ? (
     <div className={s.banner}>
-      <div><Body p={p} /></div>
-      <div>
-        {p.chart === "cost" && <CostChart cap={p.cap} />}
-        {p.meters && p.chart !== "cost" && (
-          <>
-            {p.metersLabel && <p className={s.lbl} style={{ marginBottom: 12 }}>{p.metersLabel}</p>}
-            {p.meters.map((m) => <MeterRow key={m.label} m={m} />)}
-            {p.cap && <p className={s.cap}>{p.cap}</p>}
-          </>
-        )}
-      </div>
+      <div><ProjectBody project={project} lang={lang} /></div>
+      <div>{project.chart === "cost" && <CostChart cap={project.cap} lang={lang} />}</div>
     </div>
   ) : (
-    <Body p={p} />
+    <ProjectBody project={project} lang={lang} />
   );
+  const className = `${s.t} ${s[project.span]}`;
 
-  const cls = `${s.t} ${s[p.span]}`;
-  return p.href.startsWith("/") ? (
-    <Link className={cls} href={p.href}>{inner}</Link>
+  return project.href.startsWith("/") ? (
+    <Link className={className} href={project.href}>{inner}</Link>
   ) : (
-    <a className={cls} href={p.href}>{inner}</a>
+    <a className={className} href={project.href} rel="noreferrer">{inner}</a>
   );
 }
 
-function Section({ no, title, count, id }: { no: string; title: string; count: string; id?: string }) {
+function Section({
+  no,
+  title,
+  count,
+  id,
+}: {
+  no: string;
+  title: string;
+  count: string;
+  id?: string;
+}) {
   return (
     <div className={s.c12} id={id}>
       <div className={s.sec}>
@@ -163,174 +136,257 @@ function Section({ no, title, count, id }: { no: string; title: string; count: s
   );
 }
 
-function MeasurementChain() {
-  const steps = [
-    {
-      no: "01",
-      title: "Target / Agent",
-      body: "模型真正做了什么？任务成功了？拒答了？还是已经越过了边界？",
-      foot: "behavior · task success",
-    },
-    {
-      no: "02",
-      title: "Execution / Harness",
-      body: "这个结果真的是模型造成的吗？还是 observation、tool、provider filter、scaffold 或执行环境改变了它？",
-      foot: "trajectory · environment",
-    },
-    {
-      no: "03",
-      title: "Judge / Grader",
-      body: "负责打分的工具自己靠谱吗？rubric、阈值、shortcut、FP/FN，会不会直接把结论改写？",
-      foot: "FP / FN · calibration",
-    },
-    {
-      no: "04",
-      title: "Gold / Evidence",
-      body: "最后这个结论靠什么兜底？能不能回到独立标签、统计检验、来源和可重放证据？",
-      foot: "labels · provenance",
-    },
-  ];
+function ExperienceCard({ item, lang }: { item: Experience; lang: Lang }) {
+  return (
+    <article className={v.experienceCard}>
+      <div className={v.experienceHead}>
+        <h3>{item.org}</h3>
+        <span>{tr(item.role, lang)}</span>
+      </div>
+      <p className={v.experienceLead}>{tr(item.lead, lang)}</p>
+      {item.points.length > 0 && (
+        <ul className={v.experiencePoints}>
+          {item.points.map((point) => <li key={point.en}>{tr(point, lang)}</li>)}
+        </ul>
+      )}
+      <div className={v.tagRow}>
+        {item.tags.map((tag) => <span key={tag}>{tag}</span>)}
+      </div>
+    </article>
+  );
+}
+
+function EvidenceCard({ item, lang }: { item: Evidence; lang: Lang }) {
+  return (
+    <a className={v.evidenceCard} href={item.href} rel="noreferrer">
+      <span className={v.evidenceStatus}>{tr(item.status, lang)}</span>
+      <h3>{tr(item.title, lang)}</h3>
+      <p>{tr(item.text, lang)}</p>
+      <strong>{tr(item.action, lang)}</strong>
+    </a>
+  );
+}
+
+function SkillCard({ item, lang }: { item: Skill; lang: Lang }) {
+  return (
+    <div className={v.skillCard}>
+      <span>{tr(item.k, lang)}</span>
+      <p>{tr(item.v, lang)}</p>
+    </div>
+  );
+}
+
+function LabRow({ item, lang }: { item: LabItem; lang: Lang }) {
+  return (
+    <a href={item.href} rel="noreferrer">
+      <span className={s.tt}>{item.name}</span>
+      <span className={s.yy}>{item.year}</span>
+      <span className={s.dd}>{tr(item.text, lang)}</span>
+    </a>
+  );
+}
+
+function MeasurementChain({ lang }: { lang: Lang }) {
+  const steps = lang === "zh"
+    ? [
+        ["01", "Target / Agent", "模型真正做了什么？任务成功、拒答，还是已经越过边界？", "behavior · task success"],
+        ["02", "Execution / Harness", "这个结果来自模型，还是 observation、tool、provider filter、scaffold 或环境？", "trajectory · environment"],
+        ["03", "Judge / Grader", "负责打分的工具自己靠谱吗？rubric、阈值、shortcut 和 FP/FN 会不会改写结论？", "FP / FN · calibration"],
+        ["04", "Gold / Evidence", "结论最终靠什么兜底？能否回到独立标签、统计检验、来源和可重放证据？", "labels · provenance"],
+      ]
+    : [
+        ["01", "Target / Agent", "What did the model actually do: succeed, refuse, or cross the boundary?", "behavior · task success"],
+        ["02", "Execution / Harness", "Did the model cause the result, or did observation, tools, provider filters, scaffolding or environment change it?", "trajectory · environment"],
+        ["03", "Judge / Grader", "Can the evaluator itself be trusted? Rubrics, thresholds, shortcuts and FP/FN can change the conclusion.", "FP / FN · calibration"],
+        ["04", "Gold / Evidence", "What ultimately anchors the claim: independent labels, statistical tests, provenance and replayable evidence?", "labels · provenance"],
+      ];
 
   return (
-    <div className={`${s.t} ${s.c12}`} aria-label="Evaluation measurement chain">
-      <span className={s.lbl}>同一条方法论 / measurement chain</span>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 16, flexWrap: "wrap", marginTop: 14 }}>
-        <h2 className={s.h2} style={{ margin: 0 }}>一个分数出来之前，我先检查这四层</h2>
-        <span className={s.stack} style={{ margin: 0 }}>model → system → judge → evidence</span>
+    <div className={`${s.t} ${s.c12}`}>
+      <span className={s.lbl}>{lang === "zh" ? "同一条方法论 / measurement chain" : "One method / measurement chain"}</span>
+      <div className={v.chainTitle}>
+        <h2 className={s.h2}>
+          {lang === "zh" ? "一个分数出来之前，我先检查这四层" : "Before trusting a score, I check four layers"}
+        </h2>
+        <span className={s.stack}>model → system → judge → evidence</span>
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 20 }}>
-        {steps.map((step, i) => (
-          <div
-            key={step.no}
-            style={{
-              flex: "1 1 190px",
-              minWidth: 0,
-              border: "1px solid #e6e2d6",
-              borderRadius: 7,
-              padding: "16px 16px 14px",
-              background: i === steps.length - 1 ? "#fbf4e0" : "#fdfcf8",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "baseline" }}>
-              <span style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 11, fontWeight: 700, color: "#7a6318" }}>{step.no}</span>
-              {i < steps.length - 1 && <span aria-hidden="true" style={{ color: "#c9a63a", fontSize: 18 }}>→</span>}
-            </div>
-            <h3 style={{ margin: "12px 0 7px", fontSize: 16, lineHeight: 1.2, letterSpacing: "-0.02em", color: "#15161a" }}>{step.title}</h3>
-            <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.58 }}>{step.body}</p>
-            <p style={{ margin: "12px 0 0", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 10, letterSpacing: "0.07em", textTransform: "uppercase", color: "#8a887f" }}>{step.foot}</p>
+      <div className={v.chainGrid}>
+        {steps.map(([no, title, body, foot], index) => (
+          <div key={no} className={index === steps.length - 1 ? v.chainLast : v.chainStep}>
+            <div className={v.chainNo}><span>{no}</span>{index < steps.length - 1 && <i>→</i>}</div>
+            <h3>{title}</h3>
+            <p>{body}</p>
+            <small>{foot}</small>
           </div>
         ))}
       </div>
       <p className={s.cap} style={{ marginTop: 14 }}>
-        P79、Holistic、redteam-under-test、FinQA 和 Model Observatory 看起来不像同一个项目。但我其实一直在问同一件事：这个结果到底意味着什么？产生它的测量链到底能不能信？
+        {lang === "zh"
+          ? "Web-Agent routing、Holistic、redteam-under-test、FinQA 和 Model Observatory 看起来是不同项目，但都在追问：这个结果究竟意味着什么，产生它的测量链到底能不能信？"
+          : "Web-Agent routing, Holistic, redteam-under-test, FinQA and the Model Observatory look like different projects, but they ask the same question: what does this result mean, and can the measurement chain that produced it be trusted?"}
       </p>
     </div>
   );
 }
 
 export default function Home() {
+  const [lang, setLang] = useState<Lang>("zh");
+  const { profile } = content;
+  const email = `mailto:${profile.email}`;
+
+  useEffect(() => {
+    const saved = localStorage.getItem(LANGUAGE_KEY) ?? localStorage.getItem(OLD_LANGUAGE_KEY);
+    const frame = requestAnimationFrame(() => {
+      if (saved === "zh" || saved === "en") {
+        setLang(saved);
+        localStorage.setItem(LANGUAGE_KEY, saved);
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  }, [lang]);
+
+  const changeLanguage = (next: Lang) => {
+    setLang(next);
+    localStorage.setItem(LANGUAGE_KEY, next);
+  };
+
   return (
     <div className={s.home}>
       <div className={s.bar}>
         <div className={s.barIn}>
-          <span className={s.me}>{profile.name}</span>
+          <a className={`${s.me} ${v.brandLink}`} href="#top">{profile.name}</a>
           <nav className={s.nav}>
-            {profile.nav.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
+            {profile.nav.map((item) => <a key={item.href} href={item.href}>{tr(item.label, lang)}</a>)}
             <Link className={s.sub} href="/persona">Persona Lab ↗</Link>
-            <Link className={s.sub} href="/models">观测台 ↗</Link>
+            <Link className={s.sub} href="/models">{lang === "zh" ? "观测台 ↗" : "Observatory ↗"}</Link>
           </nav>
-          <a className={s.cv} href={RESUME_CN}>简历 PDF</a>
+          <div className={v.topActions}>
+            <div className={v.langSwitch} aria-label="Language">
+              <button className={lang === "zh" ? v.active : ""} onClick={() => changeLanguage("zh")} aria-pressed={lang === "zh"}>中</button>
+              <button className={lang === "en" ? v.active : ""} onClick={() => changeLanguage("en")} aria-pressed={lang === "en"}>EN</button>
+            </div>
+            <a className={s.cv} href={lang === "zh" ? RESUME_CN : RESUME_EN}>
+              {lang === "zh" ? "简历 PDF" : "CV PDF"}
+            </a>
+          </div>
         </div>
       </div>
 
-      <div className={s.wrap}>
+      <div className={s.wrap} id="top">
         <div className={s.g}>
-          <div className={`${s.t} ${s.c8}`}>
-            <span className={s.avail}><i />{profile.availability}</span>
+          <section className={`${s.t} ${s.c8}`}>
+            <span className={s.avail}><i />{tr(profile.availability, lang)}</span>
             <h1 className={s.h1}>{profile.name}</h1>
-            <p className={s.role}>{profile.role}</p>
-            <p className={s.say}>{profile.claim[0]}<br />{profile.claim[1]}</p>
-            <p className={s.lead}>{profile.intro}</p>
+            <p className={s.role}>{tr(profile.role, lang)}</p>
+            <p className={s.say}>{tr(profile.claim[0], lang)}<br />{tr(profile.claim[1], lang)}</p>
+            <p className={s.lead}>{tr(profile.intro, lang)}</p>
             <div className={s.cta}>
-              <a className={`${s.btn} ${s.pri}`} href={RESUME_CN}>中文简历 PDF</a>
-              <a className={s.btn} href={RESUME_EN}>English CV</a>
-              <a className={s.btn} href="#work">看研究与系统</a>
+              <a className={`${s.btn} ${s.pri}`} href="#experience">
+                {lang === "zh" ? "看经历与研究" : "Experience & research"}
+              </a>
+              <a className={s.btn} href="https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/">
+                Research Portfolio
+              </a>
+              <a className={s.btn} href={lang === "zh" ? RESUME_CN : RESUME_EN}>
+                {lang === "zh" ? "简历 PDF" : "CV PDF"}
+              </a>
               <a className={s.btn} href={profile.github}>GitHub</a>
-              <a className={s.btn} href={EMAIL}>邮箱</a>
+              <a className={s.btn} href={email}>{lang === "zh" ? "邮箱" : "Email"}</a>
             </div>
-          </div>
+          </section>
 
-          <div className={`${s.t} ${s.c4} ${s.ink}`}>
+          <aside className={`${s.t} ${s.c4} ${s.ink}`}>
             <div className={s.figs}>
-              {profile.figures.map((f) => (
-                <div key={f.label}>
+              {content.proof.map((item) => (
+                <div key={item.value}>
                   <em />
-                  <b>{f.value}</b>
-                  <span>{f.label}</span>
+                  <b className={v.proofValue}>{item.value}</b>
+                  <span>{tr(item.label, lang)}</span>
                 </div>
               ))}
             </div>
-          </div>
+          </aside>
 
-          <Section no="01" title="研究与系统" count={`${featured.length} 项`} id="work" />
-          {featured.slice(0, 3).map((p) => <Card key={p.slot} p={p} />)}
-
-          <MeasurementChain />
-
-          {featured.slice(3).map((p) => <Card key={p.slot} p={p} />)}
-
-          <Section no="02" title="技能栈" count="每项都有项目对得上" id="skills" />
-          <div className={`${s.t} ${s.c8}`}>
-            <div className={s.sk}>
-              {skills.map((k) => (
-                <div key={k.k}>
-                  <p className={s.k}>{k.k}</p>
-                  <p>{k.v}</p>
-                </div>
-              ))}
+          <Section
+            no="01"
+            title={lang === "zh" ? "经历与研究" : "Experience & Research"}
+            count={lang === "zh" ? "先看真实交付" : "proof before catalogue"}
+            id="experience"
+          />
+          <div className={`${s.t} ${s.c12}`}>
+            <div className={v.experienceGrid}>
+              {content.experience.map((item) => <ExperienceCard key={item.org} item={item} lang={lang} />)}
             </div>
           </div>
 
-          <div className={`${s.t} ${s.c4}`} id="about">
-            <span className={s.lbl}>教育与经历</span>
-            <div style={{ marginTop: 16 }}>
-              {experience.map((e) => (
-                <div className={s.exp} key={e.org}>
-                  <div className={s.org}>{e.org}</div>
-                  <div className={s.what}>{e.what}</div>
-                </div>
-              ))}
+          <Section
+            no="02"
+            title={lang === "zh" ? "研究与系统" : "Selected Work"}
+            count={`${content.featured.length} ${lang === "zh" ? "项" : "projects"}`}
+            id="work"
+          />
+          {content.featured.slice(0, 3).map((project) => <ProjectCard key={project.slot} project={project} lang={lang} />)}
+          <MeasurementChain lang={lang} />
+          {content.featured.slice(3).map((project) => <ProjectCard key={project.slot} project={project} lang={lang} />)}
+
+          <Section
+            no="03"
+            title={lang === "zh" ? "研究证据" : "Research Evidence"}
+            count={lang === "zh" ? "论文 · Portfolio · Poster · Repo" : "paper · portfolio · poster · repo"}
+            id="evidence"
+          />
+          <div className={`${s.t} ${s.c12}`}>
+            <div className={v.evidenceGrid}>
+              {content.evidence.map((item) => <EvidenceCard key={item.title.en} item={item} lang={lang} />)}
+            </div>
+            <div className={v.releaseStamp}>
+              <span>{content.release.careerEpoch}</span>
+              <span>{lang === "zh" ? "公开事实核验" : "public facts verified"} · {content.release.verifiedAt}</span>
             </div>
           </div>
 
-          <Section no="03" title="其他项目" count={`${others.length} 项`} />
+          <Section
+            no="04"
+            title={lang === "zh" ? "能力图" : "Capabilities"}
+            count={lang === "zh" ? "能力必须有证据对得上" : "every claim needs evidence"}
+            id="skills"
+          />
+          <div className={`${s.t} ${s.c12}`}>
+            <div className={v.skillGrid}>
+              {content.skills.map((item) => <SkillCard key={item.k.en} item={item} lang={lang} />)}
+            </div>
+          </div>
+
+          <Section
+            no="05"
+            title="Personal Lab"
+            count={lang === "zh" ? "选出的旁支项目" : "selected side work"}
+            id="lab"
+          />
           <div className={`${s.t} ${s.c12}`}>
             <div className={s.list}>
-              {others.map((o) => (
-                <a key={o.name} href={o.href}>
-                  <span className={s.tt}>{o.name}</span>
-                  <span className={s.yy}>{o.year}</span>
-                  <span className={s.dd}>{o.text}</span>
-                </a>
-              ))}
+              {content.lab.map((item) => <LabRow key={item.name} item={item} lang={lang} />)}
             </div>
           </div>
 
-          <div className={`${s.t} ${s.c12} ${s.ink} ${s.closing}`} id="contact">
-            <div>
-              <h2 className={s.h2} style={{ margin: "0 0 6px" }}>{closing.title}</h2>
-              <p className={s.closingSub}>
-                {closing.sub}
-                {closing.todo && <span className={s.dash}>{closing.todo}</span>}
-              </p>
+          <section className={`${s.t} ${s.c12} ${s.ink} ${s.closing}`} id="contact">
+            <div className={v.closingCopy}>
+              <h2 className={s.h2} style={{ margin: "0 0 6px" }}>{tr(content.closing.title, lang)}</h2>
+              <p className={s.closingSub}>{tr(content.closing.sub, lang)}</p>
             </div>
             <div className={s.cta} style={{ margin: 0 }}>
-              <a className={`${s.btn} ${s.pri}`} href={RESUME_CN}>简历 PDF</a>
-              <a className={s.btn} href={RESUME_EN}>English CV</a>
-              <a className={s.btn} href={EMAIL}>邮件联系</a>
+              <a className={`${s.btn} ${s.pri}`} href={lang === "zh" ? RESUME_CN : RESUME_EN}>
+                {lang === "zh" ? "简历 PDF" : "CV PDF"}
+              </a>
+              <a className={s.btn} href={profile.linkedin}>LinkedIn ↗</a>
+              <a className={s.btn} href={email}>{lang === "zh" ? "邮件联系" : "Email"}</a>
               <a className={s.btn} href={profile.github}>GitHub ↗</a>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>

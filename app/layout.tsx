@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 // The root route is the personal site; the observatory lives at /models and carries its own
 // title via app/models/layout.tsx. Keep this generic — it is the default for every route.
 export const metadata: Metadata = {
-  title: "Jiaming Wei — LLM 评测 · 红队 · Agent 安全",
-  description: "LLM 评测与红队测试的作品集:判官保真度、agent 工具安全、可复现的实验系统。",
+  title: "Jiaming Wei — AI Evaluation · Red Teaming · Agent Reliability",
+  description: "Research Engineer portfolio: reliable AI evaluation, red teaming, Web / Computer-Use agents, judge calibration and reproducible evaluation systems.",
   other: {
     "codex-preview": "development",
   },

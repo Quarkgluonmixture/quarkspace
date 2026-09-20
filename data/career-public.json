@@ -1,0 +1,651 @@
+{
+  "release": {
+    "careerEpoch": "2026-09-20-post-holistic",
+    "verifiedAt": "2026-09-20",
+    "source": "Career OS / JobFinder public-safe projection",
+    "policy": "accepted != published; unknown stays unknown; no confidential employer/customer data"
+  },
+  "profile": {
+    "name": "Jiaming Wei",
+    "role": {
+      "zh": "AI Evaluation · Red Teaming · Agent Reliability",
+      "en": "AI Evaluation · Red Teaming · Agent Reliability"
+    },
+    "availability": {
+      "zh": "RESEARCH ENGINEER · 2026–27",
+      "en": "RESEARCH ENGINEER · 2026–27"
+    },
+    "claim": [
+      {
+        "zh": "模型和 Agent 会出问题。",
+        "en": "Models and agents fail."
+      },
+      {
+        "zh": "更麻烦的是，用来评估它们的那套标准本身也可能不可靠。",
+        "en": "The harder problem is that the measurement used to judge them can fail too."
+      }
+    ],
+    "intro": {
+      "zh": "我研究并构建可靠的 AI evaluation systems：从 Web / Computer-Use Agent、red teaming 和 judge calibration，到 post-training evaluation、benchmark provenance 与可复现实验基础设施。核心问题一直是同一个：一个分数或失败到底意味着什么，产生它的 measurement chain 能不能信。",
+      "en": "I study and build reliable AI evaluation systems across Web / Computer-Use agents, red teaming, judge calibration, post-training evaluation, benchmark provenance and reproducible research infrastructure. The recurring question is simple: what does a score or failure actually mean, and can the measurement chain that produced it be trusted?"
+    },
+    "email": "jiaming.wei.ai@outlook.com",
+    "github": "https://github.com/Quarkgluonmixture",
+    "linkedin": "https://www.linkedin.com/in/jiaming-wei-810ab938b/",
+    "nav": [
+      {
+        "href": "#experience",
+        "label": {
+          "zh": "经历",
+          "en": "Experience"
+        }
+      },
+      {
+        "href": "#work",
+        "label": {
+          "zh": "研究与系统",
+          "en": "Selected Work"
+        }
+      },
+      {
+        "href": "#evidence",
+        "label": {
+          "zh": "研究证据",
+          "en": "Evidence"
+        }
+      },
+      {
+        "href": "#skills",
+        "label": {
+          "zh": "能力",
+          "en": "Capabilities"
+        }
+      },
+      {
+        "href": "#lab",
+        "label": {
+          "zh": "PERSONAL LAB",
+          "en": "PERSONAL LAB"
+        }
+      },
+      {
+        "href": "#contact",
+        "label": {
+          "zh": "联系",
+          "en": "Contact"
+        }
+      }
+    ]
+  },
+  "proof": [
+    {
+      "value": "REALM ’26",
+      "label": {
+        "zh": "已录用 · EMNLP WORKSHOP",
+        "en": "ACCEPTED · EMNLP WORKSHOP"
+      }
+    },
+    {
+      "value": "HOLISTIC AI",
+      "label": {
+        "zh": "研究实习 · 已完成",
+        "en": "RESEARCH INTERNSHIP · COMPLETED"
+      }
+    },
+    {
+      "value": "WEB / CU",
+      "label": {
+        "zh": "AGENT EVALUATION",
+        "en": "AGENT EVALUATION"
+      }
+    },
+    {
+      "value": "EVAL SYSTEMS",
+      "label": {
+        "zh": "JUDGE · RED TEAM · PROVENANCE",
+        "en": "JUDGE · RED TEAM · PROVENANCE"
+      }
+    }
+  ],
+  "experience": [
+    {
+      "org": "Holistic AI",
+      "role": {
+        "zh": "Research Intern · London · 2026.06–09 · 已完成",
+        "en": "Research Intern · London · Jun–Sep 2026 · Completed"
+      },
+      "lead": {
+        "zh": "把 evaluation 当作系统，而不是一个分数：从 attack generation、target execution 和 grader audit，一直做到后期的可执行审计 pipeline 与 live delivery。",
+        "en": "Treated evaluation as a system rather than a score: from attack generation, target execution and grader auditing through to an executable audit pipeline and live delivery."
+      },
+      "points": [
+        {
+          "zh": "独立 owner 端到端 red-team / evaluation measurement line，并把 target behavior、provider-side filtering 与 grader outcome 从一个模糊的二元结果里拆开。",
+          "en": "Owned an end-to-end red-team/evaluation measurement line and separated target behavior, provider-side filtering and grader outcomes instead of collapsing them into one ambiguous binary result."
+        },
+        {
+          "zh": "用独立 labels 审计 judge / grader 的 FP/FN 与 failure modes，再把测量逻辑接入实际平台。",
+          "en": "Audited judge/grader FP/FN and failure modes against independent labels, then integrated the measurement logic into the working platform."
+        },
+        {
+          "zh": "后期构建 NYC Local Law 144 审计 pipeline：把规则转成确定性的 Python decision logic、evidence/logging 与可复核报告，并在真实数据上验证、完成最终 live demo。",
+          "en": "Later built an NYC Local Law 144 audit pipeline: deterministic Python decision logic, evidence/logging and reviewable reporting, validated on real data and demonstrated live at the end of the internship."
+        }
+      ],
+      "tags": [
+        "Evaluation",
+        "Red Teaming",
+        "Judge Reliability",
+        "Audit Systems",
+        "Python"
+      ]
+    },
+    {
+      "org": "UCL Computer Science",
+      "role": {
+        "zh": "MSc Artificial Intelligence for Sustainable Development · 2025–2026",
+        "en": "MSc Artificial Intelligence for Sustainable Development · 2025–2026"
+      },
+      "lead": {
+        "zh": "研究 Web / Computer-Use Agent 的 representation choice 与 routing：先测有没有真实价值，再问这种价值能不能被可靠预测。",
+        "en": "Research on representation choice and routing for Web / Computer-Use agents: first measure whether value exists, then ask whether that value is actually learnable."
+      },
+      "points": [
+        {
+          "zh": "论文《Routing Is Least Learnable Where It Is Most Valuable》已被 EMNLP 2026 Workshop REALM 录用。",
+          "en": "“Routing Is Least Learnable Where It Is Most Valuable” was accepted at the EMNLP 2026 Workshop REALM."
+        },
+        {
+          "zh": "研究包含预注册、受控表征比较、task-level failure analysis、representation probes 与可恢复的异构算力实验系统。",
+          "en": "The work combines preregistration, controlled representation comparisons, task-level failure analysis, representation probes and a recoverable heterogeneous-compute experiment system."
+        }
+      ],
+      "tags": [
+        "Web Agents",
+        "Computer Use",
+        "Evaluation",
+        "Representation Routing",
+        "Research Systems"
+      ]
+    },
+    {
+      "org": "Xi’an Jiaotong University",
+      "role": {
+        "zh": "BEng Automation · 2021–2025",
+        "en": "BEng Automation · 2021–2025"
+      },
+      "lead": {
+        "zh": "自动化与机器学习背景；后续逐步把研究重心收敛到可靠 AI evaluation、agent systems 与实验方法。",
+        "en": "Background in automation and machine learning, later converging on reliable AI evaluation, agent systems and experimental methods."
+      },
+      "points": [],
+      "tags": [
+        "Automation",
+        "Machine Learning"
+      ]
+    }
+  ],
+  "featured": [
+    {
+      "slot": "01",
+      "kicker": {
+        "zh": "UCL MSc Dissertation / REALM ’26 ACCEPTED",
+        "en": "UCL MSc Dissertation / REALM ’26 ACCEPTED"
+      },
+      "title": {
+        "zh": "Web Agent 表征路由：价值最高的地方，反而最难学",
+        "en": "Routing Is Least Learnable Where It Is Most Valuable"
+      },
+      "who": [
+        {
+          "zh": "预注册 · OSF",
+          "en": "Preregistered · OSF"
+        },
+        {
+          "zh": "3 模型族 × 6 表征",
+          "en": "3 model families × 6 representations"
+        },
+        {
+          "zh": "REALM ’26 已录用",
+          "en": "REALM ’26 accepted"
+        }
+      ],
+      "lead": {
+        "zh": "DOM、SoM、视觉等表征之间确实存在互补价值；但“事后知道哪个表征更值钱”并不意味着 router 能在执行前学会选对。研究把 representation value 与 routing learnability 拆开测量，并把这个负结果变成可解释的边界。",
+        "en": "DOM, SoM and vision do contain complementary value. But hindsight value does not imply that a router can predict the right representation before execution. The study separates representation value from routing learnability and turns that negative result into a measurable bound."
+      },
+      "points": [
+        {
+          "zh": "受控比较 DOM / SoM / vision 与 phantom representations，先预注册，再跑实验。",
+          "en": "Controlled comparison of DOM / SoM / vision and phantom representations, preregistered before the main runs."
+        },
+        {
+          "zh": "主结论是 routing value–learnability gap：value ≠ learnability。",
+          "en": "Core result: a routing value–learnability gap — value does not imply learnability."
+        },
+        {
+          "zh": "追 task-level failure 与 representation difference，并用 activation patching / linear probes 定位表征差异。",
+          "en": "Tracks task-level failures and representation differences, with activation patching / linear probes for diagnosis."
+        },
+        {
+          "zh": "大型可复现实验系统支持异构算力编排、自动恢复与 1K+ research tests。",
+          "en": "Large reproducible research system with heterogeneous-compute orchestration, automatic recovery and 1K+ research tests."
+        }
+      ],
+      "stack": "Python · PyTorch · Playwright · VisualWebArena · SGE/HPC",
+      "href": "https://github.com/Quarkgluonmixture/Cost-Aware-Routing-for-Web-Usage-Agents",
+      "span": "c12",
+      "wide": true,
+      "bigTitle": true,
+      "chart": "cost",
+      "cap": {
+        "zh": "成本差异不是这项研究最难的部分。真正困难的是：什么时候该看什么，以及这个判断到底能不能被学出来。",
+        "en": "The hard part was not the small cost gap between representations. It was learning when to use which representation — and whether that decision is learnable at all."
+      }
+    },
+    {
+      "slot": "02",
+      "kicker": {
+        "zh": "PUBLIC RED-TEAM MEASUREMENT STACK / APACHE-2.0",
+        "en": "PUBLIC RED-TEAM MEASUREMENT STACK / APACHE-2.0"
+      },
+      "title": {
+        "zh": "redteam-under-test",
+        "en": "redteam-under-test"
+      },
+      "who": [
+        {
+          "zh": "公开可审计",
+          "en": "Public & auditable"
+        },
+        {
+          "zh": "103 个已验证 plugin",
+          "en": "103 validated plugins"
+        },
+        {
+          "zh": "Judge 校准",
+          "en": "Judge calibration"
+        }
+      ],
+      "pull": {
+        "zh": "攻击跑出来了，不等于攻击真的成功了。",
+        "en": "An attack running is not the same as an attack succeeding."
+      },
+      "lead": {
+        "zh": "把 target、execution harness、provider behavior、judge 与独立 gold labels 放在同一条 measurement chain 上。系统不仅问“模型有没有被攻破”，也问“负责判定这件事的工具自己靠不靠谱”。",
+        "en": "Puts the target, execution harness, provider behavior, judge and independent gold labels on the same measurement chain. The system asks not only whether the target failed, but whether the evaluator itself is trustworthy."
+      },
+      "points": [
+        {
+          "zh": "166 个 plugin 映射到本地生成机制，其中 103 个通过端到端验证后启用。",
+          "en": "166 plugins mapped to local generation mechanisms; 103 enabled after end-to-end verification."
+        },
+        {
+          "zh": "攻击按目标动态生成；zero-egress 路径可以把生成、攻击与判定留在本机。",
+          "en": "Target-conditioned attack generation; a zero-egress path can keep generation, execution and judging local."
+        },
+        {
+          "zh": "同一 probe 上曾发现 upstream refusal shortcut 漏掉 16 个 breach 中的 8 个。",
+          "en": "Found an upstream refusal shortcut that missed 8 of 16 breaches on one probe."
+        }
+      ],
+      "stack": "JavaScript · Node · Postgres · TanStack Start · SST / Lambda",
+      "href": "https://github.com/Quarkgluonmixture/redteam-under-test",
+      "span": "c7",
+      "shot": {
+        "src": "/shots/redteam-cockpit.jpg",
+        "alt": {
+          "zh": "redteam-under-test cockpit：风险图、攻击面、成本与运行趋势",
+          "en": "redteam-under-test cockpit with risk, attack surface, cost and run trends"
+        },
+        "cap": {
+          "zh": "同一套系统里看攻击面，也看自己的判官是否可信。",
+          "en": "The same system inspects the attack surface and the reliability of its own judge."
+        }
+      }
+    },
+    {
+      "slot": "03",
+      "kicker": {
+        "zh": "AGENT SECURITY / READ-ONLY MCP",
+        "en": "AGENT SECURITY / READ-ONLY MCP"
+      },
+      "title": {
+        "zh": "Agent Red-Team Lab",
+        "en": "Agent Red-Team Lab"
+      },
+      "who": [
+        {
+          "zh": "Tool-use security",
+          "en": "Tool-use security"
+        },
+        {
+          "zh": "Read-only MCP",
+          "en": "Read-only MCP"
+        },
+        {
+          "zh": "574 tests",
+          "en": "574 tests"
+        }
+      ],
+      "pull": {
+        "zh": "一边诱导 Agent 越界，一边确保它真越界时留下可重放证据。",
+        "en": "Stress the agent into crossing a boundary, while making sure any real crossing leaves replayable evidence."
+      },
+      "lead": {
+        "zh": "攻击侧研究 replay / model-hop / 调用预算；防守侧把 tool-call trace analyzer 做成 read-only MCP，只分析轨迹，不替 Agent 执行真实动作。",
+        "en": "The attack side studies replay, model-hop and call budgets; the defensive side exposes a read-only MCP analyzer that inspects tool-call traces without executing real actions."
+      },
+      "points": [
+        {
+          "zh": "检测 trust-boundary crossing、敏感数据外传、destructive action、confused-deputy 与缺失授权。",
+          "en": "Detects trust-boundary crossing, sensitive-data egress, destructive actions, confused-deputy behavior and missing authorization."
+        },
+        {
+          "zh": "规则采用“降级不压制”：调用方自报已审批，也不能一句话把已发现的风险抹掉。",
+          "en": "Uses a degrade-not-suppress rule: caller claims of approval cannot erase already-observed risk."
+        }
+      ],
+      "stack": "Python · MCP / JSON-RPC · Agent Security",
+      "href": "https://github.com/Quarkgluonmixture/agent-redteam-lab",
+      "span": "c5"
+    },
+    {
+      "slot": "04",
+      "kicker": {
+        "zh": "POST-TRAINING ATTRIBUTION / CONTROLLED MATRIX",
+        "en": "POST-TRAINING ATTRIBUTION / CONTROLLED MATRIX"
+      },
+      "title": {
+        "zh": "FinQA",
+        "en": "FinQA"
+      },
+      "who": [
+        {
+          "zh": "Qwen3 0.6B→14B",
+          "en": "Qwen3 0.6B→14B"
+        },
+        {
+          "zh": "5×4 受控矩阵",
+          "en": "5×4 controlled matrix"
+        },
+        {
+          "zh": "SFT / GRPO",
+          "en": "SFT / GRPO"
+        }
+      ],
+      "pull": {
+        "zh": "模型涨了 20 分，先别急着说训练有效。",
+        "en": "A model gained twenty points. That still does not tell you why."
+      },
+      "lead": {
+        "zh": "把 protocol、answer-format SFT、显式思考与 RLVR 分开控制，追问分数变化究竟来自能力、协议还是 reward exploitation。",
+        "en": "Controls protocol, answer-format SFT, explicit reasoning and RLVR separately to attribute score changes to capability, protocol alignment or reward exploitation."
+      },
+      "points": [
+        {
+          "zh": "只切回正确 native chat protocol，部分大模型即可恢复约 +20–30 分。",
+          "en": "Switching back to the correct native chat protocol alone recovered roughly +20–30 points for some larger base models."
+        },
+        {
+          "zh": "4B answer-only SFT 没有显著净增益；paired McNemar 把“感觉涨了”变成可检验问题。",
+          "en": "4B answer-only SFT showed no significant net gain; paired McNemar turned an apparent improvement into a testable claim."
+        },
+        {
+          "zh": "GRPO/RLVR 出现明显 reward exploitation，任务准确率反而下降。",
+          "en": "GRPO/RLVR exposed clear reward exploitation while task accuracy fell."
+        }
+      ],
+      "stack": "Python · PyTorch · Qwen3 · TRL · LoRA / SFT / GRPO",
+      "href": "https://github.com/Quarkgluonmixture/FinQA",
+      "span": "c6"
+    },
+    {
+      "slot": "05",
+      "kicker": {
+        "zh": "BENCHMARK PROVENANCE / LIVE",
+        "en": "BENCHMARK PROVENANCE / LIVE"
+      },
+      "title": {
+        "zh": "AI Model Observatory",
+        "en": "AI Model Observatory"
+      },
+      "who": [
+        {
+          "zh": "Live data product",
+          "en": "Live data product"
+        },
+        {
+          "zh": "Per-observation provenance",
+          "en": "Per-observation provenance"
+        },
+        {
+          "zh": "自动 drift checks",
+          "en": "Automated drift checks"
+        }
+      ],
+      "pull": {
+        "zh": "我最不想做的，就是再造一个解释不清的“万能总分”。",
+        "en": "The last thing I wanted was another universal score with unclear semantics."
+      },
+      "lead": {
+        "zh": "不同来源、harness 与 benchmark 语义分开保存；缺失就是 N/A，agent-system 成绩不伪装成纯模型能力。上游 live boards 自动重抓并做 drift checks。",
+        "en": "Keeps source, harness and benchmark semantics distinct. Missing evidence stays N/A, agent-system results are not relabelled as pure model ability, and live upstream boards are re-read with automated drift checks."
+      },
+      "points": [
+        {
+          "zh": "每条 observation 保留来源、版本、日期、harness、reasoning effort 与 tool setting。",
+          "en": "Each observation retains source, version, date, harness, reasoning effort and tool setting."
+        },
+        {
+          "zh": "把 capability、agent systems、coding systems、human preference、speed 与 price 分开。",
+          "en": "Separates capability, agent systems, coding systems, human preference, speed and price."
+        }
+      ],
+      "stack": "TypeScript · Next.js · Data Provenance · EdgeOne Pages",
+      "href": "/models",
+      "goLabel": {
+        "zh": "进入观测台 →",
+        "en": "Open observatory →"
+      },
+      "span": "c6",
+      "shot": {
+        "src": "/shots/observatory-home.jpg",
+        "alt": {
+          "zh": "AI Model Observatory 首页与模型比较界面",
+          "en": "AI Model Observatory ranking and comparison interface"
+        },
+        "cap": {
+          "zh": "实时数字留在实时产品里；个人主页不再手工复制会漂移的 observation 数。",
+          "en": "Live counts stay inside the live product; the portfolio no longer hand-copies volatile observation totals."
+        }
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "title": {
+        "zh": "REALM ’26 论文",
+        "en": "REALM ’26 paper"
+      },
+      "status": {
+        "zh": "ACCEPTED · EMNLP 2026 WORKSHOP REALM",
+        "en": "ACCEPTED · EMNLP 2026 WORKSHOP REALM"
+      },
+      "text": {
+        "zh": "Routing Is Least Learnable Where It Is Most Valuable: Bounds on Representation Routing for Web Agents。录用不等于已发表，页面不把它写成 EMNLP 主会。",
+        "en": "Routing Is Least Learnable Where It Is Most Valuable: Bounds on Representation Routing for Web Agents. Accepted at the REALM workshop; not described here as an EMNLP main-conference acceptance or as published."
+      },
+      "href": "https://openreview.net/forum?id=EAplLx6gCD",
+      "action": {
+        "zh": "OpenReview ↗",
+        "en": "OpenReview ↗"
+      }
+    },
+    {
+      "title": {
+        "zh": "4-page Research Portfolio",
+        "en": "4-page Research Portfolio"
+      },
+      "status": {
+        "zh": "RECRUITER-FACING · WEB AGENT RESEARCH",
+        "en": "RECRUITER-FACING · WEB AGENT RESEARCH"
+      },
+      "text": {
+        "zh": "比 90 页 dissertation 更适合快速浏览的视觉研究作品集：问题、方法、主要结果和系统证据放在同一条叙事里。",
+        "en": "A visual recruiter-facing research portfolio that compresses the question, method, main result and systems evidence into a fast read."
+      },
+      "href": "https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/",
+      "action": {
+        "zh": "查看 Portfolio ↗",
+        "en": "View portfolio ↗"
+      }
+    },
+    {
+      "title": {
+        "zh": "Research Poster & Showcase",
+        "en": "Research Poster & Showcase"
+      },
+      "status": {
+        "zh": "UCL × HOLISTIC AI · 16 SEP 2026",
+        "en": "UCL × HOLISTIC AI · 16 SEP 2026"
+      },
+      "text": {
+        "zh": "最终 research poster 已在 UCL × Holistic AI showcase 展示。公开站只展示 public-safe research summary，不复制公司内部材料或客户数据。",
+        "en": "The final research poster was presented at the UCL × Holistic AI showcase. This public site exposes only public-safe research context, never private company material or client data."
+      },
+      "href": "https://github.com/Quarkgluonmixture/Cost-Aware-Routing-for-Web-Usage-Agents/tree/master/portfolio",
+      "action": {
+        "zh": "研究材料 ↗",
+        "en": "Research materials ↗"
+      }
+    },
+    {
+      "title": {
+        "zh": "Dissertation & Reproducibility",
+        "en": "Dissertation & Reproducibility"
+      },
+      "status": {
+        "zh": "UCL MSC · PREREGISTERED · PUBLIC REPO",
+        "en": "UCL MSC · PREREGISTERED · PUBLIC REPO"
+      },
+      "text": {
+        "zh": "完整研究仓库包含预注册、实验 orchestration、分析、failure evidence 与论文材料。长文证据留在研究仓库，主页只保留可扫描的结论。",
+        "en": "The full research repository contains preregistration, experiment orchestration, analysis, failure evidence and paper materials. Long-form evidence stays there; the homepage keeps the scan path short."
+      },
+      "href": "https://github.com/Quarkgluonmixture/Cost-Aware-Routing-for-Web-Usage-Agents",
+      "action": {
+        "zh": "Research repo ↗",
+        "en": "Research repo ↗"
+      }
+    }
+  ],
+  "skills": [
+    {
+      "k": {
+        "zh": "Evaluation / Research",
+        "en": "Evaluation / Research"
+      },
+      "v": {
+        "zh": "LLM & Agent evaluation · benchmark design · red teaming · judge / grader calibration · failure taxonomy · paired tests / bootstrap · preregistration",
+        "en": "LLM & Agent evaluation · benchmark design · red teaming · judge / grader calibration · failure taxonomy · paired tests / bootstrap · preregistration"
+      }
+    },
+    {
+      "k": {
+        "zh": "Agents",
+        "en": "Agents"
+      },
+      "v": {
+        "zh": "Web / Computer-Use Agent · VisualWebArena · DOM / SoM / vision representations · tool use · MCP · trajectory analysis · recovery",
+        "en": "Web / Computer-Use agents · VisualWebArena · DOM / SoM / vision representations · tool use · MCP · trajectory analysis · recovery"
+      }
+    },
+    {
+      "k": {
+        "zh": "Model / Post-training",
+        "en": "Model / Post-training"
+      },
+      "v": {
+        "zh": "PyTorch · Hugging Face · TRL · LoRA / SFT · GRPO / RLVR analysis · protocol attribution · reward-failure analysis",
+        "en": "PyTorch · Hugging Face · TRL · LoRA / SFT · GRPO / RLVR analysis · protocol attribution · reward-failure analysis"
+      }
+    },
+    {
+      "k": {
+        "zh": "Evaluation Systems",
+        "en": "Evaluation Systems"
+      },
+      "v": {
+        "zh": "Python · TypeScript · Postgres · Playwright · Docker · GitHub Actions · Linux · AWS / SST · structured logging · data provenance · reproducible harnesses",
+        "en": "Python · TypeScript · Postgres · Playwright · Docker · GitHub Actions · Linux · AWS / SST · structured logging · data provenance · reproducible harnesses"
+      }
+    }
+  ],
+  "lab": [
+    {
+      "name": "GPT Loop",
+      "year": "2026",
+      "text": {
+        "zh": "ChatGPT Web ↔ GitHub durable transport ↔ constrained runner 的 agent control plane；重点是可做事，也明确哪些门不能开。",
+        "en": "An agent control plane spanning ChatGPT Web, durable GitHub transport and a constrained runner: capable of acting while keeping hard capability boundaries."
+      },
+      "href": "https://github.com/Quarkgluonmixture/gpt-loop"
+    },
+    {
+      "name": "Autonomous Agent Prediction",
+      "year": "2026",
+      "text": {
+        "zh": "60 分钟、$2 LLM 预算、CPU-only 的自主 ML agent；更关心 leaderboard 稳定性与有效提交，而不是只追 public score。",
+        "en": "A 60-minute, $2-LLM-budget, CPU-only autonomous ML agent focused on leaderboard stability and guaranteed-valid submissions rather than public-score chasing."
+      },
+      "href": "https://github.com/Quarkgluonmixture/autonomous-agent-prediction-beta"
+    },
+    {
+      "name": "paper-deslop",
+      "year": "2026",
+      "text": {
+        "zh": "LaTeX-aware 学术改写流水线：模型只提 diff，确定性 invariant gate 守数字、引用、公式和术语。",
+        "en": "A LaTeX-aware academic rewrite pipeline where models propose diffs and deterministic invariant gates protect numbers, citations, equations and terms."
+      },
+      "href": "https://github.com/Quarkgluonmixture/paper-deslop"
+    },
+    {
+      "name": "Encode Persona",
+      "year": "2026",
+      "text": {
+        "zh": "比较自然语言、JSON/YAML、语义标签与 opaque tags 的 persona representations，带 ablations、跨模型 probes 与 exact provenance。",
+        "en": "Compares natural language, JSON/YAML, semantic labels and opaque-tag persona representations with ablations, cross-model probes and exact provenance."
+      },
+      "href": "https://github.com/Quarkgluonmixture/encode-persona"
+    },
+    {
+      "name": "Spatial Copilot",
+      "year": "2026",
+      "text": {
+        "zh": "把第一人称口述实时变成持久拓扑地图；graph topology 是事实，geometry 只是视觉假设。",
+        "en": "Turns first-person narration into a persistent topological map, treating graph topology as truth and geometry as a visual hypothesis."
+      },
+      "href": "https://github.com/Quarkgluonmixture/Spatial-Copilot"
+    },
+    {
+      "name": "FitnessOS",
+      "year": "2026",
+      "text": {
+        "zh": "offline-first SwiftUI 健身系统：SQLite source of truth、HealthKit、确定性调度与 transactional outbox。",
+        "en": "An offline-first SwiftUI fitness system with SQLite as source of truth, HealthKit, deterministic scheduling and a transactional outbox."
+      },
+      "href": "https://github.com/Quarkgluonmixture/FitnessOS"
+    }
+  ],
+  "closing": {
+    "title": {
+      "zh": "我想继续做一件事：把模型和 Agent 的“看起来不错”，变成真正经得住检查的结果。",
+      "en": "I want to keep turning “looks good” into results that survive inspection."
+    },
+    "sub": {
+      "zh": "主要关注 AI Evaluation / Red Teaming / Agent Reliability，以及 Web / Computer-Use Agent 与 model/post-training evaluation 的研究工程岗位。",
+      "en": "I’m focused on research-engineering roles in AI evaluation, red teaming and agent reliability, with continued work on Web / Computer-Use agents and model/post-training evaluation."
+    }
+  }
+}

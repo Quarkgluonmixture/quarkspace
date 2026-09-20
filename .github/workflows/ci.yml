@@ -43,6 +43,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # Recruiter-facing career claims have their own freshness/source epoch. This check fails on
+      # known stale claims or a malformed public manifest, but only warns when the verification date
+      # is old so an unrelated Observatory refresh is never blocked by career-maintenance debt.
+      - name: Validate public career manifest
+        run: npm run check:career
+
       - name: Rebuild observations from the archive
         run: npm run ingest
 
