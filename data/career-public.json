@@ -138,7 +138,8 @@
         "Judge Reliability",
         "Audit Systems",
         "Python"
-      ]
+      ],
+      "id": "holistic-ai"
     },
     {
       "org": "UCL Computer Science",
@@ -166,7 +167,8 @@
         "Evaluation",
         "Representation Routing",
         "Research Systems"
-      ]
+      ],
+      "id": "ucl"
     },
     {
       "org": "Xi’an Jiaotong University",
@@ -182,7 +184,8 @@
       "tags": [
         "Automation",
         "Machine Learning"
-      ]
+      ],
+      "id": "xjtu"
     }
   ],
   "featured": [
@@ -480,7 +483,8 @@
       "action": {
         "zh": "OpenReview ↗",
         "en": "OpenReview ↗"
-      }
+      },
+      "id": "realm-2026"
     },
     {
       "title": {
@@ -499,7 +503,8 @@
       "action": {
         "zh": "打开 4-page PDF ↗",
         "en": "Open 4-page PDF ↗"
-      }
+      },
+      "id": "research-portfolio"
     },
     {
       "title": {
@@ -518,7 +523,8 @@
       "action": {
         "zh": "打开 Showcase →",
         "en": "Open showcase →"
-      }
+      },
+      "id": "showcase-2026"
     },
     {
       "title": {
@@ -537,7 +543,8 @@
       "action": {
         "zh": "Research repo ↗",
         "en": "Research repo ↗"
-      }
+      },
+      "id": "dissertation-repo"
     }
   ],
   "skills": [
