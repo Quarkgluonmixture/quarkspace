@@ -15,16 +15,14 @@ have already been made here — all of which passed every automated check.
 ## Three product surfaces share this repo
 
 - **`/` is the owner's personal site** (job-hunting portfolio). Its files are `app/page.tsx`,
-  `app/home-content.ts`, `app/home.module.css`, `public/shots/`. **Two authorities here, and
-  conflating them is how the last drift started.** `home-content.ts` is the *implementation*
-  authority: what the deployed homepage says, which projects appear, in what order. Career
-  facts and positioning are *upstream* in `JobFinder/00_总控/` (`CURRENT_PROFILE.md`,
-  `WEAPON_INVENTORY.md`, `POSITIONING_V2.md`) — change those there first, then hand-sync into
-  `home-content.ts`. As of 2026-08-23 `../quark-space` is neither: it is a design archive, and
-  its `content/projects.json` is a frozen snapshot of the 2026-08-03 portfolio that must never
-  be synced back over `home-content.ts` — see `../quark-space/content/CANONICAL_SOURCE.md`.
-  This paragraph named that archive as the source of truth until 2026-08-26; the demotion had
-  happened three days earlier and nothing in this repository noticed.
+  `app/home-content.ts`, `app/home.module.css`, `app/home-v2.module.css`, `data/career-public.json`
+  and `public/shots/`. Career facts and positioning remain *upstream* in the private Career OS /
+  `JobFinder`; this repository stores only a **public-safe projection** in `data/career-public.json`.
+  That manifest is the recruiter-facing content authority and carries a `careerEpoch` +
+  `verifiedAt`; `home-content.ts` is only its typed implementation boundary. Do not hand-copy
+  career facts back into JSX or re-create a second homepage truth layer. `npm run check:career`
+  rejects known stale claims and malformed projection state. `../quark-space` remains a frozen
+  design archive and must never be synced back over the current manifest.
 - **`/models` is the observatory** — `app/models/page.tsx` (+ `app/models/layout.tsx` for its
   title, since the page is a client component). Everything else in this file is about the
   observatory.
@@ -33,18 +31,18 @@ have already been made here — all of which passed every automated check.
   compiler and probe routes. It reads no observatory data and must not put styles in
   `app/globals.css`. Its server-side Qwen key and access token come only from environment
   variables; neither may reach browser storage, API responses, or Git.
-- The personal site touches **no** data file: not `data/sources/`, not
-  `observations.generated.ts`, not `model-data.ts`. Changing it does not require
-  `check:data` / `check:models` / `check:prices` — only `lint` and `build`.
+- The personal site touches **no Observatory data file**: not `data/sources/`, not
+  `observations.generated.ts`, not `model-data.ts`. Its one data file is the isolated
+  `data/career-public.json` manifest. A homepage content change requires `check:career`,
+  `lint` and `build`; it does not require changing Observatory data.
 - It must never put styles in `app/globals.css`. That file owns the observatory's phone
   contract (type floor, tap targets, safe areas — `docs/UI.md`). The personal site is scoped
   under `.home` in its own CSS module with `--h-*` prefixed properties, because globals.css
   styles bare elements (`header`, `h1`) and hangs `--ink` / `--sans` / `--mono` on `body`.
-- ⚠ Any observatory number quoted on the personal site is a **copy**, and copies go stale. Re-run
-  `check:data` and `check:models` and update `home-content.ts` before publishing. This already
-  bit once: the page shipped 27 models / 1,162 observations / 49.1% when the real values were
-  28 / 1,154 / 47.4%. Re-check before publishing: as of 2026-08-06 the real values are
-  29 / 1,263 / 48.4%.
+- ⚠ Do **not** copy volatile Observatory counts onto the personal homepage. The homepage should
+  link to `/models` and describe the stable provenance contract instead. Exact model / benchmark /
+  observation counts belong to the live product that derives them. This rule exists because copied
+  counts drifted repeatedly while the Observatory kept updating correctly.
 - ⚠ **The coupling runs the other way too.** The daily refresh in `.github/workflows/upstream.yml`
   runs `npm run build` before it will commit or open a pull request, and that build now includes
   the personal site. A type error in `app/page.tsx` therefore blocks the data refresh — nothing
