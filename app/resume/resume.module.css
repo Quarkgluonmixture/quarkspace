@@ -248,7 +248,13 @@
   .print { padding: 0 10px; }
   .paper { padding: 28px 20px 32px; box-shadow: none; }
   .header { display: block; }
-  .contact { margin-top: 12px; justify-items: start; }
+  .contact { margin-top: 12px; justify-items: stretch; }
+  .contact a,
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+  }
   .itemHead { display: block; }
   .itemHead span { display: block; margin-top: 3px; text-align: left; }
   .education, .skills { grid-template-columns: 1fr; }
