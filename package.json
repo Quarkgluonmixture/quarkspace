@@ -40,7 +40,8 @@
     "draft:model": "node scripts/draft-model-record.mjs",
     "aa:new": "node scripts/aa-new-models.mjs",
     "reconcile:aa": "node scripts/reconcile-aa.mjs",
-    "capture:release": "node scripts/capture-release-tables.mjs"
+    "capture:release": "node scripts/capture-release-tables.mjs",
+    "check:career": "node scripts/check-career-manifest.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
