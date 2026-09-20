@@ -98,17 +98,14 @@ export default function ResumePage() {
               <h4>{tr(research.title, lang)}</h4>
               <span>UCL MSc · 2026</span>
             </div>
-            <p className={r.status}>
-              {lang === "zh"
-                ? "Accepted at EMNLP 2026 Workshop REALM · Submitted to NeurIPS 2026 Workshop VLM4RWD"
-                : "Accepted at EMNLP 2026 Workshop REALM · Submitted to NeurIPS 2026 Workshop VLM4RWD"}
-            </p>
+            <p className={r.status}>{tr(content.evidence[0].status, lang)}</p>
             <ul>
               {research.points?.slice(0, 3).map((point) => <li key={point.en}>{tr(point, lang)}</li>)}
             </ul>
             <div className={r.links}>
-              <a href="https://openreview.net/forum?id=EAplLx6gCD">OpenReview ↗</a>
-              <a href="https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/">Research Portfolio ↗</a>
+              <a href={content.evidence[0].href}>OpenReview ↗</a>
+              <a href={content.showcase.publicArtifacts.portfolioPdf}>Research Portfolio ↗</a>
+              <Link href="/showcase">Showcase →</Link>
               <a href={research.href}>Repository ↗</a>
             </div>
           </div>
