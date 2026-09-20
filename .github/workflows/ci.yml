@@ -249,6 +249,7 @@ jobs:
           npm run check:mobile
           npm run check:mobile -- http://localhost:3111/
           npm run check:mobile -- http://localhost:3111/resume
+          npm run check:mobile -- http://localhost:3111/showcase
 
       # The one notification this project sends when everything is working. It fires on the event
       # the owner actually wants to know about — **the site gained a model** — and not on any of
