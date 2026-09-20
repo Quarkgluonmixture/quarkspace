@@ -236,10 +236,13 @@ export default function Home() {
 
   useEffect(() => {
     const saved = localStorage.getItem(LANGUAGE_KEY) ?? localStorage.getItem(OLD_LANGUAGE_KEY);
-    if (saved === "zh" || saved === "en") {
-      setLang(saved);
-      localStorage.setItem(LANGUAGE_KEY, saved);
-    }
+    const frame = requestAnimationFrame(() => {
+      if (saved === "zh" || saved === "en") {
+        setLang(saved);
+        localStorage.setItem(LANGUAGE_KEY, saved);
+      }
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
