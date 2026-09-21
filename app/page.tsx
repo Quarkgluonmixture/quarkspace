@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import s from "./home.module.css";
 import v from "./home-v2.module.css";
 import {
@@ -19,7 +20,6 @@ import {
 
 const SHOT_W = 1700;
 const SHOT_H = 1099;
-const RESUME = "/resume";
 const LANGUAGE_KEY = "quarkspace-language";
 const OLD_LANGUAGE_KEY = "observatory-language";
 
@@ -94,7 +94,13 @@ function ProjectBody({ project, lang }: { project: Featured; lang: Lang }) {
   );
 }
 
+function localizedHref(href: string, lang: Lang) {
+  if (lang === "en" && href === "/showcase") return "/en/showcase";
+  return href;
+}
+
 function ProjectCard({ project, lang }: { project: Featured; lang: Lang }) {
+  const href = localizedHref(project.href, lang);
   const inner = project.wide ? (
     <div className={s.banner}>
       <div><ProjectBody project={project} lang={lang} /></div>
@@ -105,10 +111,10 @@ function ProjectCard({ project, lang }: { project: Featured; lang: Lang }) {
   );
   const className = `${s.t} ${s[project.span]}`;
 
-  return project.href.startsWith("/") ? (
-    <Link className={className} href={project.href}>{inner}</Link>
+  return href.startsWith("/") ? (
+    <Link className={className} href={href}>{inner}</Link>
   ) : (
-    <a className={className} href={project.href} rel="noreferrer">{inner}</a>
+    <a className={className} href={href} rel="noreferrer">{inner}</a>
   );
 }
 
@@ -156,8 +162,9 @@ function ExperienceCard({ item, lang }: { item: Experience; lang: Lang }) {
 }
 
 function EvidenceCard({ item, lang }: { item: Evidence; lang: Lang }) {
+  const href = localizedHref(item.href, lang);
   return (
-    <a className={v.evidenceCard} href={item.href} rel="noreferrer">
+    <a className={v.evidenceCard} href={href} rel="noreferrer">
       <span className={v.evidenceStatus}>{tr(item.status, lang)}</span>
       <h3>{tr(item.title, lang)}</h3>
       <p>{tr(item.text, lang)}</p>
@@ -229,29 +236,24 @@ function MeasurementChain({ lang }: { lang: Lang }) {
 }
 
 export default function Home() {
-  const [lang, setLang] = useState<Lang>("zh");
+  const pathname = usePathname();
+  const lang: Lang = pathname === "/en" || pathname.startsWith("/en/") ? "en" : "zh";
   const { profile } = content;
+  const audience = content.audiences[lang];
   const email = `mailto:${profile.email}`;
-
-  useEffect(() => {
-    const saved = localStorage.getItem(LANGUAGE_KEY) ?? localStorage.getItem(OLD_LANGUAGE_KEY);
-    const frame = requestAnimationFrame(() => {
-      if (saved === "zh" || saved === "en") {
-        setLang(saved);
-        localStorage.setItem(LANGUAGE_KEY, saved);
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, []);
+  const resume = audience.resumeRoute;
+  const experiences = audience.experienceIds
+    .map((id) => content.experience.find((item) => item.id === id))
+    .filter((item): item is Experience => Boolean(item));
+  const featured = audience.featuredSlots
+    .map((slot) => content.featured.find((item) => item.slot === slot))
+    .filter((item): item is Featured => Boolean(item));
 
   useEffect(() => {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+    localStorage.setItem(LANGUAGE_KEY, lang);
+    localStorage.setItem(OLD_LANGUAGE_KEY, lang);
   }, [lang]);
-
-  const changeLanguage = (next: Lang) => {
-    setLang(next);
-    localStorage.setItem(LANGUAGE_KEY, next);
-  };
 
   return (
     <div className={s.home}>
@@ -265,12 +267,12 @@ export default function Home() {
           </nav>
           <div className={v.topActions}>
             <div className={v.langSwitch} aria-label="Language">
-              <button className={lang === "zh" ? v.active : ""} onClick={() => changeLanguage("zh")} aria-pressed={lang === "zh"}>中</button>
-              <button className={lang === "en" ? v.active : ""} onClick={() => changeLanguage("en")} aria-pressed={lang === "en"}>EN</button>
+              <Link className={lang === "zh" ? v.active : ""} href="/" aria-current={lang === "zh" ? "page" : undefined}>中</Link>
+              <Link className={lang === "en" ? v.active : ""} href="/en" aria-current={lang === "en" ? "page" : undefined}>EN</Link>
             </div>
-            <a className={s.cv} href={RESUME}>
+            <Link className={s.cv} href={resume}>
               {lang === "zh" ? "简历 / PDF" : "CV / PDF"}
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -278,21 +280,21 @@ export default function Home() {
       <div className={s.wrap} id="top">
         <div className={s.g}>
           <section className={`${s.t} ${s.c8}`}>
-            <span className={s.avail}><i />{tr(profile.availability, lang)}</span>
+            <span className={s.avail}><i />{audience.profile.availability}</span>
             <h1 className={s.h1}>{profile.name}</h1>
-            <p className={s.role}>{tr(profile.role, lang)}</p>
-            <p className={s.say}>{tr(profile.claim[0], lang)}<br />{tr(profile.claim[1], lang)}</p>
-            <p className={s.lead}>{tr(profile.intro, lang)}</p>
+            <p className={s.role}>{audience.profile.role}</p>
+            <p className={s.say}>{audience.profile.claim[0]}<br />{audience.profile.claim[1]}</p>
+            <p className={s.lead}>{audience.profile.intro}</p>
             <div className={s.cta}>
               <a className={`${s.btn} ${s.pri}`} href="#experience">
-                {lang === "zh" ? "看经历与研究" : "Experience & research"}
+                {lang === "zh" ? "看经历与研究" : "Research & experience"}
               </a>
               <a className={s.btn} href="https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/">
                 Research Portfolio
               </a>
-              <a className={s.btn} href={RESUME}>
-                {lang === "zh" ? "简历 / PDF" : "CV / PDF"}
-              </a>
+              <Link className={s.btn} href={resume}>
+                {lang === "zh" ? "中文简历 / PDF" : "Research CV / PDF"}
+              </Link>
               <a className={s.btn} href={profile.github}>GitHub</a>
               <a className={s.btn} href={email}>{lang === "zh" ? "邮箱" : "Email"}</a>
             </div>
@@ -310,37 +312,47 @@ export default function Home() {
             </div>
           </aside>
 
+          {audience.researchDirection && (
+            <section className={`${s.t} ${s.c12}`}>
+              <span className={s.lbl}>{audience.researchDirection.label}</span>
+              <h2 className={s.h2} style={{ marginTop: 14 }}>{audience.researchDirection.title}</h2>
+              <p className={s.pull}>{audience.researchDirection.question}</p>
+              <p className={s.lead} style={{ marginTop: 14 }}>{audience.researchDirection.text}</p>
+              <p className={s.stack}>{audience.researchDirection.next}</p>
+            </section>
+          )}
+
           <Section
             no="01"
-            title={lang === "zh" ? "经历与研究" : "Experience & Research"}
-            count={lang === "zh" ? "先看真实交付" : "proof before catalogue"}
+            title={audience.sections.experience}
+            count={audience.sections.experienceCount}
             id="experience"
           />
           <div className={`${s.t} ${s.c12}`}>
             <div className={v.experienceGrid}>
-              {content.experience.map((item) => <ExperienceCard key={item.org} item={item} lang={lang} />)}
+              {experiences.map((item) => <ExperienceCard key={item.id} item={item} lang={lang} />)}
             </div>
           </div>
 
           <Section
             no="02"
-            title={lang === "zh" ? "研究与系统" : "Selected Work"}
-            count={`${content.featured.length} ${lang === "zh" ? "项" : "projects"}`}
+            title={audience.sections.work}
+            count={`${featured.length} · ${audience.sections.workCount}`}
             id="work"
           />
-          {content.featured.slice(0, 3).map((project) => <ProjectCard key={project.slot} project={project} lang={lang} />)}
+          {featured.slice(0, 3).map((project) => <ProjectCard key={project.slot} project={project} lang={lang} />)}
           <MeasurementChain lang={lang} />
-          {content.featured.slice(3).map((project) => <ProjectCard key={project.slot} project={project} lang={lang} />)}
+          {featured.slice(3).map((project) => <ProjectCard key={project.slot} project={project} lang={lang} />)}
 
           <Section
             no="03"
-            title={lang === "zh" ? "研究证据" : "Research Evidence"}
-            count={lang === "zh" ? "论文 · Portfolio · Poster · Repo" : "paper · portfolio · poster · repo"}
+            title={audience.sections.evidence}
+            count={audience.sections.evidenceCount}
             id="evidence"
           />
           <div className={`${s.t} ${s.c12}`}>
             <div className={v.evidenceGrid}>
-              {content.evidence.map((item) => <EvidenceCard key={item.title.en} item={item} lang={lang} />)}
+              {content.evidence.map((item) => <EvidenceCard key={item.id} item={item} lang={lang} />)}
             </div>
             <div className={v.releaseStamp}>
               <span>{content.release.careerEpoch}</span>
@@ -350,8 +362,8 @@ export default function Home() {
 
           <Section
             no="04"
-            title={lang === "zh" ? "能力图" : "Capabilities"}
-            count={lang === "zh" ? "能力必须有证据对得上" : "every claim needs evidence"}
+            title={audience.sections.skills}
+            count={audience.sections.skillsCount}
             id="skills"
           />
           <div className={`${s.t} ${s.c12}`}>
@@ -362,8 +374,8 @@ export default function Home() {
 
           <Section
             no="05"
-            title="Personal Lab"
-            count={lang === "zh" ? "选出的旁支项目" : "selected side work"}
+            title={audience.sections.lab}
+            count={audience.sections.labCount}
             id="lab"
           />
           <div className={`${s.t} ${s.c12}`}>
@@ -374,13 +386,13 @@ export default function Home() {
 
           <section className={`${s.t} ${s.c12} ${s.ink} ${s.closing}`} id="contact">
             <div className={v.closingCopy}>
-              <h2 className={s.h2} style={{ margin: "0 0 6px" }}>{tr(content.closing.title, lang)}</h2>
-              <p className={s.closingSub}>{tr(content.closing.sub, lang)}</p>
+              <h2 className={s.h2} style={{ margin: "0 0 6px" }}>{audience.closing.title}</h2>
+              <p className={s.closingSub}>{audience.closing.sub}</p>
             </div>
             <div className={s.cta} style={{ margin: 0 }}>
-              <a className={`${s.btn} ${s.pri}`} href={RESUME}>
-                {lang === "zh" ? "简历 / PDF" : "CV / PDF"}
-              </a>
+              <Link className={`${s.btn} ${s.pri}`} href={resume}>
+                {lang === "zh" ? "中文简历 / PDF" : "Research CV / PDF"}
+              </Link>
               <a className={s.btn} href={profile.linkedin}>LinkedIn ↗</a>
               <a className={s.btn} href={email}>{lang === "zh" ? "邮件联系" : "Email"}</a>
               <a className={s.btn} href={profile.github}>GitHub ↗</a>
