@@ -58,8 +58,8 @@ have already been made here — all of which passed every automated check.
   `/resume`, and `/showcase` at 320 / 390 / 430; pass a URL manually for `/persona` or any new route.
 
 **And one thing belongs to neither site.** `app/site-beian.tsx` (+ its CSS module) renders the ICP
-filing number, and `app/layout.tsx` renders it after `{children}` so it lands on **every** route.
-Three rules on it, all of them the kind that fail silently:
+filing number, and `app/layout.tsx` renders it after `{children}` so it lands on **every web route**.
+Four rules on it, all of them the kind that fail silently:
 
 - **Do not move it into a page.** A per-page footer misses the next route somebody adds, and a
   missing filing is a regulatory problem, not a display problem.
@@ -68,6 +68,10 @@ Three rules on it, all of them the kind that fail silently:
 - **Its colours are literal, deliberately.** It renders above both palettes, and inside `.home` the
   globals.css variables are still in scope, so reading a route palette can paint it wrong on
   another surface. Its bottom clearance for the phone rail rides on `:global(.shell) ~ .strip`.
+- **Print is the one deliberate presentation exception.** `/resume` is a print-to-PDF surface, so
+  `app/site-beian.module.css` hides only the filing strip under `@media print`; the web filing
+  must remain in the DOM and visible on screen. After changing root layout, filing CSS, resume
+  print styles or print controls, run `npm run check:resume-print`.
 
 ## Mission
 
@@ -107,11 +111,12 @@ benchmark / independent / vendor split. Adding a source card to the README moves
 npm ci
 npm run ingest        # rebuilds app/observations.generated.ts from data/sources/
 npm run lint
+npm run check:career  # recruiter-facing public manifest / stale-claim contract
 npm run check:data    # observation contract + coverage report
 npm run check:models  # every catalog number vs the source archive
 npm run check:prices  # a promotional price that reached the catalog
 npm run build
-npm run check:beian   # the ICP filing reached every prerendered route — needs the build above
+npm run check:beian   # the ICP filing reached every prerendered web route — needs the build above
 npm run test:sites    # bounded Sites build + artifact validation; needs GNU timeout
 ```
 
@@ -138,6 +143,12 @@ after a layout change — it needs Chrome and `PORT=3111 npm run start:next` —
 from a headless screenshot taken without emulation, which ignores the viewport meta tag and invents
 overflow. The CI step refuses to skip itself: if no Chrome is found on the runner it fails the job,
 because a layout check that silently passes because it never ran is worse than no layout check.
+
+`/resume` has one additional browser contract: after the mobile probes, CI runs
+`npm run check:resume-print -- http://localhost:3111/resume` under real Chrome print media.
+It requires the resume paper to remain present while the screen toolbar, ICP filing and all
+interactive buttons disappear. PR #143 added this after the first printable route exposed the
+difference between “screen looks right” and “saved PDF is clean.”
 
 **Stop that server when you are done.** Nothing here stops it for you, and it holds `node_modules`.
 One left running on 2026-08-01 was still holding the directory four days later, where it surfaced

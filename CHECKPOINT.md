@@ -1,18 +1,40 @@
 # CHECKPOINT
 
-## 2026-09-21 · recruiter-facing portfolio release is current
+## 2026-09-21 · recruiter-facing portfolio v2 is released and current
 
-The personal-site rebuild that started on 2026-09-20 is now released on `main`:
+The personal-site rebuild that started on 2026-09-20 is now closed on `main@5ee08451a8e260b9e22c68332c49d4326b736802`.
 
-- `/`: bilingual recruiter-facing portfolio driven by `data/career-public.json`;
-- `/resume`: bilingual printable CV surface; the stale August public PDF binaries are retired;
-- `/showcase`: bilingual final-poster/showcase case study with the public 4-page research portfolio and demo;
-- `/models`: observatory logo returns home and shares the same persisted language preference.
+Recruiter-facing surfaces:
+- `/` — bilingual evidence-first portfolio driven by `data/career-public.json`;
+- `/resume` — bilingual printable current-epoch CV surface; stale August public PDF binaries are retired;
+- `/showcase` — bilingual final-poster/showcase case study with the public 4-page research portfolio and demo;
+- `/models` — Observatory, with Ø linking home and the same persisted `quarkspace-language` preference.
 
-Career projection is `2026-09-20-post-holistic`: Holistic internship completed, REALM workshop acceptance stated precisely, permanent public email is Outlook, and private company/client material stays excluded. PRs #139/#140/#141 carried the release; #140 merged at `117a36e`, #141 at `cd1e055`. CI probes `/models`, `/`, `/resume`, and `/showcase` at 320/390/430.
+Release train:
+- PR #139 — portfolio v2 / current career evidence / bilingual root;
+- PR #140 — retire stale public CV PDFs + current printable `/resume`;
+- PR #141 — first-class `/showcase` research evidence surface;
+- PR #142 — repository handoff docs aligned to the new route topology;
+- PR #143 — real print-to-PDF contract for `/resume`; merge commit = current `main@5ee0845`.
 
-⛔ The private JobFinder canonical CV release is a separate authority. The public `/resume` route being current does **not** make the private A_EVAL PDF release current.  
-⛔ The exact canonical final poster PDF still lives in the private evidence vault; `/showcase` is the public-safe surface. Binary mirroring is optional and must not use a private raw URL.
+Validation:
+- PR #143 CI run 401 green;
+- post-merge main CI run **402 green**;
+- `/models`, `/`, `/resume`, `/showcase` pass 320 / 390 / 430 mobile probes;
+- real Chrome print-media probe passes: ICP filing hidden in print, resume toolbar hidden, visible buttons = 0, resume paper remains present;
+- `npm run check:career` guards the public-safe career projection and retired stale-CV filenames.
+
+Career projection = `2026-09-20-post-holistic`: Holistic internship completed; REALM wording is exactly workshop acceptance rather than EMNLP main-conference acceptance; permanent public email is Outlook; private company/client material stays excluded.
+
+⛔ Public `/resume` readiness does **not** promote the private JobFinder canonical PDFs. They have their own renderer/preflight/release state.  
+⛔ The exact canonical final poster PDF still lives in the private evidence vault. `/showcase` is the public-safe recruiter surface; binary mirroring is optional and must never use a private JobFinder raw URL.  
+⛔ The root ICP filing remains a web-wide regulatory surface, but is intentionally hidden under print media on `/resume`. Do not remove the web filing in order to make the CV print clean.
+
+### Remaining bounded portfolio work
+
+1. One production smoke-check on the real EdgeOne site after deployment: open `/`, `/resume`, `/showcase`, switch zh/en, follow the main evidence links, and test browser Print / Save PDF on `/resume`.
+2. Optional only: deliberately mirror the canonical public-safe poster PDF into this public repo if a supported binary upload path is available. The site is already recruiter-complete without it.
+3. Any future career-status change must update upstream Career OS first, then `data/career-public.json`; do not hand-edit JSX as a second truth source.
 
 **接手点** — 2026-09-04:**「每周合一次 AA 的 PR」这件事没了。** owner 的原话是「我总得手动合 PR,
 我不想看,我就想让他更新」,所以这一轮拆的是**重复劳动**,不是判断:

@@ -859,3 +859,46 @@ deepseek-v4-pro。CI 的红是本班合入触发,同班修掉。
 
 ## [2026-09-14] `/ricochet-mech-arena` 拷贝更新:开站 BGM 提前、战斗曲 0.8、两首曲子 128 kbps  #ship
 - 源仓按用户线上反馈改完重 build,拷贝整份替换(`assets/index-CEI8_5Xd.js`,音频从 9.9 MB 降到 6.4 MB,目录 12 → 10 MB)。原因与量法在源仓 LOG 同日条。
+
+
+## [2026-09-20] Portfolio v2：个人站从静态八月快照改成 Career OS 的 public-safe projection `#ship` `#decision`
+
+用户指出五类 recruiter-facing 漂移：Holistic 仍写“currently intern”、REALM 仍写 submitted、缺 NYC LL144 后期工作、
+root 没有完整中英切换、poster/showcase 与当前求职能力图缺席。处理不是继续往 `page.tsx` 手抄，而是把
+Career OS 的公开安全投影收口到 `data/career-public.json`，由 `app/home-content.ts` 做 typed boundary。
+
+PR #139 重排 IA 为 Hero → Experience → Selected Work → Research Evidence → Capability Map → Personal Lab → Contact；
+Holistic/UCL 前置，REALM 精确写成 **accepted at the EMNLP 2026 Workshop REALM**，Outlook 成为长期公开邮箱；
+Observatory 的动态数字不再复制到主页。root 与 `/models` 共用 `quarkspace-language`，Ø logo 可回主页。
+CI 后 320/390/430 的 `/` 与 `/models` 全绿。
+
+## [2026-09-20] Current `/resume`：删掉 stale August PDF，而不是继续把旧 binary 叫“简历” `#ship` `#decision`
+
+第二轮发现主页虽然 career copy 已 current，但两个 public PDF 仍是八月版本，会继续暴露旧邮箱/旧 Holistic wording。
+PR #140 因此删除那两个 stale public binaries，新增 bilingual printable `/resume`，同一 career manifest 驱动，
+并给 retired filename 加 freshness guard。手机探针也扩到 `/resume`。
+
+这是刻意把“public web resume current”和“private JobFinder canonical PDF release”拆开：
+网页当前，不代表私有 PDF 已过自己的 renderer/preflight/release gate。
+
+## [2026-09-21] `/showcase`：poster 不再只是主页一张卡，而是第一等研究证据 `#ship`
+
+PR #141 新增 bilingual `/showcase`，用已经核过的 16 Sep showcase public-safe evidence 重建 poster case study、
+六条研究结论、4-page research portfolio、公开 demo 与 repo；主页 Research Poster & Showcase 卡改指向 first-party
+`/showcase`。同时给 experience/evidence 加 stable ids，`/resume` 的 publication status 不再用数组位置或硬编码副本。
+
+canonical poster PDF 仍在 private evidence vault；不把 private JobFinder raw URL 暴露给 recruiter。
+站点已经能完整讲清研究，poster binary mirror 从 correctness 降成可选便利性。
+
+## [2026-09-21] `/resume` print-to-PDF contract：屏幕上的备案页脚不应该跑进 CV `#incident` `#ship` `#measure`
+
+真正审计“Print / Save PDF”时发现 root layout 会在所有 web route 后渲染 ICP filing；如果只看 screen/mobile，
+它完全正确，但浏览器打印可能把备案 footer 变成 CV 尾巴甚至额外一页。
+
+PR #143 的修法是窄例外：`app/site-beian.module.css` 只在 `@media print` 隐藏 filing strip，
+screen/web filing 仍必须存在；新增 `scripts/check-resume-print.mjs` 用真实 Chrome print media 检查 computed DOM，
+而不是 grep CSS。
+
+`#measure` PR CI run 401：`filingDisplay="none"`、`toolbarDisplay="none"`、`visibleButtons=0`，
+`resume print contract passed`；合并后 `main@5ee08451a8e260b9e22c68332c49d4326b736802` 的 CI run 402 全绿。
+四条 public route `/models`、`/`、`/resume`、`/showcase` 同时继续过 320/390/430 mobile probe。

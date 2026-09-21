@@ -1,8 +1,8 @@
 # Portfolio Rebuild — 2026-09-20
 
-> Status: **closed on public site** · released through PRs #139, #140 and #141  
+> Status: **CLOSED / RELEASED** · PRs #139–#143 · current `main@5ee08451a8e260b9e22c68332c49d4326b736802`  
 > Initial base: `main@377d730c8b2cbddfa5e0c96b301afb610c4c5664`  
-> Final public release train: portfolio v2 → current printable resume → first-class showcase surface. Historical CV binaries were retired from the public site rather than silently overwritten.
+> Final release train: portfolio v2 → current printable resume → first-class showcase → repository handoff → real print-to-PDF contract. Historical CV binaries were retired rather than silently overwritten.
 
 ## Phase 0 — safety freeze
 
@@ -134,6 +134,40 @@ The private JobFinder canonical PDF release remains a separate authority and mus
 
 The exact canonical final poster PDF still lives in the private evidence vault. The public site no longer depends on it for recruiter usefulness because `/showcase` reconstructs the public-safe evidence and links the public research artifacts. Mirroring that binary into this repository is optional convenience only and must wait for a deliberate binary upload path; never expose a private JobFinder raw URL.
 
+## Phase 8 — repository handoff contract
+
+- [x] AGENTS recognizes `/`, `/resume`, and `/showcase` as one recruiter-facing personal-site product;
+- [x] route/mobile contract documents the four public probes `/models`, `/`, `/resume`, `/showcase`;
+- [x] CHECKPOINT records the separation between the current public resume and the private JobFinder PDF release;
+- [x] PR #142 merged before the final print contract.
+
+## Phase 9 — real print-to-PDF contract
+
+The initial `/resume` route offered “Print / Save PDF”, but the root layout also renders the ICP filing after every route. A browser print could therefore include the regulatory web footer as stray CV content or an extra page.
+
+- [x] `app/site-beian.module.css` hides the filing strip only under `@media print`; the web filing remains present;
+- [x] `scripts/check-resume-print.mjs` uses real Chrome print media rather than a CSS grep;
+- [x] the print probe requires resume paper present, toolbar hidden, filing hidden and zero visible interactive buttons;
+- [x] CI runs that print probe after all four mobile-route probes;
+- [x] PR #143 CI run **401 green**;
+- [x] PR #143 merged as `main@5ee08451a8e260b9e22c68332c49d4326b736802`;
+- [x] post-merge main CI run **402 green**.
+
+Observed print result on the green run:
+- `filingDisplay: "none"`;
+- `toolbarDisplay: "none"`;
+- `visibleButtons: 0`;
+- `resume print contract passed`.
+
 ## Final acceptance state — 2026-09-21
 
-The four recruiter/public routes `/models`, `/`, `/resume`, and `/showcase` share the same language preference, have dedicated current content contracts, and are exercised at 320 / 390 / 430 in CI. The public career projection is now post-Holistic, REALM-accepted, bilingual, poster/showcase-aware and protected against the stale August CV binaries that originally triggered this rebuild.
+The recruiter-facing rebuild is **closed**.
+
+The four public routes `/models`, `/`, `/resume`, and `/showcase` share the same persisted language preference and are exercised at 320 / 390 / 430 in CI. The public career projection is post-Holistic, REALM-workshop-accepted, bilingual, poster/showcase-aware and protected against the stale August CV binaries that originally triggered this rebuild. `/resume` also has a behavioral Chrome print-media gate, so “Save PDF” is now a tested product surface rather than a label.
+
+Remaining work is bounded rather than architectural:
+1. one real-production smoke-check after EdgeOne deployment;
+2. optional poster-PDF binary mirroring if a supported public upload path becomes available;
+3. future career changes flow Career OS → `data/career-public.json` → shared site render, never ad-hoc JSX copy.
+
+The private JobFinder canonical CV release remains a separate release system and is not made current by the public web resume.

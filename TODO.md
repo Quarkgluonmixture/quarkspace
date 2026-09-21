@@ -52,16 +52,20 @@ ARC Prize 三个 split（batch 23/24/25）已全部脚本化并接上目录，�
 FrontierSWE V2 已脚本化（batch 43，2026-09-09 合入；V2 与 V1 是两个 benchmark，见 §9 该行），
 探测细节住在 `scripts/fetchers/frontierswe-v2.mjs` 的头注释里，不在这。
 
-## 个人站 `/`
+## 个人站 `/` / `/resume` / `/showcase`
 
-2026-09-20 portfolio v2 重构已经在 `rebuild/portfolio-v2-20260920` 执行此前两项 owner 决策：
-`/models` 的 Ø logo 回个人主页，个人站做完整中/英文同构版，并与观测台共用语言偏好。
-重构同时把 recruiter-facing career facts 收口到 `data/career-public.json`，避免继续手抄 Career OS 状态。
+Portfolio v2 已经完成并发布到 `main@5ee0845`：双语 root、current-epoch printable resume、
+showcase evidence、shared language preference、mobile CI、career manifest freshness contract 和
+real Chrome print-to-PDF contract 都已落地。**这一块不再有架构重构 TODO。**
 
-- [ ] **可选增强：把 canonical showcase poster PDF 镜像进 public repo。** `/showcase` 已经用
-      public-safe manifest 重建 poster case study、六条结论、公开 4-page portfolio 与 demo，因此 recruiter
-      不再缺 showcase surface。剩下只是一键直开“原始最终 poster PDF”的便利性；canonical binary 仍只在
-      private Career OS / Library。⛔ 在有明确 binary upload path 前，不用 private JobFinder raw URL 冒充公开资产。
+- [ ] **做一次真实生产站 smoke-check。** EdgeOne 自动部署之后，手动打开 `https://quarkspace.top/`、
+      `/resume`、`/showcase`：切一次中/英文；点 REALM / portfolio / repo 主要证据链接；
+      在 `/resume` 用浏览器 Print / Save PDF 看最终版式。CI 已覆盖代码与 print media，
+      这一步只确认真实生产部署 / 外链 / 浏览器交互。
+- [ ] **可选增强：镜像 canonical showcase poster PDF。** `/showcase` 已经重建 public-safe poster
+      case study、六条结论、公开 4-page portfolio 与 demo，recruiter 不缺信息。剩下只是“一键打开
+      原始最终 poster PDF”的便利性。只有拿到明确支持的 binary upload path 才做；
+      ⛔ 不用 private JobFinder raw URL 冒充公开资产。
 
 ## ⭐ 要你定:ProgramBench 这一列的口径(2026-08-15 又撞到一次)
 
