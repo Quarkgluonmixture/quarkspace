@@ -14,19 +14,21 @@ have already been made here — all of which passed every automated check.
 
 ## Three products share this repo
 
-- **The owner's recruiter-facing personal site spans `/`, `/resume`, and `/showcase`.**
-  `/` is the main portfolio; `/resume` is the bilingual printable CV surface; `/showcase`
-  is the bilingual research-poster/showcase evidence surface. Their implementation lives in
-  `app/page.tsx`, `app/resume/`, `app/showcase/`, `app/home-content.ts`,
-  `app/home.module.css`, `app/home-v2.module.css`, `data/career-public.json` and
-  `public/shots/`. Career facts and positioning remain *upstream* in the private Career OS /
-  `JobFinder`; this repository stores only a **public-safe projection** in `data/career-public.json`.
-  That manifest is the recruiter-facing content authority and carries a `careerEpoch` +
-  `verifiedAt`; `home-content.ts` is only its typed implementation boundary. Do not hand-copy
-  volatile career facts back into JSX or re-create a second truth layer on `/resume` or
-  `/showcase`. `npm run check:career` rejects known stale claims, missing stable ids and broken
-  recruiter-facing route contracts. `../quark-space` remains a frozen design archive and must
-  never be synced back over the current manifest.
+- **The owner's recruiter-facing personal site spans six audience-specific routes.**
+  Chinese domestic-job surfaces: `/`, `/resume`, `/showcase`. English research / Fall-2027
+  PhD surfaces: `/en`, `/en/resume`, `/en/showcase`. Language/audience is therefore part of
+  the URL, not only a localStorage toggle. The route pairs intentionally share implementation,
+  but they do **not** share identical narrative order: Chinese prioritizes recruiter scan speed;
+  English prioritizes research question, contribution, publication status and next research direction.
+  Their implementation lives in `app/page.tsx`, `app/en/`, `app/resume/`, `app/showcase/`,
+  `app/home-content.ts`, scoped CSS, `data/career-public.json` and `public/shots/`.
+  Career facts and positioning remain *upstream* in the private Career OS / `JobFinder`; this
+  repository stores only one **public-safe projection** in `data/career-public.json`. The manifest
+  owns both stable public facts and the `china-work` / `phd-research` audience projections.
+  `home-content.ts` is only its typed implementation boundary. Do not hand-copy volatile career
+  facts into route JSX and do not create separate Chinese/English truth files. `npm run check:career`
+  rejects known stale claims, missing stable ids, broken audience routes and publication-status drift.
+  `../quark-space` remains a frozen design archive and must never be synced back over the current manifest.
 - **`/models` is the observatory** — `app/models/page.tsx` (+ `app/models/layout.tsx` for its
   title, since the page is a client component). Everything else in this file is about the
   observatory.
@@ -54,8 +56,9 @@ have already been made here — all of which passed every automated check.
   the portfolio can stop the pipeline. Send personal-site changes through a pull request and read
   CI before merging; EdgeOne publishes on merge regardless of what CI said.
 - `scripts/check-mobile.mjs` defaults to `/models` for this reason — pointed at another route it
-  would pass while a phone regression sat one route over. CI explicitly probes `/models`, `/`,
-  `/resume`, and `/showcase` at 320 / 390 / 430; pass a URL manually for `/persona` or any new route.
+  would pass while a phone regression sat one route over. CI explicitly probes `/models` plus all
+  six portfolio routes (`/`, `/en`, `/resume`, `/en/resume`, `/showcase`, `/en/showcase`)
+  at 320 / 390 / 430; pass a URL manually for `/persona` or any new route.
 
 **And one thing belongs to neither site.** `app/site-beian.tsx` (+ its CSS module) renders the ICP
 filing number, and `app/layout.tsx` renders it after `{children}` so it lands on **every web route**.
@@ -68,10 +71,10 @@ Four rules on it, all of them the kind that fail silently:
 - **Its colours are literal, deliberately.** It renders above both palettes, and inside `.home` the
   globals.css variables are still in scope, so reading a route palette can paint it wrong on
   another surface. Its bottom clearance for the phone rail rides on `:global(.shell) ~ .strip`.
-- **Print is the one deliberate presentation exception.** `/resume` is a print-to-PDF surface, so
-  `app/site-beian.module.css` hides only the filing strip under `@media print`; the web filing
-  must remain in the DOM and visible on screen. After changing root layout, filing CSS, resume
-  print styles or print controls, run `npm run check:resume-print`.
+- **Print is the one deliberate presentation exception.** `/resume` and `/en/resume` are
+  print-to-PDF surfaces, so `app/site-beian.module.css` hides only the filing strip under
+  `@media print`; the web filing must remain in the DOM and visible on screen. After changing
+  root layout, filing CSS, resume print styles or print controls, run the print contract on both routes.
 
 ## Mission
 
@@ -136,19 +139,23 @@ defect in your commit — so it prints a report and the scheduled job turns it i
 issue. Run it before deciding what to collect next; `--no-network` skips the upstream section.
 
 `npm run check:mobile` probes the built site at 320 / 390 / 430px under real device emulation and
-fails on horizontal overflow. **It runs in CI since 2026-08-07** and now covers the four public
-routes `/models`, `/`, `/resume`, and `/showcase`, so a phone
-regression now fails a pull request instead of waiting for somebody to remember. Run it locally too
+fails on horizontal overflow. **It runs in CI since 2026-08-07** and now covers `/models` plus
+all six portfolio routes, so a phone regression on either audience now fails a pull request instead
+of waiting for somebody to remember. Run it locally too
 after a layout change — it needs Chrome and `PORT=3111 npm run start:next` — and never judge mobile
 from a headless screenshot taken without emulation, which ignores the viewport meta tag and invents
 overflow. The CI step refuses to skip itself: if no Chrome is found on the runner it fails the job,
 because a layout check that silently passes because it never ran is worse than no layout check.
 
-`/resume` has one additional browser contract: after the mobile probes, CI runs
-`npm run check:resume-print -- http://localhost:3111/resume` under real Chrome print media.
-It requires the resume paper to remain present while the screen toolbar, ICP filing and all
-interactive buttons disappear. PR #143 added this after the first printable route exposed the
-difference between “screen looks right” and “saved PDF is clean.”
+`/resume` and `/en/resume` have one additional browser contract: after the mobile probes, CI
+runs `check:resume-print` against both routes under real Chrome print media. It requires the resume
+paper to remain present while the screen toolbar, ICP filing and all interactive buttons disappear.
+PR #143 introduced the contract; PR #145 extended it to the English research CV.
+
+After a relevant personal-site push reaches `main`, `.github/workflows/portfolio-production-smoke.yml`
+waits boundedly for EdgeOne to expose the new markers, then tests the **real** `quarkspace.top`
+routes: six route/content assertions, locale cross-links, 320/390/430 Chrome probes, and both resume
+print contracts. Do not replace this with a prose/manual smoke checklist.
 
 **Stop that server when you are done.** Nothing here stops it for you, and it holds `node_modules`.
 One left running on 2026-08-01 was still holding the directory four days later, where it surfaced
