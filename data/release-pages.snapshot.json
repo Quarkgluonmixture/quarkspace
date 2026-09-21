@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-20",
+  "checkedAt": "2026-09-21",
   "pages": {
     "openai": [
       "https://openai.com/index/1-million-businesses-putting-ai-to-work",
@@ -1365,7 +1365,7 @@
     "qwen": [
       "E-Commerce Bench: Long-Horizon Operations, Multi-Dimensional Evaluation",
       "Qwen-Drive-1.0: An Initial Step towards a Vision-Language Foundation Model for Autonomous Driving",
-      "Qwen3.8-Flash-Next: A New Architecture, Towards Ultimate Cost-Efficiency",
+      "Qwen-Image-2.1: Compact, Efficient, and Unified Image Creation",
       "Qwen3.8-LiveTranslate: Names the speaker. Carries the meaning.",
       "Qwen3.8-Omni-Flash: Omni Senses. Agentic Delivery."
     ],
