@@ -51,3 +51,12 @@
     padding-bottom: calc(15px + 64px + env(safe-area-inset-bottom));
   }
 }
+
+
+@media print {
+  /* The filing is a web-regulatory surface, not CV content. /resume is intentionally printable;
+     without this the root-layout footer becomes a stray line (or a second page) in the recruiter PDF. */
+  .strip {
+    display: none !important;
+  }
+}
