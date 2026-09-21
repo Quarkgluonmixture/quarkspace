@@ -28,6 +28,7 @@ export type Featured = {
 };
 
 export type Experience = {
+  id: string;
   org: string;
   role: Localized;
   lead: Localized;
@@ -36,6 +37,7 @@ export type Experience = {
 };
 
 export type Evidence = {
+  id: string;
   title: Localized;
   status: Localized;
   text: Localized;
@@ -53,6 +55,27 @@ export type LabItem = {
   year: string;
   text: Localized;
   href: string;
+};
+
+export type Showcase = {
+  event: Localized;
+  posterTitle: Localized;
+  posterSubtitle: Localized;
+  people: Localized;
+  example: {
+    task: Localized;
+    read: { label: string; value: string; outcome: Localized };
+    look: { label: string; value: string; outcome: Localized };
+    note: Localized;
+  };
+  findings: { no: string; title: Localized; text: Localized }[];
+  publicArtifacts: {
+    portfolioPage: string;
+    portfolioPdf: string;
+    demo: string;
+    repo: string;
+  };
+  disclosure: Localized;
 };
 
 export type CareerContent = {
@@ -77,6 +100,7 @@ export type CareerContent = {
   experience: Experience[];
   featured: Featured[];
   evidence: Evidence[];
+  showcase: Showcase;
   skills: Skill[];
   lab: LabItem[];
   closing: {
