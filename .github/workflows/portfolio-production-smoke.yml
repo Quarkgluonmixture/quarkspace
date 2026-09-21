@@ -1,6 +1,23 @@
 name: Portfolio production smoke
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "app/page.tsx"
+      - "app/layout.tsx"
+      - "app/en/**"
+      - "app/resume/**"
+      - "app/showcase/**"
+      - "app/home-content.ts"
+      - "app/home.module.css"
+      - "app/home-v2.module.css"
+      - "app/site-beian.tsx"
+      - "app/site-beian.module.css"
+      - "data/career-public.json"
+      - "scripts/check-mobile.mjs"
+      - "scripts/check-resume-print.mjs"
+      - ".github/workflows/portfolio-production-smoke.yml"
   workflow_dispatch:
 
 permissions:
