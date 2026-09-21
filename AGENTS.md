@@ -12,17 +12,21 @@ Read `docs/ARCHITECTURE.md` before making structural or data changes.
 what may be done unsupervised, what must be handed back for approval, and the five mistakes that
 have already been made here — all of which passed every automated check.
 
-## Three product surfaces share this repo
+## Three products share this repo
 
-- **`/` is the owner's personal site** (job-hunting portfolio). Its files are `app/page.tsx`,
-  `app/home-content.ts`, `app/home.module.css`, `app/home-v2.module.css`, `data/career-public.json`
-  and `public/shots/`. Career facts and positioning remain *upstream* in the private Career OS /
+- **The owner's recruiter-facing personal site spans `/`, `/resume`, and `/showcase`.**
+  `/` is the main portfolio; `/resume` is the bilingual printable CV surface; `/showcase`
+  is the bilingual research-poster/showcase evidence surface. Their implementation lives in
+  `app/page.tsx`, `app/resume/`, `app/showcase/`, `app/home-content.ts`,
+  `app/home.module.css`, `app/home-v2.module.css`, `data/career-public.json` and
+  `public/shots/`. Career facts and positioning remain *upstream* in the private Career OS /
   `JobFinder`; this repository stores only a **public-safe projection** in `data/career-public.json`.
   That manifest is the recruiter-facing content authority and carries a `careerEpoch` +
   `verifiedAt`; `home-content.ts` is only its typed implementation boundary. Do not hand-copy
-  career facts back into JSX or re-create a second homepage truth layer. `npm run check:career`
-  rejects known stale claims and malformed projection state. `../quark-space` remains a frozen
-  design archive and must never be synced back over the current manifest.
+  volatile career facts back into JSX or re-create a second truth layer on `/resume` or
+  `/showcase`. `npm run check:career` rejects known stale claims, missing stable ids and broken
+  recruiter-facing route contracts. `../quark-space` remains a frozen design archive and must
+  never be synced back over the current manifest.
 - **`/models` is the observatory** — `app/models/page.tsx` (+ `app/models/layout.tsx` for its
   title, since the page is a client component). Everything else in this file is about the
   observatory.
@@ -50,7 +54,8 @@ have already been made here — all of which passed every automated check.
   the portfolio can stop the pipeline. Send personal-site changes through a pull request and read
   CI before merging; EdgeOne publishes on merge regardless of what CI said.
 - `scripts/check-mobile.mjs` defaults to `/models` for this reason — pointed at another route it
-  would pass while a phone regression sat one route over. Pass a URL to probe `/` or `/persona`.
+  would pass while a phone regression sat one route over. CI explicitly probes `/models`, `/`,
+  `/resume`, and `/showcase` at 320 / 390 / 430; pass a URL manually for `/persona` or any new route.
 
 **And one thing belongs to neither site.** `app/site-beian.tsx` (+ its CSS module) renders the ICP
 filing number, and `app/layout.tsx` renders it after `{children}` so it lands on **every** route.
@@ -126,7 +131,8 @@ defect in your commit — so it prints a report and the scheduled job turns it i
 issue. Run it before deciding what to collect next; `--no-network` skips the upstream section.
 
 `npm run check:mobile` probes the built site at 320 / 390 / 430px under real device emulation and
-fails on horizontal overflow. **It runs in CI since 2026-08-07**, on both routes, so a phone
+fails on horizontal overflow. **It runs in CI since 2026-08-07** and now covers the four public
+routes `/models`, `/`, `/resume`, and `/showcase`, so a phone
 regression now fails a pull request instead of waiting for somebody to remember. Run it locally too
 after a layout change — it needs Chrome and `PORT=3111 npm run start:next` — and never judge mobile
 from a headless screenshot taken without emulation, which ignores the viewport meta tag and invents

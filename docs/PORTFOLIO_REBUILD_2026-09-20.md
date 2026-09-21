@@ -1,8 +1,8 @@
 # Portfolio Rebuild — 2026-09-20
 
-> Status: active rebuild on `rebuild/portfolio-v2-20260920`  
-> Base: `main@377d730c8b2cbddfa5e0c96b301afb610c4c5664`  
-> Safety rule: main is untouched until PR review; current CV binaries and historical artifacts are not rewritten in place.
+> Status: **closed on public site** · released through PRs #139, #140 and #141  
+> Initial base: `main@377d730c8b2cbddfa5e0c96b301afb610c4c5664`  
+> Final public release train: portfolio v2 → current printable resume → first-class showcase surface. Historical CV binaries were retired from the public site rather than silently overwritten.
 
 ## Phase 0 — safety freeze
 
@@ -106,3 +106,34 @@ Phase 2–4:
 Phase 5:
 - [x] PR diff reviewed;
 - [x] no change to main until acceptance gates are green. Production merge remains a separate release action because EdgeOne deploys immediately.
+
+
+## Phase 6 — current resume surface
+
+- [x] retired the two stale August recruiter-facing PDF binaries from the public repository;
+- [x] replaced homepage CV links with a bilingual `/resume` route backed by the same career manifest;
+- [x] added print / Save-as-PDF behavior instead of pretending an old binary is current;
+- [x] guarded against the retired filenames returning;
+- [x] added `/resume` to mobile CI;
+- [x] PR #140 green and merged; merge commit `117a36eb88e27935de797ed6fbd4b49387508ec9`.
+
+The private JobFinder canonical PDF release remains a separate authority and must still pass its own renderer/preflight contract before being called current.
+
+## Phase 7 — poster/showcase evidence surface
+
+- [x] added bilingual `/showcase`;
+- [x] reconstructed the final 16 Sep poster case study and six research findings from public-safe evidence;
+- [x] linked the public 4-page research PDF, interactive research page, demo and repository;
+- [x] routed the homepage Research Poster & Showcase evidence card to the first-party showcase surface;
+- [x] removed hard-coded volatile publication-status copy from `/resume`; research status now resolves by stable manifest id;
+- [x] added stable ids for experience/evidence entities and contract checks for them;
+- [x] added per-route metadata and `/showcase` mobile CI;
+- [x] PR #141 green and merged; merge commit `cd1e055d5c67abd7ecaddd42f23546c705574f68`.
+
+### Remaining bounded item
+
+The exact canonical final poster PDF still lives in the private evidence vault. The public site no longer depends on it for recruiter usefulness because `/showcase` reconstructs the public-safe evidence and links the public research artifacts. Mirroring that binary into this repository is optional convenience only and must wait for a deliberate binary upload path; never expose a private JobFinder raw URL.
+
+## Final acceptance state — 2026-09-21
+
+The four recruiter/public routes `/models`, `/`, `/resume`, and `/showcase` share the same language preference, have dedicated current content contracts, and are exercised at 320 / 390 / 430 in CI. The public career projection is now post-Holistic, REALM-accepted, bilingual, poster/showcase-aware and protected against the stale August CV binaries that originally triggered this rebuild.

@@ -1,5 +1,19 @@
 # CHECKPOINT
 
+## 2026-09-21 · recruiter-facing portfolio release is current
+
+The personal-site rebuild that started on 2026-09-20 is now released on `main`:
+
+- `/`: bilingual recruiter-facing portfolio driven by `data/career-public.json`;
+- `/resume`: bilingual printable CV surface; the stale August public PDF binaries are retired;
+- `/showcase`: bilingual final-poster/showcase case study with the public 4-page research portfolio and demo;
+- `/models`: observatory logo returns home and shares the same persisted language preference.
+
+Career projection is `2026-09-20-post-holistic`: Holistic internship completed, REALM workshop acceptance stated precisely, permanent public email is Outlook, and private company/client material stays excluded. PRs #139/#140/#141 carried the release; #140 merged at `117a36e`, #141 at `cd1e055`. CI probes `/models`, `/`, `/resume`, and `/showcase` at 320/390/430.
+
+⛔ The private JobFinder canonical CV release is a separate authority. The public `/resume` route being current does **not** make the private A_EVAL PDF release current.  
+⛔ The exact canonical final poster PDF still lives in the private evidence vault; `/showcase` is the public-safe surface. Binary mirroring is optional and must not use a private raw URL.
+
 **接手点** — 2026-09-04:**「每周合一次 AA 的 PR」这件事没了。** owner 的原话是「我总得手动合 PR,
 我不想看,我就想让他更新」,所以这一轮拆的是**重复劳动**,不是判断:
 
