@@ -73,7 +73,7 @@ try {
   await sleep(3000);
 
   const expression = `(() => {
-    const shown = (el) => !!el && getComputedStyle(el).display !== "none" && getComputedStyle(el).visibility !== "hidden";
+    const shown = (el) => !!el && el.getClientRects().length > 0 && getComputedStyle(el).display !== "none" && getComputedStyle(el).visibility !== "hidden";
     const filing = document.querySelector("body > footer");
     const toolbar = document.querySelector("main > div:first-child");
     const paper = document.querySelector("main > article");
