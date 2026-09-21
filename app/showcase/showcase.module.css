@@ -41,7 +41,10 @@
   background: #fffdf8;
 }
 
-.lang button {
+.lang a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 38px;
   min-height: 36px;
   border: 0;
@@ -50,6 +53,7 @@
   color: #78756e;
   font: 700 10px/1 monospace;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .lang .active {

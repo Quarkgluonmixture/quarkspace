@@ -1,0 +1,133 @@
+name: Portfolio production smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/page.tsx"
+      - "app/layout.tsx"
+      - "app/en/**"
+      - "app/resume/**"
+      - "app/showcase/**"
+      - "app/home-content.ts"
+      - "app/home.module.css"
+      - "app/home-v2.module.css"
+      - "app/site-beian.tsx"
+      - "app/site-beian.module.css"
+      - "data/career-public.json"
+      - "scripts/check-mobile.mjs"
+      - "scripts/check-resume-print.mjs"
+      - ".github/workflows/portfolio-production-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Smoke quarkspace.top portfolio
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Wait for the current main portfolio to reach EdgeOne
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://quarkspace.top"
+          for _ in $(seq 1 90); do
+            zh="$(curl -fsSL --max-time 20 "$base/" || true)"
+            en="$(curl -fsSL --max-time 20 "$base/en" || true)"
+            if grep -Fq '大模型评测' <<<"$zh" && grep -Fq 'Reliable Agent Evaluation for Adaptive Agentic Systems' <<<"$en"; then
+              echo "Current bilingual portfolio is live."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::EdgeOne never exposed the current bilingual portfolio within the bounded smoke window."
+          exit 1
+
+      - name: Assert route content and locale links
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="https://quarkspace.top"
+
+          check() {
+            local path="$1"
+            local marker="$2"
+            local file
+            file="$(mktemp)"
+            code="$(curl -sS -L --max-time 20 -o "$file" -w '%{http_code}' "$base$path")"
+            if [ "$code" != "200" ]; then
+              echo "::error::$path returned HTTP $code"
+              cat "$file"
+              exit 1
+            fi
+            if ! grep -Fq "$marker" "$file"; then
+              echo "::error::$path did not contain expected marker: $marker"
+              exit 1
+            fi
+            echo "OK $path — $marker"
+          }
+
+          check "/" "大模型评测"
+          check "/en" "Reliable Agent Evaluation for Adaptive Agentic Systems"
+          check "/resume" "2027 校招"
+          check "/en/resume" "PHD / RESEARCH CV"
+          check "/showcase" "什么时候值得为更昂贵的感知付费"
+          check "/en/showcase" "When Is Expensive Perception Worth Paying For?"
+
+          assert_link() {
+            local path="$1"
+            local href="$2"
+            local file
+            file="$(mktemp)"
+            curl -fsSL --max-time 20 "$base$path" -o "$file"
+            if ! grep -Fq "href=\"$href\"" "$file"; then
+              echo "::error::$path did not contain locale link: $href"
+              exit 1
+            fi
+            echo "OK $path → $href"
+          }
+
+          assert_link "/" "/en"
+          assert_link "/en" "/en/resume"
+          assert_link "/resume" "/en/resume"
+          assert_link "/en/resume" "/resume"
+          assert_link "/showcase" "/en/showcase"
+          assert_link "/en/showcase" "/showcase"
+
+      - name: Probe production mobile layout and CV print surfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME_PATH="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium-browser || command -v chromium || true)"
+          if [ -z "$CHROME_PATH" ]; then
+            echo "::error::no Chrome on this runner — production UI smoke must fail rather than skip."
+            exit 1
+          fi
+          export CHROME_PATH
+          base="https://quarkspace.top"
+
+          npm run check:mobile -- "$base/"
+          npm run check:mobile -- "$base/en"
+          npm run check:mobile -- "$base/resume"
+          npm run check:mobile -- "$base/en/resume"
+          npm run check:mobile -- "$base/showcase"
+          npm run check:mobile -- "$base/en/showcase"
+
+          npm run check:resume-print -- "$base/resume"
+          npm run check:resume-print -- "$base/en/resume"

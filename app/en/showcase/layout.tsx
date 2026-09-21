@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Jiaming Wei — Web-Agent Research Poster & Showcase",
   description:
-    "魏佳铭的公开 Web-Agent research showcase：UCL × Holistic AI final poster、六个研究结论、4-page portfolio 与 demo。",
+    "Public-safe Web-Agent research showcase: final UCL × Holistic AI poster, six findings, research portfolio, demo and reproducible repository.",
   alternates: {
-    canonical: "https://quarkspace.top/showcase",
+    canonical: "https://quarkspace.top/en/showcase",
     languages: {
       "zh-CN": "https://quarkspace.top/showcase",
       en: "https://quarkspace.top/en/showcase",
@@ -13,6 +13,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ShowcaseLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function EnglishShowcaseLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return children;
 }

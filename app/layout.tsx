@@ -13,8 +13,15 @@ const geistMono = Geist_Mono({
 // The root route is the personal site; the observatory lives at /models and carries its own
 // title via app/models/layout.tsx. Keep this generic — it is the default for every route.
 export const metadata: Metadata = {
-  title: "Jiaming Wei — AI Evaluation · Red Teaming · Agent Reliability",
-  description: "Research Engineer portfolio: reliable AI evaluation, red teaming, Web / Computer-Use agents, judge calibration and reproducible evaluation systems.",
+  title: "Jiaming Wei — 大模型评测 · 红队 · Agent 可靠性",
+  description: "魏佳铭的中文求职主页：大模型评测、红队、Agent 可靠性、Web / Computer-Use Agent 与可复现实验系统。",
+  alternates: {
+    canonical: "https://quarkspace.top/",
+    languages: {
+      "zh-CN": "https://quarkspace.top/",
+      en: "https://quarkspace.top/en",
+    },
+  },
   other: {
     "codex-preview": "development",
   },

@@ -248,13 +248,17 @@ jobs:
 
           npm run check:mobile
           npm run check:mobile -- http://localhost:3111/
+          npm run check:mobile -- http://localhost:3111/en
           npm run check:mobile -- http://localhost:3111/resume
+          npm run check:mobile -- http://localhost:3111/en/resume
           npm run check:mobile -- http://localhost:3111/showcase
+          npm run check:mobile -- http://localhost:3111/en/showcase
 
-          # /resume is deliberately a print/PDF surface. The root-layout regulatory filing
-          # belongs on the website but not inside the CV; emulate real print media so this cannot
-          # silently become stray recruiter-facing content or an extra PDF page.
+          # Both resume routes are deliberately print/PDF surfaces. The root-layout regulatory
+          # filing belongs on the website but not inside either CV; emulate real print media so
+          # this cannot silently become stray recruiter-facing content or an extra PDF page.
           npm run check:resume-print -- http://localhost:3111/resume
+          npm run check:resume-print -- http://localhost:3111/en/resume
 
       # The one notification this project sends when everything is working. It fires on the event
       # the owner actually wants to know about — **the site gained a model** — and not on any of

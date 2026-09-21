@@ -1,8 +1,8 @@
 {
   "release": {
     "careerEpoch": "2026-09-20-post-holistic",
-    "verifiedAt": "2026-09-20",
-    "source": "Career OS / JobFinder public-safe projection",
+    "verifiedAt": "2026-09-21",
+    "source": "Career OS / JobFinder public-safe projection · 2026-09-20-post-holistic",
     "policy": "accepted != published; unknown stays unknown; no confidential employer/customer data"
   },
   "profile": {
@@ -669,8 +669,8 @@
       "en": "Testing when richer web-agent representations help — and whether their value can be predicted cheaply."
     },
     "people": {
-      "zh": "Jiaming Wei · Supervisors: Prof. María Pérez-Ortiz · Zekun Wu",
-      "en": "Jiaming Wei · Supervisors: Prof. María Pérez-Ortiz · Zekun Wu"
+      "zh": "Jiaming Wei · Supervisors: María Pérez-Ortiz · Zekun Wu",
+      "en": "Jiaming Wei · Supervisors: María Pérez-Ortiz · Zekun Wu"
     },
     "example": {
       "task": {
@@ -775,6 +775,134 @@
     "disclosure": {
       "zh": "最终 poster/showcase 的研究结论可以公开；公司内部材料、客户数据和私有实现不在这个页面里。",
       "en": "The research conclusions shown at the final poster/showcase are public-safe; private company material, client data and internal implementation are excluded."
+    }
+  },
+  "audiences": {
+    "zh": {
+      "id": "china-work",
+      "route": "/",
+      "resumeRoute": "/resume",
+      "showcaseRoute": "/showcase",
+      "profile": {
+        "role": "大模型评测 / 红队 / Agent 可靠性 Research Engineer",
+        "availability": "2027 校招 · 北京优先 / 上海可选",
+        "claim": [
+          "把模型和 Agent 的失败变成可测量、可复现、可诊断的问题。",
+          "也把 judge、grader 和 benchmark 当作需要被验证的测量工具。"
+        ],
+        "intro": "我主要面向大模型评测、红队、Agent 可靠性与 Web / Computer-Use Agent 研究工程岗位。Holistic AI 实习已完成；UCL Web-Agent 研究已被 EMNLP 2026 Workshop REALM 录用。下面只放能被论文、公开代码或真实交付支撑的证据。"
+      },
+      "experienceIds": [
+        "holistic-ai",
+        "ucl",
+        "xjtu"
+      ],
+      "featuredSlots": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05"
+      ],
+      "sections": {
+        "experience": "经历与研究",
+        "experienceCount": "先看真实交付",
+        "work": "代表项目 / 研究系统",
+        "workCount": "精选证据",
+        "evidence": "论文与公开证据",
+        "evidenceCount": "论文 · Portfolio · Poster · Repo",
+        "skills": "能力图",
+        "skillsCount": "能力必须有证据对得上",
+        "lab": "Personal Lab",
+        "labCount": "选出的旁支项目"
+      },
+      "resume": {
+        "eyebrow": "2027 校招 · AI EVALUATION / AGENT RELIABILITY",
+        "summary": "大模型评测 / 红队 / Agent 可靠性 Research Engineer。做过工业级 LLM/Agent red-team evaluation、judge/grader 误差审计、Web/Computer-Use Agent 研究与可复现实验系统。核心方法是把模型行为、执行环境、判官误差和证据链拆开测量，避免把一个分数误当成事实。"
+      },
+      "closing": {
+        "title": "我想继续做的，是把“模型看起来不错”变成真正经得住检查的结果。",
+        "sub": "目标方向：大模型评测 / 红队 / Agent 可靠性、Web / Computer-Use Agent，以及有真实实验与系统 ownership 的 Research Engineer 岗位。"
+      }
+    },
+    "en": {
+      "id": "phd-research",
+      "route": "/en",
+      "resumeRoute": "/en/resume",
+      "showcaseRoute": "/en/showcase",
+      "profile": {
+        "role": "Research Engineer — Reliable Agent Evaluation & Adaptive Agentic Systems",
+        "availability": "FALL 2027 PHD · RESEARCH",
+        "claim": [
+          "What evidence is reliable enough to support an adaptive agent decision?",
+          "I study that question across web agents, evaluator reliability, trajectories and post-training."
+        ],
+        "intro": "I study how to evaluate agentic systems when the evidence itself is unreliable: task outcomes vary across reruns, automatic judges make systematic errors, and final success labels can hide failures in trajectories, tools, providers or evaluation infrastructure."
+      },
+      "experienceIds": [
+        "ucl",
+        "holistic-ai",
+        "xjtu"
+      ],
+      "featuredSlots": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05"
+      ],
+      "sections": {
+        "experience": "Research & Experience",
+        "experienceCount": "question → evidence → contribution",
+        "work": "Selected Research Systems",
+        "workCount": "public, inspectable evidence",
+        "evidence": "Research Evidence",
+        "evidenceCount": "paper · portfolio · poster · repo",
+        "skills": "Methods & Engineering",
+        "skillsCount": "claims backed by artifacts",
+        "lab": "Personal Lab",
+        "labCount": "selected side work"
+      },
+      "researchDirection": {
+        "label": "RESEARCH DIRECTION · FALL 2027",
+        "title": "Reliable Agent Evaluation for Adaptive Agentic Systems",
+        "question": "What minimum evidence is required before an adaptive agent is justified in changing its behaviour or learning from feedback?",
+        "text": "My current direction treats evaluator error and outcome instability as part of the decision problem itself: when should an agent acquire richer perception, switch models, call a verifier, retry, ask a human, spend more test-time compute or abstain?",
+        "next": "perception · models · tools · memory · retries · verification · test-time compute"
+      },
+      "resume": {
+        "eyebrow": "PHD / RESEARCH CV · RELIABLE AGENT EVALUATION",
+        "summary": "I study how to evaluate agentic systems when the evidence itself is unreliable: task outcomes vary across reruns, automatic judges make systematic errors, and final success labels can hide failures in trajectories, tools, providers or evaluation infrastructure. My current research asks what evidence is reliable enough to support adaptive decisions about perception, models, tools, memory, retries and test-time computation."
+      },
+      "closing": {
+        "title": "I want to make evaluation reliability part of the agent decision problem, not an afterthought.",
+        "sub": "Current Fall 2027 direction: reliable agent evaluation, evaluator-aware adaptation, trajectory-grounded supervision and resource-aware verification."
+      }
+    }
+  },
+  "academic": {
+    "ucl": {
+      "programme": "MSc Artificial Intelligence for Sustainable Development · Department of Computer Science",
+      "dates": "Sep 2025–Sep 2026",
+      "completion": "Programme completion: 21 Sep 2026 · dissertation result pending",
+      "supervisors": "Primary supervisor: María Pérez-Ortiz · Second supervisor: Zekun Wu"
+    },
+    "xjtu": {
+      "programme": "BEng Automation",
+      "dates": "Sep 2021–Jul 2025",
+      "result": "GPA 3.82 · weighted average 87.95"
+    },
+    "publication": {
+      "title": "Routing Is Least Learnable Where It Is Most Valuable: Bounds on Representation Routing for Web Agents",
+      "authors": "Jiaming Wei, Zekun Wu, Adriano Koshiyama, María Pérez-Ortiz",
+      "status": "Accepted at EMNLP 2026 Workshop REALM",
+      "secondaryStatus": "Submitted to NeurIPS 2026 Workshop VLM4RWD · under review",
+      "preprint": "arXiv:2608.06171",
+      "dissertationTitle": "When Is Expensive Perception Worth Paying For? Measuring the Ceiling, the Predictability and the Economics of Representation Routing in Web Agents"
+    },
+    "credentials": {
+      "toefl": "TOEFL iBT 107 (R28/L28/S23/W28) · MyBest 109 · 21 Sep 2024",
+      "gre": "GRE 321 excluding writing"
     }
   }
 }

@@ -15,6 +15,24 @@ function required(value, label) {
 required(manifest?.release?.careerEpoch, "release.careerEpoch");
 required(manifest?.release?.verifiedAt, "release.verifiedAt");
 required(manifest?.profile?.email, "profile.email");
+required(manifest?.audiences?.zh?.profile?.role, "audiences.zh.profile.role");
+required(manifest?.audiences?.en?.profile?.role, "audiences.en.profile.role");
+required(manifest?.audiences?.en?.researchDirection?.question, "audiences.en.researchDirection.question");
+required(manifest?.academic?.publication?.status, "academic.publication.status");
+required(manifest?.academic?.ucl?.supervisors, "academic.ucl.supervisors");
+
+if (manifest?.audiences?.zh?.route !== "/" || manifest?.audiences?.en?.route !== "/en") {
+  errors.push("audience home routes must remain / for zh work and /en for English research");
+}
+if (manifest?.audiences?.zh?.resumeRoute !== "/resume" || manifest?.audiences?.en?.resumeRoute !== "/en/resume") {
+  errors.push("audience resume routes must remain /resume and /en/resume");
+}
+if (manifest?.audiences?.zh?.showcaseRoute !== "/showcase" || manifest?.audiences?.en?.showcaseRoute !== "/en/showcase") {
+  errors.push("audience showcase routes must remain /showcase and /en/showcase");
+}
+if (!manifest?.audiences?.en?.profile?.role?.includes("Reliable Agent Evaluation")) {
+  errors.push("English research audience must expose the current reliable-agent-evaluation positioning");
+}
 
 if (manifest?.profile?.email !== "jiaming.wei.ai@outlook.com") {
   errors.push("profile.email is not the current permanent professional contact");
@@ -37,6 +55,9 @@ const checkedFiles = [
   "app/layout.tsx",
   "app/resume/page.tsx",
   "app/showcase/page.tsx",
+  "app/en/page.tsx",
+  "app/en/resume/page.tsx",
+  "app/en/showcase/page.tsx",
 ];
 
 const banned = [
@@ -72,6 +93,9 @@ if (!fs.existsSync(path.join(root, "app", "resume", "page.tsx"))) {
 if (!fs.existsSync(path.join(root, "app", "showcase", "page.tsx"))) {
   errors.push("research /showcase route is missing");
 }
+for (const relative of ["app/en/page.tsx", "app/en/resume/page.tsx", "app/en/showcase/page.tsx"]) {
+  if (!fs.existsSync(path.join(root, relative))) errors.push(`English audience route is missing: ${relative}`);
+}
 
 required(manifest?.showcase?.posterTitle?.en, "showcase.posterTitle.en");
 required(manifest?.showcase?.event?.en, "showcase.event.en");
@@ -94,6 +118,9 @@ if (!serialized.includes("EMNLP 2026 Workshop REALM")) {
 }
 if (serialized.includes("Accepted at EMNLP 2026\"") || serialized.includes("Accepted at EMNLP 2026,”")) {
   errors.push("REALM claim is ambiguous with EMNLP main-conference acceptance");
+}
+if (!serialized.includes("Submitted to NeurIPS 2026 Workshop VLM4RWD · under review")) {
+  errors.push("English research CV must preserve the current VLM4RWD under-review status");
 }
 
 for (const warning of warnings) console.warn(`career manifest warning: ${warning}`);

@@ -17,7 +17,7 @@
 
 .back,
 .print,
-.lang button {
+.lang a {
   min-height: 38px;
   border: 1px solid #cfc9ba;
   border-radius: 999px;
@@ -48,10 +48,18 @@
   background: #fdfcf8;
 }
 
-.lang button {
+.lang a {
   min-width: 38px;
   border: 0;
   background: transparent;
+  cursor: pointer;
+}
+
+.lang a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   cursor: pointer;
 }
 

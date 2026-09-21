@@ -22,7 +22,10 @@
   background: #fffefb;
 }
 
-.langSwitch button {
+.langSwitch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 38px;
   min-height: 34px;
   padding: 0 9px;
@@ -33,9 +36,10 @@
   font: 700 10.5px/1 var(--h-mono);
   letter-spacing: 0.08em;
   cursor: pointer;
+  text-decoration: none;
 }
 
-.langSwitch button:hover {
+.langSwitch a:hover {
   color: #7a6318;
 }
 
@@ -353,7 +357,7 @@
     margin-left: auto;
   }
 
-  .langSwitch button {
+  .langSwitch a {
     min-height: 36px;
   }
 }
@@ -380,7 +384,7 @@
     gap: 6px;
   }
 
-  .langSwitch button {
+  .langSwitch a {
     min-width: 36px;
     padding: 0 7px;
   }
