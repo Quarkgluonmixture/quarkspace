@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { content, type Lang, type Localized } from "../home-content";
 import r from "./resume.module.css";
 
@@ -9,44 +10,44 @@ const LANGUAGE_KEY = "quarkspace-language";
 const OLD_LANGUAGE_KEY = "observatory-language";
 const tr = (value: Localized, lang: Lang) => value[lang];
 
+function SectionHead({ no, title }: { no: string; title: string }) {
+  return (
+    <div className={r.sectionHead}>
+      <span>{no}</span><h3>{title}</h3>
+    </div>
+  );
+}
+
 export default function ResumePage() {
-  const [lang, setLang] = useState<Lang>("zh");
-  const { profile } = content;
+  const pathname = usePathname();
+  const lang: Lang = pathname === "/en/resume" || pathname.startsWith("/en/") ? "en" : "zh";
+  const { profile, academic } = content;
+  const audience = content.audiences[lang];
   const holistic = content.experience.find((item) => item.id === "holistic-ai")!;
   const ucl = content.experience.find((item) => item.id === "ucl")!;
   const xjtu = content.experience.find((item) => item.id === "xjtu")!;
   const realm = content.evidence.find((item) => item.id === "realm-2026")!;
   const research = content.featured.find((item) => item.slot === "01")!;
   const redteam = content.featured.find((item) => item.slot === "02")!;
-
-  useEffect(() => {
-    const saved = localStorage.getItem(LANGUAGE_KEY) ?? localStorage.getItem(OLD_LANGUAGE_KEY);
-    const frame = requestAnimationFrame(() => {
-      if (saved === "zh" || saved === "en") {
-        setLang(saved);
-        localStorage.setItem(LANGUAGE_KEY, saved);
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, []);
+  const finqa = content.featured.find((item) => item.slot === "04")!;
 
   useEffect(() => {
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+    localStorage.setItem(LANGUAGE_KEY, lang);
+    localStorage.setItem(OLD_LANGUAGE_KEY, lang);
   }, [lang]);
 
-  const changeLanguage = (next: Lang) => {
-    setLang(next);
-    localStorage.setItem(LANGUAGE_KEY, next);
-  };
+  const siteUrl = lang === "en" ? "https://quarkspace.top/en" : "https://quarkspace.top";
+  const showcaseRoute = audience.showcaseRoute;
 
   return (
     <main className={r.shell}>
       <div className={r.toolbar}>
-        <Link href="/" className={r.back}>← {lang === "zh" ? "主页" : "Home"}</Link>
+        <Link href={audience.route} className={r.back}>← {lang === "zh" ? "主页" : "Research home"}</Link>
         <div className={r.toolbarRight}>
           <div className={r.lang} aria-label="Language">
-            <button onClick={() => changeLanguage("zh")} aria-pressed={lang === "zh"} className={lang === "zh" ? r.active : ""}>中</button>
-            <button onClick={() => changeLanguage("en")} aria-pressed={lang === "en"} className={lang === "en" ? r.active : ""}>EN</button>
+            <Link href="/resume" aria-current={lang === "zh" ? "page" : undefined} className={lang === "zh" ? r.active : ""}>中</Link>
+            <Link href="/en/resume" aria-current={lang === "en" ? "page" : undefined} className={lang === "en" ? r.active : ""}>EN</Link>
           </div>
           <button className={r.print} onClick={() => window.print()}>
             {lang === "zh" ? "打印 / 保存 PDF" : "Print / Save PDF"}
@@ -57,107 +58,197 @@ export default function ResumePage() {
       <article className={r.paper}>
         <header className={r.header}>
           <div>
-            <p className={r.eyebrow}>RESEARCH ENGINEER · AI EVALUATION</p>
+            <p className={r.eyebrow}>{audience.resume.eyebrow}</p>
             <h1>{profile.name}</h1>
-            <h2>{tr(profile.role, lang)}</h2>
+            <h2>{audience.profile.role}</h2>
           </div>
           <div className={r.contact}>
             <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            <a href="https://quarkspace.top">quarkspace.top</a>
+            <a href={siteUrl}>{lang === "en" ? "quarkspace.top/en" : "quarkspace.top"}</a>
             <a href={profile.github}>GitHub</a>
             <a href={profile.linkedin}>LinkedIn</a>
           </div>
         </header>
 
-        <p className={r.summary}>
-          {lang === "zh"
-            ? "研究并构建可靠的 LLM / Agent 评测系统，重点是 Web / Computer-Use Agent、red teaming、judge/grader reliability、benchmark provenance 与可复现实验基础设施。核心问题是：一个分数或失败意味着什么，以及产生它的 measurement chain 能不能信。"
-            : "I study and build reliable LLM and agent evaluation systems across Web / Computer-Use agents, red teaming, judge/grader reliability, benchmark provenance and reproducible research infrastructure. The recurring question is what a score or failure actually means, and whether the measurement chain that produced it can be trusted."}
-        </p>
+        <p className={r.summary}>{audience.resume.summary}</p>
 
-        <section>
-          <div className={r.sectionHead}>
-            <span>01</span><h3>{lang === "zh" ? "经历" : "Experience"}</h3>
-          </div>
-          <div className={r.item}>
-            <div className={r.itemHead}>
-              <h4>{holistic.org}</h4>
-              <span>{tr(holistic.role, lang)}</span>
-            </div>
-            <ul>
-              {holistic.points.map((point) => <li key={point.en}>{tr(point, lang)}</li>)}
-            </ul>
-          </div>
-        </section>
-
-        <section>
-          <div className={r.sectionHead}>
-            <span>02</span><h3>{lang === "zh" ? "研究与论文" : "Research & Publications"}</h3>
-          </div>
-          <div className={r.item}>
-            <div className={r.itemHead}>
-              <h4>{tr(research.title, lang)}</h4>
-              <span>UCL MSc · 2026</span>
-            </div>
-            <p className={r.status}>{tr(realm.status, lang)}</p>
-            <ul>
-              {research.points?.slice(0, 3).map((point) => <li key={point.en}>{tr(point, lang)}</li>)}
-            </ul>
-            <div className={r.links}>
-              <a href={realm.href}>OpenReview ↗</a>
-              <a href={content.showcase.publicArtifacts.portfolioPdf}>Research Portfolio ↗</a>
-              <Link href="/showcase">Showcase →</Link>
-              <a href={research.href}>Repository ↗</a>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div className={r.sectionHead}>
-            <span>03</span><h3>{lang === "zh" ? "精选系统" : "Selected System"}</h3>
-          </div>
-          <div className={r.item}>
-            <div className={r.itemHead}>
-              <h4>{tr(redteam.title, lang)}</h4>
-              <span>2026 · PUBLIC / APACHE-2.0</span>
-            </div>
-            <p>{tr(redteam.lead, lang)}</p>
-            <ul>
-              {redteam.points?.map((point) => <li key={point.en}>{tr(point, lang)}</li>)}
-            </ul>
-            <div className={r.links}><a href={redteam.href}>Repository ↗</a></div>
-          </div>
-        </section>
-
-        <section>
-          <div className={r.sectionHead}>
-            <span>04</span><h3>{lang === "zh" ? "教育" : "Education"}</h3>
-          </div>
-          <div className={r.education}>
-            <div>
-              <h4>{ucl.org}</h4>
-              <p>{tr(ucl.role, lang)}</p>
-            </div>
-            <div>
-              <h4>{xjtu.org}</h4>
-              <p>{tr(xjtu.role, lang)}</p>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div className={r.sectionHead}>
-            <span>05</span><h3>{lang === "zh" ? "技能" : "Skills"}</h3>
-          </div>
-          <div className={r.skills}>
-            {content.skills.map((skill) => (
-              <div key={skill.k.en}>
-                <strong>{tr(skill.k, lang)}</strong>
-                <p>{tr(skill.v, lang)}</p>
+        {lang === "en" ? (
+          <>
+            <section>
+              <SectionHead no="01" title="Research & Publications" />
+              <div className={r.item}>
+                <div className={r.itemHead}>
+                  <h4>{academic.publication.title}</h4>
+                  <span>UCL MSc · 2026</span>
+                </div>
+                <p><strong>{academic.publication.authors}</strong></p>
+                <p className={r.status}>{academic.publication.status}</p>
+                <p>{academic.publication.secondaryStatus} · {academic.publication.preprint}</p>
+                <ul>
+                  {research.points?.slice(0, 4).map((point) => <li key={point.en}>{point.en}</li>)}
+                </ul>
+                <div className={r.links}>
+                  <a href={realm.href}>OpenReview ↗</a>
+                  <a href={content.showcase.publicArtifacts.portfolioPdf}>4-page Research Portfolio ↗</a>
+                  <Link href={showcaseRoute}>Poster & Showcase →</Link>
+                  <a href={research.href}>Repository ↗</a>
+                </div>
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
+
+            <section>
+              <SectionHead no="02" title="Education" />
+              <div className={r.item}>
+                <div className={r.itemHead}>
+                  <h4>University College London (UCL), Department of Computer Science</h4>
+                  <span>{academic.ucl.dates}</span>
+                </div>
+                <p>{academic.ucl.programme}</p>
+                <p>{academic.ucl.completion}</p>
+                <p>{academic.ucl.supervisors}</p>
+                <p><strong>MSc dissertation:</strong> <em>{academic.publication.dissertationTitle}</em></p>
+              </div>
+              <div className={r.item}>
+                <div className={r.itemHead}>
+                  <h4>Xi&apos;an Jiaotong University</h4>
+                  <span>{academic.xjtu.dates}</span>
+                </div>
+                <p>{academic.xjtu.programme} · {academic.xjtu.result}</p>
+              </div>
+            </section>
+
+            <section>
+              <SectionHead no="03" title="Research / Engineering Experience" />
+              <div className={r.item}>
+                <div className={r.itemHead}>
+                  <h4>{holistic.org}</h4>
+                  <span>{holistic.role.en}</span>
+                </div>
+                <ul>
+                  {holistic.points.map((point) => <li key={point.en}>{point.en}</li>)}
+                </ul>
+              </div>
+            </section>
+
+            <section>
+              <SectionHead no="04" title="Selected Research Systems" />
+              <div className={r.item}>
+                <div className={r.itemHead}>
+                  <h4>{redteam.title.en}</h4>
+                  <span>PUBLIC · 2026</span>
+                </div>
+                <p>{redteam.lead.en}</p>
+                <ul>
+                  {redteam.points?.map((point) => <li key={point.en}>{point.en}</li>)}
+                </ul>
+                <div className={r.links}><a href={redteam.href}>Repository ↗</a></div>
+              </div>
+              <div className={r.item}>
+                <div className={r.itemHead}>
+                  <h4>{finqa.title.en}</h4>
+                  <span>POST-TRAINING ATTRIBUTION · 2026</span>
+                </div>
+                <p>{finqa.lead.en}</p>
+                <ul>
+                  {finqa.points?.slice(0, 3).map((point) => <li key={point.en}>{point.en}</li>)}
+                </ul>
+                <div className={r.links}><a href={finqa.href}>Repository ↗</a></div>
+              </div>
+            </section>
+
+            <section>
+              <SectionHead no="05" title="Research Methods & Engineering" />
+              <div className={r.skills}>
+                {content.skills.map((skill) => (
+                  <div key={skill.k.en}>
+                    <strong>{skill.k.en}</strong>
+                    <p>{skill.v.en}</p>
+                  </div>
+                ))}
+              </div>
+              <div className={r.item}>
+                <p><strong>English / tests:</strong> {academic.credentials.toefl} · {academic.credentials.gre}</p>
+              </div>
+            </section>
+          </>
+        ) : (
+          <>
+            <section>
+              <SectionHead no="01" title="经历" />
+              <div className={r.item}>
+                <div className={r.itemHead}>
+                  <h4>{holistic.org}</h4>
+                  <span>{holistic.role.zh}</span>
+                </div>
+                <ul>
+                  {holistic.points.map((point) => <li key={point.en}>{point.zh}</li>)}
+                </ul>
+              </div>
+            </section>
+
+            <section>
+              <SectionHead no="02" title="研究与论文" />
+              <div className={r.item}>
+                <div className={r.itemHead}>
+                  <h4>{research.title.zh}</h4>
+                  <span>UCL MSc · 2026</span>
+                </div>
+                <p className={r.status}>{realm.status.zh}</p>
+                <ul>
+                  {research.points?.slice(0, 3).map((point) => <li key={point.en}>{point.zh}</li>)}
+                </ul>
+                <div className={r.links}>
+                  <a href={realm.href}>OpenReview ↗</a>
+                  <a href={content.showcase.publicArtifacts.portfolioPdf}>Research Portfolio ↗</a>
+                  <Link href={showcaseRoute}>Poster / Showcase →</Link>
+                  <a href={research.href}>Repository ↗</a>
+                </div>
+              </div>
+            </section>
+
+            <section>
+              <SectionHead no="03" title="精选系统" />
+              <div className={r.item}>
+                <div className={r.itemHead}>
+                  <h4>{redteam.title.zh}</h4>
+                  <span>2026 · PUBLIC / APACHE-2.0</span>
+                </div>
+                <p>{redteam.lead.zh}</p>
+                <ul>
+                  {redteam.points?.map((point) => <li key={point.en}>{point.zh}</li>)}
+                </ul>
+                <div className={r.links}><a href={redteam.href}>Repository ↗</a></div>
+              </div>
+            </section>
+
+            <section>
+              <SectionHead no="04" title="教育" />
+              <div className={r.education}>
+                <div>
+                  <h4>{ucl.org}</h4>
+                  <p>{ucl.role.zh}</p>
+                </div>
+                <div>
+                  <h4>{xjtu.org}</h4>
+                  <p>{xjtu.role.zh}</p>
+                  <p>{academic.xjtu.result}</p>
+                </div>
+              </div>
+            </section>
+
+            <section>
+              <SectionHead no="05" title="技能" />
+              <div className={r.skills}>
+                {content.skills.map((skill) => (
+                  <div key={skill.k.en}>
+                    <strong>{skill.k.zh}</strong>
+                    <p>{skill.v.zh}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </>
+        )}
 
         <footer className={r.footer}>
           <span>{content.release.careerEpoch}</span>
