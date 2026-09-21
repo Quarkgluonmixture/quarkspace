@@ -156,7 +156,7 @@ The initial `/resume` route offered “Print / Save PDF”, but the root layout 
 - [x] `app/site-beian.module.css` hides the filing strip only under `@media print`; the web filing remains present;
 - [x] `scripts/check-resume-print.mjs` uses real Chrome print media rather than a CSS grep;
 - [x] the print probe requires resume paper present, toolbar hidden, filing hidden and zero visible interactive buttons;
-- [x] CI runs that print probe after all four mobile-route probes;
+- [x] at Phase 9, CI ran that print probe after the then-current four mobile-route probes; Phase 10 extends both mobile and print coverage to the audience-split routes;
 - [x] PR #143 CI run **401 green**;
 - [x] PR #143 merged as `main@5ee08451a8e260b9e22c68332c49d4326b736802`;
 - [x] post-merge main CI run **402 green**.
