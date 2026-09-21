@@ -902,3 +902,41 @@ screen/web filing 仍必须存在；新增 `scripts/check-resume-print.mjs` 用�
 `#measure` PR CI run 401：`filingDisplay="none"`、`toolbarDisplay="none"`、`visibleButtons=0`，
 `resume print contract passed`；合并后 `main@5ee08451a8e260b9e22c68332c49d4326b736802` 的 CI run 402 全绿。
 四条 public route `/models`、`/`、`/resume`、`/showcase` 同时继续过 320/390/430 mobile probe。
+
+## [2026-09-21] Portfolio audience split：中文求职 / 英文 research 不再靠同 URL 的 localStorage 切换 `#decision` `#ship` `#measure`
+
+owner 明确了读者不是同一个：中文站主要给国内 Research Engineer 求职，英文站主要给 Fall-2027 PhD /
+research evaluation。旧 v2 虽然 bilingual，但 `/`、`/resume`、`/showcase` 都是同一个 URL 上用
+client state 换 copy；把链接发给 recruiter / supervisor 时，URL 本身不能表达读者，也容易把“翻译”
+误当成“同一信息架构”。
+
+因此 PR #145 没复制第二套 career facts，而是在同一个 `data/career-public.json` 里增加两个 audience
+projection：`china-work` 与 `phd-research`。当前 route contract：
+- 中文：`/`、`/resume`、`/showcase`;
+- 英文 research：`/en`、`/en/resume`、`/en/showcase`;
+- `/models` 仍是独立 bilingual Observatory。
+
+两边允许不同叙事排序，但不允许不同事实源。中文优先 Holistic 已完成、LLM/Agent evaluation /
+red-team / Web-CU 交付证据和招聘 CV；英文优先 research question、UCL / publication evidence、
+个人贡献/负结果逻辑、下一步 research direction 和 Research CV。英文 headline / spine 对齐当前
+Career OS：**Reliable Agent Evaluation & Adaptive Agentic Systems**。
+
+这轮重新从 JobFinder / Career OS 当前材料核过公开事实：Holistic fixed-term internship 已于
+2026-09-18 完成；REALM 只写 **accepted at EMNLP 2026 Workshop REALM**，不冒充 EMNLP 主会或
+published；VLM4RWD 仍是 submitted / under review；公开站补齐 UCL supervisors、dissertation title、
+Research CV 需要的 TOEFL/GRE 等 public-safe 信息。旧 `Prof. María Pérez-Ortiz` honorific 去掉，
+只保留 supervisor relationship，避免 title 漂移。
+
+`#measure` PR #145 final head 的完整 CI 全绿：career contract、lint、build、prerender/ICP、
+server-bundle render、`/models` + 六条 portfolio route 的 320/390/430 Chrome mobile probe，
+以及 `/resume` + `/en/resume` 两份真实 print-media contract。PR 合并为
+`main@d2bb98cd74e51da4ebdeaa0177125fd19509e399`；post-merge main CI run **35604912663** 全绿。
+
+同一 PR 新增 `.github/workflows/portfolio-production-smoke.yml`，相关 portfolio 文件 push 到 main 后
+自动等 EdgeOne 出现新 marker，再直接打真实 `https://quarkspace.top`。第一次 production run
+**35604912657**：13:20:11 UTC 时新英文 route 仍 404，13:21:29 UTC 观测到当前版本上线；随后六条
+route/content marker、六组 locale cross-link 全通过，六条 production route 在 320/390/430 都
+document width = viewport width，两份 production CV 均打印契约通过。
+
+这关闭了旧 CHECKPOINT 里的“上线后人工 smoke 一次”尾巴。以后 production smoke 是 release system，
+不是 checklist；⛔ 不要重新加一个“记得手工打开六个页面”的 TODO。
