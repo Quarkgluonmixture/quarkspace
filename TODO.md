@@ -7,6 +7,17 @@
 
 ---
 
+## Recruiter-facing portfolio
+
+- [ ] **可选项，不是发布阻塞项**：如果以后拿到一个明确、public-safe、可维护的 binary upload 路径，
+      可以把 canonical final poster PDF 镜像进这个 public repo。当前 `/showcase` 与
+      `/en/showcase` 已经有 poster case study、4-page research portfolio、demo 和 repo，
+      所以没有这个 binary 也算 recruiter/research complete。
+      ⛔ 不要为了补这个便利项暴露 private JobFinder raw URL。
+
+生产 smoke **不在 TODO 里**：PR #145 之后由 `.github/workflows/portfolio-production-smoke.yml`
+对相关 `main` push 自动执行，2026-09-21 首次真实 production run 35604912657 已绿。
+
 ## 2026-09-04 体检之后剩下的
 
 ⭐ **这一节里没有「要你定」了** —— 09-04 那三道题(issue #122 · 「最新发布」看板 ·
