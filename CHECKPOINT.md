@@ -1,40 +1,59 @@
 # CHECKPOINT
 
-## 2026-09-21 · recruiter-facing portfolio v2 is released and current
+## 2026-09-21 · recruiter-facing portfolio audience split is released, production-smoked, and current
 
-The personal-site rebuild that started on 2026-09-20 is now closed on `main@5ee08451a8e260b9e22c68332c49d4326b736802`.
+The rebuild that started on 2026-09-20 is closed on production at `main@d2bb98cd74e51da4ebdeaa0177125fd19509e399` (PR #145).
 
-Recruiter-facing surfaces:
-- `/` — bilingual evidence-first portfolio driven by `data/career-public.json`;
-- `/resume` — bilingual printable current-epoch CV surface; stale August public PDF binaries are retired;
-- `/showcase` — bilingual final-poster/showcase case study with the public 4-page research portfolio and demo;
-- `/models` — Observatory, with Ø linking home and the same persisted `quarkspace-language` preference.
+Recruiter-facing surfaces are now **route-level audience projections**, not one bilingual page with client-side copy switching:
+- `/` — Chinese domestic-job portfolio;
+- `/resume` — Chinese recruiter-facing printable CV;
+- `/showcase` — Chinese poster / research-evidence case study;
+- `/en` — English research / Fall-2027 PhD portfolio;
+- `/en/resume` — English research CV;
+- `/en/showcase` — English poster / research-evidence case study;
+- `/models` — Observatory; separate product, still bilingual in-place.
+
+The six portfolio routes share one public-safe fact layer in `data/career-public.json`. The manifest now carries two audience projections:
+`zh = china-work` and `en = phd-research`. Work and PhD are **two readings of one evidence chain**, not two independently maintained identities. `app/home-content.ts` is only the typed boundary; do not fork career facts into route JSX.
 
 Release train:
-- PR #139 — portfolio v2 / current career evidence / bilingual root;
-- PR #140 — retire stale public CV PDFs + current printable `/resume`;
-- PR #141 — first-class `/showcase` research evidence surface;
-- PR #142 — repository handoff docs aligned to the new route topology;
-- PR #143 — real print-to-PDF contract for `/resume`; merge commit = current `main@5ee0845`.
+- PR #139 — evidence-first portfolio / current career projection;
+- PR #140 — retire stale public CV binaries + printable web CV;
+- PR #141 — first-class poster/showcase evidence;
+- PR #142 — handoff docs for the first route topology;
+- PR #143 — real print-to-PDF contract;
+- PR #145 — route-level Chinese work / English research split, audience-specific CVs, locale metadata, expanded CI, and automatic production smoke; merge = `d2bb98c`.
 
-Validation:
-- PR #143 CI run 401 green;
-- post-merge main CI run **402 green**;
-- `/models`, `/`, `/resume`, `/showcase` pass 320 / 390 / 430 mobile probes;
-- real Chrome print-media probe passes: ICP filing hidden in print, resume toolbar hidden, visible buttons = 0, resume paper remains present;
-- `npm run check:career` guards the public-safe career projection and retired stale-CV filenames.
+Current public career projection:
+- epoch = `2026-09-20-post-holistic`, re-verified 2026-09-21;
+- Holistic AI fixed-term research internship completed 2026-09-18;
+- UCL Web-Agent paper = **accepted at EMNLP 2026 Workshop REALM**; accepted ≠ published and ≠ EMNLP main conference;
+- VLM4RWD = submitted / under review;
+- UCL × Holistic final poster/showcase = 2026-09-16;
+- English research surface uses the current positioning **Reliable Agent Evaluation & Adaptive Agentic Systems**;
+- private employer/customer material remains excluded.
 
-Career projection = `2026-09-20-post-holistic`: Holistic internship completed; REALM wording is exactly workshop acceptance rather than EMNLP main-conference acceptance; permanent public email is Outlook; private company/client material stays excluded.
+Validation is closed at two levels:
+- PR #145 final-head CI green: career contract, lint, full build, prerender/ICP, server-bundle render, real Chrome mobile probes and both resume print contracts;
+- post-merge main CI run **35604912663** green;
+- automatic production workflow run **35604912657** green against `https://quarkspace.top`;
+- production markers verified on `/`, `/en`, `/resume`, `/en/resume`, `/showcase`, `/en/showcase`;
+- all six portfolio routes passed real Chrome at 320 / 390 / 430 px;
+- both `/resume` and `/en/resume` passed the real print-media contract;
+- production locale cross-links were asserted in both directions.
 
-⛔ Public `/resume` readiness does **not** promote the private JobFinder canonical PDFs. They have their own renderer/preflight/release state.  
-⛔ The exact canonical final poster PDF still lives in the private evidence vault. `/showcase` is the public-safe recruiter surface; binary mirroring is optional and must never use a private JobFinder raw URL.  
-⛔ The root ICP filing remains a web-wide regulatory surface, but is intentionally hidden under print media on `/resume`. Do not remove the web filing in order to make the CV print clean.
+`.github/workflows/portfolio-production-smoke.yml` now runs automatically after relevant `main` pushes. It waits boundedly for EdgeOne to expose the new portfolio markers, then tests the real domain. Production smoke is therefore a regression gate, not a hand-maintained checklist.
+
+⛔ Public web-resume readiness does **not** promote the private JobFinder canonical PDF releases. They retain their own renderer/preflight/release authority.  
+⛔ The exact canonical final poster PDF still lives in the private evidence vault. The public `/showcase` and `/en/showcase` surfaces are already recruiter/research complete; binary mirroring is optional only.  
+⛔ The ICP filing remains a web-wide regulatory surface but is intentionally hidden under print media on both resume routes.  
+⛔ Do not re-collapse `/` and `/en` into localStorage-only language switching: the URL itself now carries audience/language intent, so a shared recruiter/supervisor link is deterministic.
 
 ### Remaining bounded portfolio work
 
-1. One production smoke-check on the real EdgeOne site after deployment: open `/`, `/resume`, `/showcase`, switch zh/en, follow the main evidence links, and test browser Print / Save PDF on `/resume`.
-2. Optional only: deliberately mirror the canonical public-safe poster PDF into this public repo if a supported binary upload path is available. The site is already recruiter-complete without it.
-3. Any future career-status change must update upstream Career OS first, then `data/career-public.json`; do not hand-edit JSX as a second truth source.
+1. Optional only: deliberately mirror the canonical public-safe final poster PDF into this public repo if a supported binary upload path is available.
+2. Any future career-status change must update upstream Career OS first, then the single public-safe manifest and its audience projections; do not hand-edit route JSX as a second truth source.
+3. If a future portfolio deployment changes route content/layout, trust the automatic production-smoke workflow rather than adding a new manual smoke TODO.
 
 **接手点** — 2026-09-04:**「每周合一次 AA 的 PR」这件事没了。** owner 的原话是「我总得手动合 PR,
 我不想看,我就想让他更新」,所以这一轮拆的是**重复劳动**,不是判断:
@@ -83,8 +102,8 @@ Career projection = `2026-09-20-post-holistic`: Holistic internship completed; R
 `…-lhi0hg2y.edgeone.cool` 是 EdgeOne 项目名派生的域名、**不许顺手替换**。全文 → 坑 **49**。
 
 ⚠ **文案的权威是三层,别压平成一句 "source of truth"**:职业事实/定位 → `JobFinder/00_总控/` ·
-线上首页文案/选择/排序 → `app/home-content.ts` · 历史设计快照 → quark-space(已 archived,只读,
-⛔ 不得回灌)。指反过三天且零告警(**30 个 npm script 没有一个校验散文**)—— 全文 `LOG.md` 2026-08-26。
+公开站的 public-safe facts + audience projections → `data/career-public.json`（`app/home-content.ts` 只做 typed boundary）·
+历史设计快照 → quark-space(已 archived,只读,⛔ 不得回灌)。指反过三天且零告警(**30 个 npm script 没有一个校验散文**)—— 全文 `LOG.md` 2026-08-26。
 
 ⛔ **已定、别重新论证的两条**:**preview 规矩** —— 一条记录 = 一个在服役的版本,preview 的行留档不入库
 (Qwen / Gemini 那两条上游精确同名且族里无 GA 取代 ⇒ 按坑 **25** 不动);**收录地板不放开** ——
@@ -134,7 +153,8 @@ Snapshot for the next session. One page. 现场状态在这里;**动手前的自
 | 同上，末步 | GitHub Actions | 归属闸门 `attribute-and-merge.sh`：提议 alias → 跑契约 → 三条件满足才自合 | 有条件自合，否则留 PR |
 | 由 `upstream.yml` 末步按需触发 | GitHub Actions `aa-refresh.yml` | 重读 AA 参数 → `reconcile-aa.mjs` 把重测的 speed/latency 抄进目录 → 契约(**现在是闸**) → 开 PR → 四条件自合 | 有条件自合，否则留 PR |
 | 09:30 UTC（10:30 UK） | hermes（Windows 定时任务，canonical job id **`2d4dbdc7db6f`**） | 读 gaps issue → 挑一件完整做完 → 开 PR → **四条件全真就合并并删分支**（2026-09-04 起是指令不是许可） | 有条件自合 |
-| 任意 push 到 main | GitHub Actions `ci.yml` | 契约全套 + 归属闸门回测 + 两个分类器自测 + 手机探针（两条路由）+ 站上新增模型才推微信 | — |
+| 任意 push 到 main | GitHub Actions `ci.yml` | 契约全套 + 归属闸门回测 + 两个分类器自测 + 手机探针（`/models` + 六条 portfolio routes）+ 两份 CV print + 站上新增模型才推微信 | — |
+| 相关 portfolio 文件 push 到 main | GitHub Actions `portfolio-production-smoke.yml` | bounded wait for EdgeOne → 六条真实线上 route/content/cross-link checks → 320/390/430 Chrome → 两份 CV print | — |
 
 **三条件**（tier B 自合的唯一门槛，写在 `docs/AGENT-OPERATIONS.md`）：契约全绿（含跨源分歧闸门与
 一源两串闸门）· `describe-change` 报告**没有已有数字被改动** · 没有写 `acknowledgedDisagreements`
@@ -160,7 +180,7 @@ npm run build
 npm run check:beian     # 备案号是否进了每一条预渲染路由(读上面 build 的产物)
 ```
 
-`npm run check:mobile` 在 CI 里跑（两条路由）。本地跑前先看 `GOTCHAS.md` 坑 11。
+`npm run check:mobile` 在 CI 里跑（`/models` + 六条 portfolio routes）。本地跑前先看 `GOTCHAS.md` 坑 11。
 
 其他常用：
 
