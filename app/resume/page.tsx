@@ -3,12 +3,11 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { content, type Lang, type Localized } from "../home-content";
+import { content, type Lang } from "../home-content";
 import r from "./resume.module.css";
 
 const LANGUAGE_KEY = "quarkspace-language";
 const OLD_LANGUAGE_KEY = "observatory-language";
-const tr = (value: Localized, lang: Lang) => value[lang];
 
 function SectionHead({ no, title }: { no: string; title: string }) {
   return (
