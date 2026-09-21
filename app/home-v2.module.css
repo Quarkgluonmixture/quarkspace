@@ -23,6 +23,9 @@
 }
 
 .langSwitch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 38px;
   min-height: 34px;
   padding: 0 9px;
@@ -33,6 +36,7 @@
   font: 700 10.5px/1 var(--h-mono);
   letter-spacing: 0.08em;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .langSwitch a:hover {
