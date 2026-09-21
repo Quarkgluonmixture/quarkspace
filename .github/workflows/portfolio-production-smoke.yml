@@ -73,12 +73,25 @@ jobs:
           check "/showcase" "什么时候值得为更昂贵的感知付费"
           check "/en/showcase" "When Is Expensive Perception Worth Paying For?"
 
-          curl -fsSL "$base/" | grep -Fq 'href="/en"'
-          curl -fsSL "$base/en" | grep -Fq 'href="/en/resume"'
-          curl -fsSL "$base/resume" | grep -Fq 'href="/en/resume"'
-          curl -fsSL "$base/en/resume" | grep -Fq 'href="/resume"'
-          curl -fsSL "$base/showcase" | grep -Fq 'href="/en/showcase"'
-          curl -fsSL "$base/en/showcase" | grep -Fq 'href="/showcase"'
+          assert_link() {
+            local path="$1"
+            local href="$2"
+            local file
+            file="$(mktemp)"
+            curl -fsSL --max-time 20 "$base$path" -o "$file"
+            if ! grep -Fq "href=\"$href\"" "$file"; then
+              echo "::error::$path did not contain locale link: $href"
+              exit 1
+            fi
+            echo "OK $path → $href"
+          }
+
+          assert_link "/" "/en"
+          assert_link "/en" "/en/resume"
+          assert_link "/resume" "/en/resume"
+          assert_link "/en/resume" "/resume"
+          assert_link "/showcase" "/en/showcase"
+          assert_link "/en/showcase" "/showcase"
 
       - name: Probe production mobile layout and CV print surfaces
         shell: bash
