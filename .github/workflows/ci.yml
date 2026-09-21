@@ -251,6 +251,11 @@ jobs:
           npm run check:mobile -- http://localhost:3111/resume
           npm run check:mobile -- http://localhost:3111/showcase
 
+          # /resume is deliberately a print/PDF surface. The root-layout regulatory filing
+          # belongs on the website but not inside the CV; emulate real print media so this cannot
+          # silently become stray recruiter-facing content or an extra PDF page.
+          npm run check:resume-print -- http://localhost:3111/resume
+
       # The one notification this project sends when everything is working. It fires on the event
       # the owner actually wants to know about — **the site gained a model** — and not on any of
       # the events that lead up to it: a board moving, a maker publishing a post, Artificial
