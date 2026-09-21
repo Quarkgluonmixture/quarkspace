@@ -61,10 +61,18 @@ Upstream authorities inspected:
 
 ## Language contract
 
-- One structure, two copies: zh/en are fields on the same content objects, not two independently maintained pages.
-- Root uses the same persisted preference key as `/models`: `quarkspace-language`.
-- `/models` should migrate the old `observatory-language` value once for backwards compatibility.
-- The observatory logo becomes a home link without changing the mobile rail geometry.
+The original v2 implementation used one URL with client-side zh/en switching. Phase 10 superseded that contract.
+
+Current contract:
+- `/`, `/resume`, `/showcase` = Chinese domestic-job audience;
+- `/en`, `/en/resume`, `/en/showcase` = English research / Fall-2027 PhD audience;
+- each route pair reuses the same implementation and one public-safe manifest, but audience-specific ordering/copy is allowed;
+- the URL is the authoritative language/audience selector for shareable portfolio links;
+- `quarkspace-language` remains a compatibility/preference signal for other bilingual products such as `/models`, but it must not override a portfolio route;
+- metadata/canonical/language alternates must map each Chinese route to its English counterpart;
+- do not create separate career fact files for Chinese and English. `data/career-public.json` carries the shared facts plus `china-work` and `phd-research` projections.
+
+The observatory logo remains a home link without changing the mobile rail geometry.
 
 ## Freshness contract
 
@@ -159,15 +167,65 @@ Observed print result on the green run:
 - `visibleButtons: 0`;
 - `resume print contract passed`.
 
+## Phase 10 — route-level audience split + production regression gate
+
+The owner clarified that the two languages have different primary readers: the Chinese surface is mainly for domestic job search, while the English surface is mainly for PhD / research evaluation. A client-side language toggle was therefore the wrong abstraction even though the copy itself was bilingual.
+
+- [x] read the current QuarkSpace handoff/report docs before changing implementation;
+- [x] re-grounded public-site positioning in JobFinder / Career OS current truths, including `CURRENT_PROFILE`, `POSITIONING_V2`, `CAREER_TRACKS`, `WEAPON_INVENTORY`, the Fall-2027 PhD target index, and the current English Research CV;
+- [x] kept one evidence chain while introducing two audience projections: `china-work` and `phd-research`;
+- [x] made `/` the Chinese work-facing portfolio and `/en` the English research/PhD portfolio;
+- [x] bound the matching resumes to `/resume` and `/en/resume`;
+- [x] mirrored the poster/showcase route at `/showcase` and `/en/showcase`;
+- [x] replaced in-place portfolio language buttons with deterministic route navigation;
+- [x] gave the English homepage an explicit Fall-2027 research direction: **Reliable Agent Evaluation for Adaptive Agentic Systems**;
+- [x] reshaped the English CV around research/publications → education → research/engineering experience → research systems → methods/credentials instead of translating the Chinese recruiter CV line-for-line;
+- [x] added current public-safe UCL supervisors, publication/review status, dissertation title and test credentials needed by the research surface;
+- [x] kept REALM wording exact: accepted at **EMNLP 2026 Workshop REALM**, not EMNLP main conference and not published;
+- [x] kept VLM4RWD at submitted / under review;
+- [x] removed the drift-prone `Prof.` honorific from the public supervisor line and preserved only the supervisor relationship;
+- [x] added locale-specific metadata, canonical URLs and language alternates;
+- [x] expanded the career contract to guard audience route topology and research/publication status;
+- [x] expanded PR/main CI to `/models` + all six portfolio routes at 320 / 390 / 430, and both resume print contracts;
+- [x] added `.github/workflows/portfolio-production-smoke.yml`: relevant `main` pushes wait boundedly for EdgeOne, then probe the real domain rather than trusting deployment assumptions;
+- [x] PR #145 final-head CI green and merged as `main@d2bb98cd74e51da4ebdeaa0177125fd19509e399`;
+- [x] post-merge main CI run **35604912663** green;
+- [x] production smoke run **35604912657** green.
+
+Observed production smoke:
+- EdgeOne initially returned 404 for the new English route during propagation, then exposed the current portfolio marker at **2026-09-21 13:21:29 UTC**;
+- `/` contained the Chinese work marker `大模型评测`;
+- `/en` contained `Reliable Agent Evaluation for Adaptive Agentic Systems`;
+- both resume markers and both showcase titles were present;
+- locale cross-links passed in both directions;
+- all six production portfolio routes matched viewport width at 320 / 390 / 430;
+- both production resume routes passed the real Chrome print contract.
+
+The production smoke itself is now part of the release system. Do not recreate “open these pages by hand after deploy” as recurring release debt.
+
 ## Final acceptance state — 2026-09-21
 
-The recruiter-facing rebuild is **closed**.
+The recruiter/research portfolio rebuild is **closed in production**.
 
-The four public routes `/models`, `/`, `/resume`, and `/showcase` share the same persisted language preference and are exercised at 320 / 390 / 430 in CI. The public career projection is post-Holistic, REALM-workshop-accepted, bilingual, poster/showcase-aware and protected against the stale August CV binaries that originally triggered this rebuild. `/resume` also has a behavioral Chrome print-media gate, so “Save PDF” is now a tested product surface rather than a label.
+Current topology:
+- Chinese domestic-job audience: `/`, `/resume`, `/showcase`;
+- English PhD/research audience: `/en`, `/en/resume`, `/en/showcase`;
+- Observatory remains `/models`.
 
-Remaining work is bounded rather than architectural:
-1. one real-production smoke-check after EdgeOne deployment;
-2. optional poster-PDF binary mirroring if a supported public upload path becomes available;
-3. future career changes flow Career OS → `data/career-public.json` → shared site render, never ad-hoc JSX copy.
+The six portfolio routes are not six truth stores. They render one public-safe Career OS projection with audience-specific ordering/copy. The Chinese site foregrounds completed Holistic delivery, evaluation/red-team/agent reliability evidence and a recruiter-facing CV. The English site foregrounds the research question, UCL/publication evidence, contribution/negative-result logic, next research direction and a research CV.
 
-The private JobFinder canonical CV release remains a separate release system and is not made current by the public web resume.
+Release evidence is complete:
+- PR #145 merged to `main@d2bb98c`;
+- final-head PR CI green;
+- post-merge main CI **35604912663** green;
+- real EdgeOne production smoke **35604912657** green;
+- six production portfolio routes passed route/content/cross-link checks and 320/390/430 Chrome probes;
+- both production CVs passed real print-media checks.
+
+Remaining work is deliberately bounded:
+1. optional public-safe poster-PDF binary mirroring only;
+2. future career changes flow Career OS → one public-safe manifest → audience projections;
+3. production smoke remains automated and should be reused rather than replaced with manual acceptance prose.
+
+The private JobFinder canonical CV/PDF release system remains separate authority; a web CV being current does not promote a private canonical PDF.
+
