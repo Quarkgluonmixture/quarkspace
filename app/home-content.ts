@@ -78,6 +78,74 @@ export type Showcase = {
   disclosure: Localized;
 };
 
+export type Audience = {
+  id: "china-work" | "phd-research";
+  route: string;
+  resumeRoute: string;
+  showcaseRoute: string;
+  profile: {
+    role: string;
+    availability: string;
+    claim: [string, string];
+    intro: string;
+  };
+  experienceIds: string[];
+  featuredSlots: string[];
+  sections: {
+    experience: string;
+    experienceCount: string;
+    work: string;
+    workCount: string;
+    evidence: string;
+    evidenceCount: string;
+    skills: string;
+    skillsCount: string;
+    lab: string;
+    labCount: string;
+  };
+  researchDirection?: {
+    label: string;
+    title: string;
+    question: string;
+    text: string;
+    next: string;
+  };
+  resume: {
+    eyebrow: string;
+    summary: string;
+  };
+  closing: {
+    title: string;
+    sub: string;
+  };
+};
+
+export type Academic = {
+  ucl: {
+    programme: string;
+    dates: string;
+    completion: string;
+    supervisors: string;
+  };
+  xjtu: {
+    programme: string;
+    dates: string;
+    result: string;
+  };
+  publication: {
+    title: string;
+    authors: string;
+    status: string;
+    secondaryStatus: string;
+    preprint: string;
+    dissertationTitle: string;
+  };
+  credentials: {
+    toefl: string;
+    gre: string;
+  };
+};
+
 export type CareerContent = {
   release: {
     careerEpoch: string;
@@ -96,6 +164,8 @@ export type CareerContent = {
     linkedin: string;
     nav: { href: string; label: Localized }[];
   };
+  audiences: Record<Lang, Audience>;
+  academic: Academic;
   proof: { value: string; label: Localized }[];
   experience: Experience[];
   featured: Featured[];
