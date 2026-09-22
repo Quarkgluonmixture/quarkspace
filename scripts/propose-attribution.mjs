@@ -190,12 +190,23 @@ const siblingInSameSource = (raw, base) => {
 // evidence is the same reasoning as the rest of this file: a refusal costs a delay, a wrong alias
 // costs a wrong number nobody can see.
 const DATE_SUFFIX = /^[0-9]{4,8}$/;
+// A dated sibling keeps its date even after the effort is stripped, but the date can sit either
+// side of the effort token: `qwen3.7-max-20260517` (tier, then date) and
+// `deepseek-v4-pro-high-20260813` (date after the effort). Stripping the effort alone left a
+// `max0813` residue that failed DATE_SUFFIX, so a GA slug like `qwen3.7-max-0813` was invisible
+// to the fifth refusal — measured 2026-09-22, when a batch-50 alias refusal rotated the
+// self-test's runtime-chosen subject onto "Qwen3.7-Max" and the rule was silent on it.
+const datedBase = (raw) => {
+  const m = String(raw).trim().match(/^(.*?)[\-_ ]([0-9]{4,8})$/);
+  if (!m || !m[1]) return null;
+  const withoutDate = norm(stripEffort(m[1]) ?? m[1]);
+  return withoutDate ? { base: withoutDate, date: m[2] } : null;
+};
 const datedSiblingDisagrees = (raw, base) => {
   for (const other of rowsByString.keys()) {
     if (other === raw) continue;
-    const otherBase = norm(stripEffort(other) ?? other);
-    if (!otherBase.startsWith(base)) continue;
-    if (!DATE_SUFFIX.test(otherBase.slice(base.length))) continue;
+    const parsed = datedBase(other);
+    if (!parsed || parsed.base !== base) continue;
     let agree = 0, conflict = 0;
     for (const a of rowsByString.get(raw) ?? []) {
       for (const b of rowsByString.get(other) ?? []) {
