@@ -338,6 +338,67 @@ const RELEASES = {
       "GDPVal-AA v2 Knowledge work": { id: "gdpval", version: "v2", tools: true },
     },
   },
+  "gemini38f": {
+    label: "Gemini 3.8 Flash model card",
+    maker: "Google",
+    // NOT the launch blog — the model card publishes the full model × benchmark grid. Unlike the
+    // 3.6 Flash card (batch 47), which curl returned server-rendered (154KB, 2 tables), this card's
+    // HTML carries almost no rows (156KB, 1 <tr>): the grid is drawn client-side, so the CDP settle
+    // is load-bearing here. The table shape is the same as 3.6's: "Benchmark | Note | <models>…".
+    url: "https://deepmind.google/models/model-cards/gemini-3-8-flash/",
+    batch: "batch-50-gemini38f-card",
+    batchLabel: "50 · Gemini 3.8 Flash model card table",
+    // 49 is the DeepSeek V4 Pro withdrawal note; batch numbers are never reused.
+    published: "2026-09-02",
+    labelColumns: 2,
+    noteName: "Gemini 3.8 Flash",
+    // Deliberately no `keep`-adoption: BOTH Flash models on this card sit under the 50-cell
+    // collection floor (3.8 Flash needs 31 more cells, 3.7 Flash needs 18 — report-gaps 2026-09-21),
+    // so this batch adopts NOTHING, the batch-36 GLM-5.3 stance: a vendor table can never be the
+    // thing that carries a new model over the floor. It is evidence waiting for the independent
+    // boards to measure them. `keep` stays as the row-note subject; adoption is refused per-column
+    // in model-aliases.json, and those refusals are load-bearing the same way batch 36's are.
+    keep: "Gemini 3.8 Flash",
+    rowNote:
+      "厂商发布材料:行上不写 reasoning effort 或运行日期;harness 只在 Terminal-bench 行的 Note 列声明 " +
+      "Terminus-2,其余行留空;evaluation_date 讫的是发布日",
+    adoption:
+      "与 3.6 卡(batch 47)不同,这张卡的表格是**客户端渲染**的:curl 只回 156KB 壳、几乎无 <tr>,采集脚本用 CDP 驱动无头 Chrome " +
+      "等应用画完再读表,因此这是可复跑的抓取而不是眼抄。⚠ 本批次**一个模型列都不采纳,包括 Gemini 3.8 Flash 自己**:" +
+      "3.8 Flash 与 3.7 Flash 都在 50 格收录地板以下(report-gaps 2026-09-21:分别差 31/18 格)," +
+      "证据计数器按设计整批排除 release-capture,一张厂商表永远不可能自己把新模型抬过收录地板 —— " +
+      "这批是为独立榜测到这两个模型那天备好的证据(同 batch 36 的立场)。所有已进目录的模型串" +
+      "(Claude Opus 5 / Sonnet 5 / GPT-5.6 Sol / Terra)**有全局 alias**," +
+      "这里的 file-scoped 拒收是承重的:不写,竞品分数会直接写进这四条目录记录。" +
+      "evaluation_date 记的是发布日(卡片页不标运行日期);百分号后缀 `%` 在 parser 里剥掉后再 Number()。",
+    extraNote:
+      "交叉验证(坑 33,采表前逐格对过目录现值):DeepSWE 的 Sol 72.7 / Terra 69.6 / Sonnet 5 53.8 与官方板(batch 11)逐位相同;" +
+      "Terminal-Bench 4.0 的 Sol 37.3 / Sonnet 5 12.4 与官方板(terminal-40 列)吻合,Terra 23.6 介于官方 21.5 与 Vals 26.3 之间 —— " +
+      "这两个标签的列身份由数字定,不靠串。GDPval-AA 的 Opus 5 1824 vs AA 活 Elo 1708、Sol 1710 vs 1588 ≈7-8%,活 Elo 正常漂移。" +
+      "⚠ 「Terminal-bench 4.0」是 terminal-40 列(observe 档)的第一批 vendor 行:该列此前只有官方板与 Vals," +
+      "benchmarkSplits 里 terminal/4.0 → terminal-40 的路由已存在,本批经 carried map 直接落列。" +
+      "⚠ 「HLE-Verified」拒收:目录 hle-no-tools 列装 Full 集,Verified 是另一 split(坑 3 同形,3.6 卡同判)。" +
+      "⚠ 「OSWorld-2.0」行 Note 明写「Partial score, batch tool enabled」—— partial credit 不是目录 osworld2 列的 pass 分口径," +
+      "与 Qwen3.8 页 OSWorld 2.0 行(19.4 pass / 54.8 partial)同形:那里采的是 pass 分,这里整行拒收。" +
+      "⚠ LVBench 行不规则:首行第 3.8 Flash 格带「(agentic)」后缀(数值解析时剥掉括注、口径进 note)," +
+      "次行是一格的「(static)」子行 —— parser 对数字开头的单格行按上一行归属第一模型列、标签带 (static) 限定," +
+      "static 87.1 只进 archive 不 carry,agentic 87.8 同判:目录无 LVBench 列。" +
+      "⚠ GDP.PDF / Harvey's Legal / Vals Finance Agent v2 / BioMysteryBench(两行)/ LABBench2:目录无列,留档。" +
+      "⚠ 两行价格(Input/Output $/1M)非 benchmark 行,parser 的 price 正则跳过,不 carry。⚠ 3.8 Flash 的 Input $0.75/$1.50 是 " +
+      "no-caching 折扣价,目录若将来引用价格须用 regular $1.50,与 batch-42 GPT-5.6 Sol promo 同判(促销价不入目录)。",
+    carried: {
+      // Keys are the full rendered labels (benchmark name + description merged into one cell),
+      // same as batch 47. ⚠ These keys were verified against a CLEAN read — the first CDP pass
+      // intermittently drops the letter "s" from cell text ("Fla h", "Rea oning"); re-running the
+      // capture is the drift check, and a replay whose labels lost characters would silently skip
+      // every row. The meta below records the same warning for the next reader.
+      "DeepSWE v1.1 Long-horizon software engineering": { id: "deepswe", version: "v1.1", tools: true },
+      "Terminal-bench 2.1 Agentic terminal coding": { id: "terminal", version: "2.1", tools: true, harness: "Terminus-2" },
+      "Terminal-bench 4.0 General agent capabilities": { id: "terminal-40", version: "4.0", tools: true },
+      "GDPVal-AA v2 Knowledge work": { id: "gdpval", version: "v2", tools: true },
+      "CharXiv Reasoning Information synthesis from complex charts": { id: "charxiv", version: "RQ", tools: false },
+    },
+  },
   kimik3: {
     label: "Kimi K3 release",
     maker: "Moonshot AI",
@@ -448,6 +509,8 @@ if (!Array.isArray(tables) || tables.length === 0) throw new Error(`no tables re
 const rows = [];
 let section = null;
 let sectionsSeen = 0;
+// The label of the last multi-cell benchmark row, for one-cell sub-score rows to inherit.
+let prevLabel = null;
 
 for (const table of tables) {
   // The first row names the models. A table whose header has no model columns is a layout table,
@@ -476,11 +539,50 @@ for (const table of tables) {
     const label = (cells[0] ?? "").trim();
     if (!label) continue;
     // A row with one filled cell is a section heading ("Coding Agent"), not a benchmark.
-    if (cells.filter((cell) => cell.trim()).length === 1) { section = label; sectionsSeen += 1; continue; }
+    if (cells.filter((cell) => cell.trim()).length === 1) {
+      // ⚠ Except when the single cell is a bare score. Google's 3.8 Flash card has a one-cell
+      // sub-row under LVBench (reads just "87.1%\n(static)") — read as a heading it pollutes
+      // every later row's section note with "87.1% (static)" and the value itself is lost
+      // (measured on the first gemini38f capture, 2026-09-21). A heading is words; a sub-score
+      // is a number. A numeric-leading single cell is a continuation of the PREVIOUS benchmark
+      // row: it belongs to the first model column, and it keeps its parent's label plus the
+      // parenthetical qualifier so it stays distinguishable in the archive. It never carries —
+      // a carried map keys on the full label, and "LVBench … (static)" matches nothing.
+      const head = label.split(/[(/]/)[0].trim();
+      const subScore = Number(head.replace(/^[$]/, "").replace(/%$/, "").replace(/,/g, ""));
+      if (/^\d/.test(label) && Number.isFinite(subScore) && prevLabel) {
+        const qualifier = (label.match(/\(([^)]*)\)/) ?? [])[1];
+        rows.push({
+          model_raw: models[0],
+          benchmark: qualifier ? `${prevLabel} (${qualifier})` : prevLabel,
+          benchmark_version: null,
+          score: subScore,
+          unit: subScore > 200 ? "Elo" : "%",
+          harness: null,
+          reasoning_effort: release.effort ?? null,
+          tools_enabled: null,
+          context_length: null,
+          evaluation_date: release.published,
+          source_label: release.label,
+          source_url: release.url,
+          source_kind: "vendor",
+          note:
+            `${release.noteName} 发布页「${section ?? "performance"}」分区,${prevLabel} 的子行读数` +
+            `${qualifier ? `(${qualifier} 口径)` : ""},单格行无标签,按上一行归属第一模型列;不映射任何目录列` +
+            `;${release.rowNote ?? "厂商发布材料:未标注 harness、reasoning effort 或运行日期"}`,
+        });
+        continue;
+      }
+      section = label; sectionsSeen += 1; continue;
+    }
 
     // Google's card mixes prices into the same table ("Input price $/1M tokens…"). A price is not
     // an observation and would otherwise survive as a `%` row with score 1.5 — skip the whole row.
     if (/\bprice\b/i.test(label)) continue;
+
+    // A multi-cell row that reaches here is a benchmark row; one-cell sub-rows below it inherit
+    // this label. Set it before the per-model loop so the row's own emit sees nothing change.
+    prevLabel = label;
 
     const carried = release.carried[label];
     // A continuation row ("With tools", "1M (pointwise)") drops the Notes cell instead of
@@ -495,16 +597,20 @@ for (const table of tables) {
       // The page writes an unrun cell as "—" or "--". It is not a zero and it is not a row.
       if (!published || published === "--" || published === "—" || published === "-- / --") continue;
 
-      // Google's card prints "91.8%" and "$1.50"; strip the suffix and separators before Number().
-      // A cell that is still not a number (a price with two figures, a harness name) is skipped —
-      // the same NaN path that always dropped prose cells.
-      const [primaryRaw, secondaryRaw] = published.split("/");
+      // Google's card prints "91.8%", "$1.50" — and "87.8%\n(agentic)", a score whose parenthetical
+      // names the reading rather than a second number. Strip the suffix and separators before
+      // Number(); keep the parenthetical as a note qualifier (it survives the NaN skip below,
+      // which a bare split("/") would not). A cell that is still not a number (a price with two
+      // figures, a harness name) is skipped — the same NaN path that always dropped prose cells.
+      const paren = (published.match(/\(([^)]*)\)/) ?? [])[1];
+      const [primaryRaw, secondaryRaw] = published.replace(/\([^)]*\)/, "").split("/");
       const numeric = (part) => Number(part.trim().replace(/^[$]/, "").replace(/%$/, "").replace(/,/g, ""));
       const score = numeric(primaryRaw);
       if (!Number.isFinite(score)) continue;
       const secondary = secondaryRaw !== undefined ? secondaryRaw.trim() : undefined;
 
-      const baseNote = `${release.noteName} 发布页「${section ?? "performance"}」分区,原样抄录 ${label} 一行`;
+      const baseNote = `${release.noteName} 发布页「${section ?? "performance"}」分区,原样抄录 ${label} 一行` +
+        (paren ? `,括注口径(${paren})` : "");
       // Every release so far states no harness and no effort, so the row says so. A release that
       // states them says something else — the row is the evidence, and a sentence that is false on
       // every row is worse than the same sentence being false once in the meta.

@@ -2374,6 +2374,48 @@
       "file": "batch-47-gemini36f-card",
       "modelId": null,
       "reason": "Batch 47 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. All five strings resolve globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving them out."
+    },
+    {
+      "modelRaw": "Gemini 3.8 Flash",
+      "effort": "*",
+      "file": "batch-50-gemini38f-card",
+      "modelId": null,
+      "reason": "REFUSED 2026-09-21: no catalog record holds Gemini 3.8 Flash. The report-gaps floor is arithmetic, not editorial - it sits 31 cells under the 50-cell collection average, and the evidence counter by design excludes release captures, so a vendor table can never be the thing that carries a model over it. This row is evidence waiting for the independent boards to measure it (same stance as batch 36 for GLM-5.3, batch 48 for Muse Spark 1.2)."
+    },
+    {
+      "modelRaw": "Gemini 3.7 Flash",
+      "effort": "*",
+      "file": "batch-50-gemini38f-card",
+      "modelId": null,
+      "reason": "REFUSED 2026-09-21: no catalog record holds Gemini 3.7 Flash (18 cells under the floor, same arithmetic as its sibling column). Evidence in waiting, not a defect."
+    },
+    {
+      "modelRaw": "Claude Opus 5",
+      "effort": "*",
+      "file": "batch-50-gemini38f-card",
+      "modelId": null,
+      "reason": "Batch 50 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. The string resolves globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving it out."
+    },
+    {
+      "modelRaw": "Claude Sonnet 5",
+      "effort": "*",
+      "file": "batch-50-gemini38f-card",
+      "modelId": null,
+      "reason": "Batch 50 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. The string resolves globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving it out."
+    },
+    {
+      "modelRaw": "GPT-5.6 Sol",
+      "effort": "*",
+      "file": "batch-50-gemini38f-card",
+      "modelId": null,
+      "reason": "Batch 50 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. The string resolves globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving it out."
+    },
+    {
+      "modelRaw": "GPT-5.6 Terra",
+      "effort": "*",
+      "file": "batch-50-gemini38f-card",
+      "modelId": null,
+      "reason": "Batch 50 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. The string resolves globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving it out."
     }
   ],
   "benchmarkSplits": [
@@ -2689,6 +2731,20 @@
         "MMLU-Pro"
       ],
       "reason": "Batch 38 (Qwen3.7-Plus release) 的五个拒收标签,理由分五类,写在这里免得下一代发布时重新推导。(1) SWE-Pro:脚注明说在修正过的题集上重测了所有基线,且用内部 scaffold,与官方 Public 板不是同一实例。(2) CritPT:6.0 会落进 Epoch 9.14 的同 null-effort 桶,分歧 34%,厂商读数低于独立榜时按源优先级留在档里。(3) MCP-Atlas:脚注明说 Public set。(4) SWE-Verified:内部 scaffold 读数,DSv4 80.6 vs Vals 96.4 差约 20%,是 scaffold 差异不是模型差异。(5) MMLU-Pro:是 MMLU-Pro,不是目录 mmmu 列的 MMMU-Pro,一字之差的两个基准。这五个标签在整个档案里只出现在 batch-38,全局拒收无副作用(已验证)。"
+    },
+    {
+      "benchmarks": [
+        "HLE-Verified Multidisciplinary expert reasoning",
+        "OSWorld-2.0 Agentic computer use",
+        "LVBench Long video understanding",
+        "Vals Finance Agent v2 Financial analyst tasks",
+        "Harvey's Legal Agent Benchmark Complex legal workflows",
+        "GDP.PDF Expert PDF document comprehension",
+        "BioMysteryBench Bioinformatics research workflows",
+        "Human Difficult",
+        "LABBench2 Biology real-world research tasks"
+      ],
+      "reason": "Batch 50 (Gemini 3.8 Flash model card) 的九个未映射标签,理由分三类,写在这里免得下一代 Google 卡片发布时重新推导。(1) split 不匹配:HLE-Verified —— 目录 hle-no-tools 列装 Full 集,Verified 是另一 split(坑 3 同形,batch 47 的 3.6 卡同判);OSWorld-2.0 —— 行 Note 明写 Partial score, batch tool enabled,partial credit 不是目录 osworld2 列的 pass 分口径,与 Qwen3.8 页 OSWorld 行(19.4 pass / 54.8 partial)同形,那里采的是 pass 分。(2) 目录无列:LVBench(含 agentic/static 两口径)、Vals Finance Agent v2、Harvey's Legal、GDP.PDF、BioMysteryBench 两行、LABBench2。(3) LVBench 的单格 (static) 子行由 parser 按上一行归属第一模型列,标签带 (static) 限定,天然不匹配任何 carried 键。"
     }
   ],
   "versionFallbacks": [

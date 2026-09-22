@@ -1,0 +1,11 @@
+{
+  "batch": "50 · Gemini 3.8 Flash model card table",
+  "collectedWith": "scripts/capture-release-tables.mjs gemini38f",
+  "filtered": false,
+  "release": "gemini38f",
+  "sources": [
+    "https://deepmind.google/models/model-cards/gemini-3-8-flash/"
+  ],
+  "note": "Gemini 3.8 Flash model card(2026-09-02)的性能表,整表抄录:85 行,6 个已发布模型列,15 个 benchmark 标签,0 个分区。与 3.6 卡(batch 47)不同,这张卡的表格是**客户端渲染**的:curl 只回 156KB 壳、几乎无 <tr>,采集脚本用 CDP 驱动无头 Chrome 等应用画完再读表,因此这是可复跑的抓取而不是眼抄。⚠ 本批次**一个模型列都不采纳,包括 Gemini 3.8 Flash 自己**:3.8 Flash 与 3.7 Flash 都在 50 格收录地板以下(report-gaps 2026-09-21:分别差 31/18 格),证据计数器按设计整批排除 release-capture,一张厂商表永远不可能自己把新模型抬过收录地板 —— 这批是为独立榜测到这两个模型那天备好的证据(同 batch 36 的立场)。所有已进目录的模型串(Claude Opus 5 / Sonnet 5 / GPT-5.6 Sol / Terra)**有全局 alias**,这里的 file-scoped 拒收是承重的:不写,竞品分数会直接写进这四条目录记录。evaluation_date 记的是发布日(卡片页不标运行日期);百分号后缀 `%` 在 parser 里剥掉后再 Number()。 交叉验证(坑 33,采表前逐格对过目录现值):DeepSWE 的 Sol 72.7 / Terra 69.6 / Sonnet 5 53.8 与官方板(batch 11)逐位相同;Terminal-Bench 4.0 的 Sol 37.3 / Sonnet 5 12.4 与官方板(terminal-40 列)吻合,Terra 23.6 介于官方 21.5 与 Vals 26.3 之间 —— 这两个标签的列身份由数字定,不靠串。GDPval-AA 的 Opus 5 1824 vs AA 活 Elo 1708、Sol 1710 vs 1588 ≈7-8%,活 Elo 正常漂移。⚠ 「Terminal-bench 4.0」是 terminal-40 列(observe 档)的第一批 vendor 行:该列此前只有官方板与 Vals,benchmarkSplits 里 terminal/4.0 → terminal-40 的路由已存在,本批经 carried map 直接落列。⚠ 「HLE-Verified」拒收:目录 hle-no-tools 列装 Full 集,Verified 是另一 split(坑 3 同形,3.6 卡同判)。⚠ 「OSWorld-2.0」行 Note 明写「Partial score, batch tool enabled」—— partial credit 不是目录 osworld2 列的 pass 分口径,与 Qwen3.8 页 OSWorld 2.0 行(19.4 pass / 54.8 partial)同形:那里采的是 pass 分,这里整行拒收。⚠ LVBench 行不规则:首行第 3.8 Flash 格带「(agentic)」后缀(数值解析时剥掉括注、口径进 note),次行是一格的「(static)」子行 —— parser 对数字开头的单格行按上一行归属第一模型列、标签带 (static) 限定,static 87.1 只进 archive 不 carry,agentic 87.8 同判:目录无 LVBench 列。⚠ GDP.PDF / Harvey's Legal / Vals Finance Agent v2 / BioMysteryBench(两行)/ LABBench2:目录无列,留档。⚠ 两行价格(Input/Output $/1M)非 benchmark 行,parser 的 price 正则跳过,不 carry。⚠ 3.8 Flash 的 Input $0.75/$1.50 是 no-caching 折扣价,目录若将来引用价格须用 regular $1.50,与 batch-42 GPT-5.6 Sol promo 同判(促销价不入目录)。",
+  "retrievedDate": "2026-09-21"
+}
