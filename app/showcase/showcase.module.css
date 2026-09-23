@@ -133,6 +133,27 @@
   border-color: #1d2025;
 }
 
+.posterFigure {
+  margin: 34px 0 0;
+  text-align: center;
+}
+
+.posterFigure img {
+  display: block;
+  width: min(560px, 100%);
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid #cfc8b8;
+  border-radius: 8px;
+  box-shadow: 0 16px 42px rgba(49, 43, 27, .08);
+}
+
+.posterFigure figcaption {
+  margin-top: 10px;
+  color: #6f6a5e;
+  font-size: 13px;
+}
+
 .poster {
   margin: 34px 0 0;
   padding: 30px;

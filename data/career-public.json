@@ -764,6 +764,8 @@
     "publicArtifacts": {
       "portfolioPage": "https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/",
       "portfolioPdf": "https://quarkgluonmixture.github.io/Cost-Aware-Routing-for-Web-Usage-Agents/portfolio/Jiaming-Wei-Phantom-Routing-Defense.pdf",
+      "posterPdf": "/showcase/Jiaming_Wei_Research_Poster_Web_Agent_Evaluation.pdf",
+      "posterPreview": "/showcase/poster-preview.jpg",
       "demo": "https://raw.githubusercontent.com/Quarkgluonmixture/Cost-Aware-Routing-for-Web-Usage-Agents/master/portfolio/demo.mp4",
       "repo": "https://github.com/Quarkgluonmixture/Cost-Aware-Routing-for-Web-Usage-Agents"
     },

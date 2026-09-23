@@ -41,13 +41,36 @@ export default function ShowcasePage() {
           <p className={s.dek}>{tr(showcase.posterSubtitle, lang)}</p>
           <p className={s.people}>{tr(showcase.people, lang)}</p>
           <div className={s.actions}>
-            <a className={s.primary} href={showcase.publicArtifacts.portfolioPdf}>4-page Research Portfolio ↗</a>
+            <a className={s.primary} href={showcase.publicArtifacts.posterPdf}>
+              {lang === "zh" ? "海报 PDF（原版）↗" : "Poster PDF (as presented) ↗"}
+            </a>
+            <a href={showcase.publicArtifacts.portfolioPdf}>4-page Research Portfolio ↗</a>
             <a href={showcase.publicArtifacts.portfolioPage}>
               {lang === "zh" ? "交互式研究页 ↗" : "Interactive research page ↗"}
             </a>
             <a href={showcase.publicArtifacts.repo}>GitHub ↗</a>
           </div>
         </section>
+
+        <figure className={s.posterFigure}>
+          <a href={showcase.publicArtifacts.posterPdf} aria-label={lang === "zh" ? "打开海报 PDF" : "Open the poster PDF"}>
+            {/* eslint-disable-next-line @next/next/no-img-element -- static export; a plain preview image is enough */}
+            <img
+              src={showcase.publicArtifacts.posterPreview}
+              alt={lang === "zh"
+                ? "研究海报：When Is Expensive Perception Worth Paying For?"
+                : "Research poster: When Is Expensive Perception Worth Paying For?"}
+              width={1357}
+              height={1921}
+              loading="lazy"
+            />
+          </a>
+          <figcaption>
+            {lang === "zh"
+              ? "2026-09-16 展示的原版海报。点击打开 PDF。"
+              : "The poster as presented on 16 Sep 2026. Click to open the PDF."}
+          </figcaption>
+        </figure>
 
         <section className={s.poster}>
           <div className={s.posterHead}>
@@ -130,8 +153,8 @@ export default function ShowcasePage() {
           <p>{tr(showcase.disclosure, lang)}</p>
           <p className={s.meta}>
             {lang === "zh"
-              ? "Showcase poster 已于 2026-09-16 展示。这个网页重建公开研究证据，不把私有公司材料伪装成 portfolio asset。"
-              : "The final poster was presented on 16 Sep 2026. This page reconstructs public research evidence without turning private company material into a portfolio asset."}
+              ? "Showcase poster 已于 2026-09-16 展示，原版 PDF 见页首。这个网页重建公开研究证据，不把私有公司材料伪装成 portfolio asset。"
+              : "The final poster was presented on 16 Sep 2026; the original PDF is linked at the top. This page reconstructs public research evidence without turning private company material into a portfolio asset."}
           </p>
         </section>
       </div>

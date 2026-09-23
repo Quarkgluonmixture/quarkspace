@@ -73,6 +73,8 @@ export type Showcase = {
   publicArtifacts: {
     portfolioPage: string;
     portfolioPdf: string;
+    posterPdf: string;
+    posterPreview: string;
     demo: string;
     repo: string;
   };
