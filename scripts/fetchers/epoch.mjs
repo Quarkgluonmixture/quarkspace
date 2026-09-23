@@ -119,8 +119,11 @@ const EXTERNAL = [
     origin: "https://critpt.com/", originName: "CritPt leaderboard",
   },
   {
-    file: "apex_agents_external.csv", benchmark: "apex", version: "2026", score: "Pass@1 score",
+    file: "apex_agents_external.csv", benchmark: "apex", version: "1.1", score: "Pass@1 score",
     origin: "https://www.mercor.com/apex/apex-agents-leaderboard/", originName: "Mercor APEX-Agents leaderboard",
+    // v1.1 task set (31 worlds / 240 tasks) since 2026-09-22; the v1.0 readings (33 worlds / 480
+    // tasks) live on in the archive under version "2026" and route to the `apex` column via
+    // benchmarkSplits. Routed to the apex-11 column by benchmarkSplits (apex|1.1 → apex-11).
   },
   {
     file: "osworld_2_external.csv", benchmark: "osworld2", version: "2.0", score: "Binary accuracy",
