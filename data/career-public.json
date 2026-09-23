@@ -591,12 +591,22 @@
   ],
   "lab": [
     {
-      "name": "GPT Loop",
+      "name": "constrained-agent-runner",
       "year": "2026",
       "text": {
         "zh": "ChatGPT Web ↔ GitHub durable transport ↔ constrained runner 的 agent control plane；重点是可做事，也明确哪些门不能开。",
         "en": "An agent control plane spanning ChatGPT Web, durable GitHub transport and a constrained runner: capable of acting while keeping hard capability boundaries."
-      }
+      },
+      "href": "https://github.com/Quarkgluonmixture/constrained-agent-runner"
+    },
+    {
+      "name": "coding-agent-guardrails",
+      "year": "2026",
+      "text": {
+        "zh": "让 Claude Code / Codex 可靠干活的 rules、hooks 与 skills：git 误操作闸门、下结论前先证明检查真的跑了、会话交接与跨模型审查；每条都来自一次真实失败。",
+        "en": "Rules, hooks and skills that keep Claude Code / Codex reliable: git guardrails, proving a check actually ran before claiming a verdict, session handover and cross-model review — each added after a real failure."
+      },
+      "href": "https://github.com/Quarkgluonmixture/coding-agent-guardrails"
     },
     {
       "name": "Autonomous Agent Prediction",
