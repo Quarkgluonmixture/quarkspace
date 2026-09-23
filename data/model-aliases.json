@@ -2442,6 +2442,12 @@
       "benchmarkVersion": "V2",
       "benchmarkId": "frontierswe-v2",
       "reason": "FrontierSWE V2 is a different benchmark from the archived V1 column, not a new snapshot of it: V1 ran every model on its maker's own CLI (Claude Code, Codex, Kimi CLI…) under a Dominance/AVG RANK headline; V2 runs one harness (proximus) for all models across 34 tasks × 5 trials × 20-hour budget, headline Mean@5. The readings are not comparable — Kimi K3 is 81.2 on V1's vendor dominance reading and 25.87 Mean@5 here — so V2 gets its own column the same way FrontierMath Tier 4 and Terminal-Bench 2.0 did. batch-02's 'Mean@5' versionAlias points at the V1 column and is untouched: that label was the V1 board's own metric name, recorded before V2 existed, and the vendor release tables' 'Dominance as of <date>' rows route to V1 the same way."
+    },
+    {
+      "benchmark": "apex",
+      "benchmarkVersion": "1.1",
+      "benchmarkId": "apex-11",
+      "reason": "APEX-Agents v1.1 (first seen in Epoch's export 2026-09-22) is a different task set from the v1.0 the apex column holds — 31 worlds / 240 tasks versus 33 worlds / 480 tasks, confirmed on Mercor's page and the HF dataset apex-agents-v1.1 — so rule 4 gives it its own column, the same two-step terminal|4.0 → terminal-40 already does. Scores moved wholesale for carried models (fable-5 45→63.6, gpt-5.5 38.5→55.1, opus-5 43.5→65.8), which presented as a cross-source disagreement above 20% and held the daily refresh; that was the version split, not a rewrite. The v1.0 rows stay in the apex column untouched."
     }
   ],
   "versionAliases": [

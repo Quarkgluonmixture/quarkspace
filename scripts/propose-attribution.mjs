@@ -189,13 +189,12 @@ const siblingInSameSource = (raw, base) => {
 // lands in a cell the preview never filled, so no disagreement gate can fire. Refusing on absent
 // evidence is the same reasoning as the rest of this file: a refusal costs a delay, a wrong alias
 // costs a wrong number nobody can see.
-const DATE_SUFFIX = /^[0-9]{4,8}$/;
 // A dated sibling keeps its date even after the effort is stripped, but the date can sit either
 // side of the effort token: `qwen3.7-max-20260517` (tier, then date) and
 // `deepseek-v4-pro-high-20260813` (date after the effort). Stripping the effort alone left a
-// `max0813` residue that failed DATE_SUFFIX, so a GA slug like `qwen3.7-max-0813` was invisible
-// to the fifth refusal — measured 2026-09-22, when a batch-50 alias refusal rotated the
-// self-test's runtime-chosen subject onto "Qwen3.7-Max" and the rule was silent on it.
+// `max0813` residue that failed the pure-date test, so a GA slug like `qwen3.7-max-0813` was
+// invisible to the fifth refusal — measured 2026-09-22, when a batch-50 alias refusal rotated
+// the self-test's runtime-chosen subject onto "Qwen3.7-Max" and the rule was silent on it.
 const datedBase = (raw) => {
   const m = String(raw).trim().match(/^(.*?)[\-_ ]([0-9]{4,8})$/);
   if (!m || !m[1]) return null;

@@ -424,6 +424,13 @@ export const BENCHMARKS: BenchmarkRecord[] = [
   { id:"ale", name:"Agents' Last Exam", axis:"professional", mode:"system", tier:"core", method:"execution", unit:"%", version:"2026", source:"ALE", url:"https://agents-last-exam.org/", zh:"可验证的真实职业任务", en:"Verifiable real-world work" },
   { id:"gdpval", name:"GDPval-AA", axis:"professional", mode:"system", tier:"core", method:"rubric", unit:"Elo", version:"v2", source:"Artificial Analysis", url:"https://artificialanalysis.ai/evaluations/gdpval-aa", zh:"44 种职业的知识工作", en:"Knowledge work across 44 occupations" },
   { id:"apex", name:"APEX-Agents", axis:"professional", mode:"system", tier:"core", method:"rubric", unit:"%", version:"2026", source:"Mercor", url:"https://www.mercor.com/apex/apex-agents-leaderboard/", zh:"投行、咨询与法律交付物", en:"Banking, consulting and legal deliverables" },
+  // APEX-Agents v1.1 (first seen via Epoch's export 2026-09-22): 31 worlds / 240 tasks, an openly
+  // different task set from the v1.0 the `apex` column holds (33 worlds / 480 tasks, confirmed on
+  // Mercor's page and HF dataset apex-agents-v1.1) — rule 4, so its own column, the same shape as
+  // terminal-20/terminal-40. Observe, not core: v1.0 remains the column with cross-model coverage.
+  // Scores moved wholesale (+18 to +21 points for carried models), which is the version split
+  // showing up as a cross-source disagreement, not a rewrite — the v1.0 rows stay untouched.
+  { id:"apex-11", name:"APEX-Agents 1.1", axis:"professional", mode:"system", tier:"observe", method:"rubric", unit:"%", version:"1.1", source:"Mercor", url:"https://www.mercor.com/apex/apex-agents-leaderboard/", zh:"投行、咨询与法律交付物（1.1 题集）", en:"Banking, consulting and legal deliverables (1.1 task set)" },
   { id:"mmmu", name:"MMMU-Pro", axis:"multimodal", mode:"model", tier:"core", method:"exam", unit:"%", version:"Pro", source:"MMMU", url:"https://mmmu-benchmark.github.io/", zh:"专业多模态推理", en:"Expert multimodal reasoning" },
   { id:"charxiv", name:"CharXiv · RQ", axis:"multimodal", mode:"model", tier:"core", method:"exam", unit:"%", version:"RQ", source:"CharXiv", url:"https://charxiv.github.io/", zh:"复杂学术图表理解", en:"Complex scientific chart reasoning" },
   { id:"omnidoc", name:"OmniDocBench", axis:"multimodal", mode:"model", tier:"observe", method:"execution", unit:"%", version:"1.5", source:"OpenDataLab", url:"https://github.com/opendatalab/OmniDocBench", zh:"真实文档解析", en:"Real-world document parsing" },
