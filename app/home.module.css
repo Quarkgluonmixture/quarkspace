@@ -265,11 +265,11 @@ a.t:hover .h2, a.t:hover .go { color: var(--h-acc); }
 }
 
 /* ── other projects list ── */
-.list a {
+.list a, .list > div {
   display: grid; grid-template-columns: 1fr auto; gap: 4px 14px;
   padding: 13px 0; border-bottom: 1px solid var(--h-hair);
 }
-.list a:last-child { border-bottom: 0; }
+.list > :last-child { border-bottom: 0; }
 .list a:hover .tt { color: var(--h-acc); }
 .tt { font-weight: 700; color: var(--h-tx); font-size: 15px; }
 .yy { font: 11px/1 var(--h-mono); color: var(--h-dim); font-variant-numeric: tabular-nums; }

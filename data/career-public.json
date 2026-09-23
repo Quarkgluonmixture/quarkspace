@@ -596,8 +596,7 @@
       "text": {
         "zh": "ChatGPT Web ↔ GitHub durable transport ↔ constrained runner 的 agent control plane；重点是可做事，也明确哪些门不能开。",
         "en": "An agent control plane spanning ChatGPT Web, durable GitHub transport and a constrained runner: capable of acting while keeping hard capability boundaries."
-      },
-      "href": "https://github.com/Quarkgluonmixture/gpt-loop"
+      }
     },
     {
       "name": "Autonomous Agent Prediction",
@@ -614,8 +613,7 @@
       "text": {
         "zh": "LaTeX-aware 学术改写流水线：模型只提 diff，确定性 invariant gate 守数字、引用、公式和术语。",
         "en": "A LaTeX-aware academic rewrite pipeline where models propose diffs and deterministic invariant gates protect numbers, citations, equations and terms."
-      },
-      "href": "https://github.com/Quarkgluonmixture/paper-deslop"
+      }
     },
     {
       "name": "Encode Persona",
@@ -623,8 +621,7 @@
       "text": {
         "zh": "比较自然语言、JSON/YAML、语义标签与 opaque tags 的 persona representations，带 ablations、跨模型 probes 与 exact provenance。",
         "en": "Compares natural language, JSON/YAML, semantic labels and opaque-tag persona representations with ablations, cross-model probes and exact provenance."
-      },
-      "href": "https://github.com/Quarkgluonmixture/encode-persona"
+      }
     },
     {
       "name": "Spatial Copilot",
@@ -632,8 +629,7 @@
       "text": {
         "zh": "把第一人称口述实时变成持久拓扑地图；graph topology 是事实，geometry 只是视觉假设。",
         "en": "Turns first-person narration into a persistent topological map, treating graph topology as truth and geometry as a visual hypothesis."
-      },
-      "href": "https://github.com/Quarkgluonmixture/Spatial-Copilot"
+      }
     },
     {
       "name": "FitnessOS",
@@ -641,8 +637,7 @@
       "text": {
         "zh": "offline-first SwiftUI 健身系统：SQLite source of truth、HealthKit、确定性调度与 transactional outbox。",
         "en": "An offline-first SwiftUI fitness system with SQLite as source of truth, HealthKit, deterministic scheduling and a transactional outbox."
-      },
-      "href": "https://github.com/Quarkgluonmixture/FitnessOS"
+      }
     }
   ],
   "closing": {

@@ -54,7 +54,8 @@ export type LabItem = {
   name: string;
   year: string;
   text: Localized;
-  href: string;
+  // Omitted for private repositories: a link a visitor cannot open reads as a dead link.
+  href?: string;
 };
 
 export type Showcase = {

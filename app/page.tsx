@@ -183,13 +183,14 @@ function SkillCard({ item, lang }: { item: Skill; lang: Lang }) {
 }
 
 function LabRow({ item, lang }: { item: LabItem; lang: Lang }) {
-  return (
-    <a href={item.href} rel="noreferrer">
+  const body = (
+    <>
       <span className={s.tt}>{item.name}</span>
       <span className={s.yy}>{item.year}</span>
       <span className={s.dd}>{tr(item.text, lang)}</span>
-    </a>
+    </>
   );
+  return item.href ? <a href={item.href} rel="noreferrer">{body}</a> : <div>{body}</div>;
 }
 
 function MeasurementChain({ lang }: { lang: Lang }) {
