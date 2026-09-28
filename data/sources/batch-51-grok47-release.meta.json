@@ -1,0 +1,12 @@
+{
+  "batch": "51 · Grok 4.7 release table",
+  "collectedWith": "CDP render + DOM grid extraction (scripts/lib/render.mjs; x.ai publishes CSS grids, not <table> elements — extraction transcript in the PR body)",
+  "filtered": false,
+  "release": "grok47",
+  "sources": [
+    "https://x.ai/news/grok-4-7"
+  ],
+  "note": "Grok 4.7 发布页(2026-09-21)的 Model Improvements 表与 GDPval 图表,逐格抄录:13 行(8 个自家模型格 + 5 个竞品锚点格)。⚠ x.ai 不用 <table>:表是 div.grid[grid-cols-[1.5fr_repeat(4,1fr)]] CSS 网格,GDPval 是 SVG 图表;scripts/capture-release-tables.mjs 的 EXTRACT 吃不到,本批经 CDP 渲染后按 grid 容器逐格读出(transcript 存 PR body),提取配方(复跑用):CDP 渲染后 document.querySelectorAll(\"div.grid\") 里 className 含 repeat(4) 的容器按 :scope > * 逐格读 textContent,GDPval 图表读 figure.innerText 的 1735/1695/1605/1542 序列。交叉验证(采表前逐格对过目录现值,全部逐位一致):GPT-5.6 Sol Max deepswe 72.7 = 官方榜(max, mini-swe-agent);Grok 4.6 High deepswe 65.2 / terminal-40 20.3 = 两个官方榜;Grok 4.6 (high) GDPval 1605、Fable 5.1 (max) 1735、GPT-6 Astra (max) 1542 = AA GDPval-AA v2 榜对应行。五个锚点全中说明此表诚实,但锚点行仍按竞品列先例拒收(batch-17/32/38/39/47/50):厂商发布竞品分数不声明 harness、effort、版本或运行日期。⚠ DeepSWE 71.0 的脚注 * = high effort 写进 reasoning_effort;GDPval 1695 的 (xhigh) 写进 reasoning_effort;Terminal-Bench 4.0 37.6 的 effort 只在列头 xHigh 层面声明、不落行。⚠ Grok 4.7 自身无 catalog record(gaps issue 的 15 个 no-evidence 模型之一):自家 3 个可 carry 格(deepswe/terminal-40/gdpval)留档等待 record,5 个目录无列的格(cursorbench/eebench/aa-briefcase/harvey-legal/healthbench-professional)永久留档。⚠ 价格行($2/$6 input/output per million)不是 benchmark 行,记进本 meta 备查:Grok 4.7 定价与 Grok 4.6 同价 $2/$6,另有 2x 速度变体 2x 价,都不进观测行。",
+  "retrievedDate": "2026-09-28",
+  "priceNote": "Grok 4.7: input $2/M, output $6/M (same as Grok 4.6); fast variant 2x output speed at 2x price. From the same page's pricing table."
+}
