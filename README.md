@@ -21,7 +21,7 @@ For implementation details and AI-agent handoff, read [`AGENTS.md`](AGENTS.md) a
 - separate rankings for general capability, agent systems, coding systems, human preference, speed, and value
 - selectable model dossier and three-model comparison
 - evidence-backed seven-axis capability radar with explicit `Not ingested` / partial / broad coverage states
-- 75-benchmark catalog spanning reasoning, science, coding, agents, professional work, multimodality, and long context
+- 76-benchmark catalog spanning reasoning, science, coding, agents, professional work, multimodality, and long context
 - multi-model benchmark line charts and raw-score tables by capability family
 - model-capability / best-system toggle to prevent harness results being presented as pure model ability
 - OpenRouter price comparison rather than a live overwrite: the card shows the archived list
