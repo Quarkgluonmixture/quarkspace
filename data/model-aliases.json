@@ -2416,6 +2416,27 @@
       "file": "batch-50-gemini38f-card",
       "modelId": null,
       "reason": "Batch 50 is Google's own model card and it prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no reasoning effort and no benchmark version, and source precedence puts it below every board that does. The string resolves globally from other batches, so the refusal has to be scoped to this file rather than expressed by leaving it out."
+    },
+    {
+      "modelRaw": "Grok 4.6 High",
+      "effort": "*",
+      "file": "batch-51-grok47-release",
+      "modelId": null,
+      "reason": "Batch 51 is xAI's own release post and its grid prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no run date and no benchmark version beyond the column header, and source precedence puts it below every board that does. The three competitor strings here are also the batch's cross-validation anchors (Grok 4.6 High 65.2/20.3/1605, GPT-5.6 Sol Max 72.7, Fable 5.1 Max 1735 -- all digit-identical to the DeepSWE / Terminal-Bench 4.0 / GDPval-AA boards already archived), so the refusal is about provenance, not honesty. Same decision as batch-17/32/38/39/47/50."
+    },
+    {
+      "modelRaw": "GPT-5.6 Sol Max",
+      "effort": "*",
+      "file": "batch-51-grok47-release",
+      "modelId": null,
+      "reason": "Batch 51 is xAI's own release post and its grid prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no run date and no benchmark version beyond the column header, and source precedence puts it below every board that does. The three competitor strings here are also the batch's cross-validation anchors (Grok 4.6 High 65.2/20.3/1605, GPT-5.6 Sol Max 72.7, Fable 5.1 Max 1735 -- all digit-identical to the DeepSWE / Terminal-Bench 4.0 / GDPval-AA boards already archived), so the refusal is about provenance, not honesty. Same decision as batch-17/32/38/39/47/50."
+    },
+    {
+      "modelRaw": "Fable 5.1 Max",
+      "effort": "*",
+      "file": "batch-51-grok47-release",
+      "modelId": null,
+      "reason": "Batch 51 is xAI's own release post and its grid prints a column per competitor. Those numbers are archived as evidence but must not be ingested: a maker publishing a rival's score states no harness, no run date and no benchmark version beyond the column header, and source precedence puts it below every board that does. The three competitor strings here are also the batch's cross-validation anchors (Grok 4.6 High 65.2/20.3/1605, GPT-5.6 Sol Max 72.7, Fable 5.1 Max 1735 -- all digit-identical to the DeepSWE / Terminal-Bench 4.0 / GDPval-AA boards already archived), so the refusal is about provenance, not honesty. Same decision as batch-17/32/38/39/47/50."
     }
   ],
   "benchmarkSplits": [
