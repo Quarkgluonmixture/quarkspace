@@ -99,8 +99,8 @@
           <div id="laneStraight" class="lane active">↑ 直</div>
           <div id="laneRight" class="lane">右 →</div>
         </div>
-        <div id="instruction">先点“开启导航”</div>
-        <div id="subInstruction">允许定位后，会自动显示你离路线多远、下一岔口怎么走。</div>
+        <div id="instruction">先点“开启定位”</div>
+        <div id="subInstruction">先允许“位置”权限。拿到 GPS 后即可导航；指南针权限可随后单独开启。</div>
         <div class="metrics">
           <div class="metric"><b id="nextPoi">近枫台</b><span>下一景点</span></div>
           <div class="metric"><b id="turnDist">—</b><span>下一动作</span></div>
@@ -110,7 +110,7 @@
     </div>
 
     <div class="actions">
-      <button id="startBtn" class="btn primary">开启导航</button>
+      <button id="startBtn" class="btn primary">开启定位</button>
       <button id="locateBtn" class="btn">定位到我</button>
       <button id="manualBtn" class="btn">手动定位</button>
       <button id="officialBtn" class="btn warn">官方导览牌</button>
@@ -542,23 +542,74 @@
     const rel=norm180(absBearing-deviceHeading); $('compassPill').textContent=`朝向 ${Math.round(deviceHeading)}° · 目标 ${rel>0?'+':''}${Math.round(rel)}°`;
   }
 
-  async function startNavigation(){
-    if(!map)return;
-    if(location.protocol!=='https:' && location.hostname!=='localhost') toast('iPhone 实时定位通常要求 HTTPS；本地文件模式可能被 Safari 限制。',4200);
-    try{
-      if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
-        const p=await DeviceOrientationEvent.requestPermission(); if(p==='granted') enableOrientation();
-      }else enableOrientation();
-    }catch(e){ console.warn(e); }
-    if(!navigator.geolocation){toast('这个浏览器不支持定位');return;}
+  function startLocationWatch(){
     if(watchId!=null) navigator.geolocation.clearWatch(watchId);
     watchId=navigator.geolocation.watchPosition(pos=>{
       const c=pos.coords; currentPos={lat:c.latitude,lng:c.longitude,accuracy:c.accuracy,heading:c.heading,speed:c.speed};
-      updateUserMarker(); if(currentRouteKey==='return'&&route.length<2)buildReturnRoute(false); updateNav();
+      updateUserMarker();
+      if(currentRouteKey==='return'&&route.length<2)buildReturnRoute(false);
+      updateNav();
     },err=>{
-      toast('定位失败：'+err.message,4200); $('instruction').textContent='定位没拿到'; $('subInstruction').textContent='可点“手动定位”，然后在地图上点你所在的位置。';
+      toast('持续定位失败：'+err.message,4200);
     },{enableHighAccuracy:true,maximumAge:2500,timeout:15000});
-    $('startBtn').textContent='导航已开启'; $('startBtn').classList.remove('primary');
+  }
+
+  async function requestCompass(){
+    try{
+      if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
+        const p=await DeviceOrientationEvent.requestPermission();
+        if(p==='granted'){
+          enableOrientation();
+          $('startBtn').textContent='定位 + 指南针已开启';
+          toast('指南针已开启');
+        }else{
+          toast('指南针权限未开启；GPS 导航仍可正常使用');
+        }
+      }else{
+        enableOrientation();
+        $('startBtn').textContent='定位 + 指南针已开启';
+        toast('指南针已开启');
+      }
+    }catch(e){
+      console.warn(e);
+      toast('指南针权限没有开启；GPS 导航仍可使用');
+    }
+  }
+
+  function startNavigation(){
+    if(!map)return;
+    if(location.protocol!=='https:' && location.hostname!=='localhost'){
+      toast('iPhone 精确定位要求 HTTPS。请从 https://www.quarkspace.top/guide 打开。',4200);
+    }
+    if(!navigator.geolocation){
+      toast('这个浏览器不支持定位');
+      return;
+    }
+
+    $('instruction').textContent='正在申请位置权限…';
+    $('subInstruction').textContent='请在 Safari 弹窗中允许 quarkspace.top 使用“位置”，建议选择精确位置。';
+
+    // Deliberately request geolocation BEFORE any motion/orientation permission.
+    // getCurrentPosition forces the location permission prompt and gives immediate feedback;
+    // only after GPS succeeds do we start watchPosition. Compass becomes an optional second tap.
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const c=pos.coords;
+      currentPos={lat:c.latitude,lng:c.longitude,accuracy:c.accuracy,heading:c.heading,speed:c.speed};
+      updateUserMarker();
+      map.setView([currentPos.lat,currentPos.lng],18);
+      startLocationWatch();
+      if(currentRouteKey==='return'&&route.length<2)buildReturnRoute(false);
+      updateNav();
+      $('startBtn').textContent='开启指南针（可选）';
+      $('startBtn').classList.remove('primary');
+      $('startBtn').onclick=requestCompass;
+      toast('位置已开启；蓝点就是你。需要朝向箭头时再点“开启指南针”。',4200);
+    },err=>{
+      const reason = err.code===1 ? '位置权限被拒绝' : err.code===2 ? '暂时无法获取位置' : '定位请求超时';
+      $('instruction').textContent=reason;
+      $('subInstruction').textContent='iPhone：设置 → 隐私与安全性 → 定位服务 → Safari 网站 → 使用 App 期间，并开启“精确位置”。也可以先用“手动定位”。';
+      toast(reason+'：'+err.message,5200);
+    },{enableHighAccuracy:true,maximumAge:0,timeout:20000});
   }
 
   function enableOrientation(){
@@ -606,7 +657,7 @@
 
   document.querySelectorAll('.chip').forEach(btn=>btn.addEventListener('click',()=>routeButtonClick(btn.dataset.route,btn)));
   $('startBtn').onclick=startNavigation;
-  $('locateBtn').onclick=()=>{if(currentPos&&map)map.setView([currentPos.lat,currentPos.lng],18);else toast('先开启导航');};
+  $('locateBtn').onclick=()=>{if(currentPos&&map)map.setView([currentPos.lat,currentPos.lng],18);else toast('先开启定位');};
   $('manualBtn').onclick=()=>{manualMode=!manualMode;$('manualBtn').textContent=manualMode?'点地图位置':'手动定位';toast(manualMode?'现在在地图上点你所在的位置':'已取消手动定位');};
   $('officialBtn').onclick=()=>{$('officialModal').classList.add('open');};
   $('closeModal').onclick=()=>{$('officialModal').classList.remove('open');};
