@@ -23,6 +23,15 @@ const nextConfig: NextConfig = {
       { source: "/ricochet-mech-arena", destination: "/ricochet-mech-arena/index.html", permanent: false },
     ];
   },
+
+  // /guide must be a top-level document rather than an iframe. iOS Safari can gate precise
+  // geolocation and motion permissions differently inside embedded documents. Rewriting keeps
+  // the shareable URL stable while the browser treats the navigation app as the top-level page.
+  async rewrites() {
+    return [
+      { source: "/guide", destination: "/badaling-redleaf-nav.html" },
+    ];
+  },
 };
 
 export default nextConfig;
