@@ -1,0 +1,32 @@
+.shell {
+  width: 100%;
+  height: calc(100dvh - 71px);
+  min-height: 560px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #0f1410;
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #0f1410;
+}
+
+.noScript {
+  margin: 0;
+  padding: 24px;
+  color: #f2f5f2;
+  background: #0f1410;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+@media (max-width: 800px) {
+  .shell {
+    height: calc(100dvh - 72px - env(safe-area-inset-bottom));
+    min-height: 480px;
+  }
+}
