@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#101410" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>八达岭红叶岭 · 实时步行导航</title>
+  <link rel="preconnect" href="https://tile.openstreetmap.org" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+        onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';" />
+  <style>
+    :root{
+      --bg:#0f1410; --panel:#171d18; --panel2:#202821; --text:#f2f5f2; --muted:#aab5aa;
+      --line:#3fd177; --accent:#f2b84b; --danger:#ff6b6b; --blue:#5fb7ff;
+      --safe-top:max(env(safe-area-inset-top),10px); --safe-bottom:max(env(safe-area-inset-bottom),12px);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;overscroll-behavior:none}
+    button,select{font:inherit}
+    #app{height:100%;display:flex;flex-direction:column;min-height:0}
+    header{padding:calc(var(--safe-top) + 2px) 14px 8px;background:linear-gradient(180deg,#101510 70%,rgba(16,21,16,.92));z-index:1000}
+    .title-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    h1{font-size:17px;margin:0;font-weight:780;letter-spacing:.2px}
+    .status-dot{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;white-space:nowrap}
+    .dot{width:8px;height:8px;border-radius:50%;background:#777;box-shadow:0 0 0 3px rgba(255,255,255,.05)}
+    .dot.ok{background:var(--line)} .dot.warn{background:var(--accent)} .dot.bad{background:var(--danger)}
+    .route-scroll{display:flex;gap:8px;overflow:auto;padding:9px 0 1px;scrollbar-width:none}
+    .route-scroll::-webkit-scrollbar{display:none}
+    .chip{border:1px solid #354039;background:#1b231c;color:#dce5dc;border-radius:999px;padding:8px 11px;font-size:12px;white-space:nowrap}
+    .chip.active{background:#e8f5e9;color:#102114;border-color:#e8f5e9;font-weight:750}
+    #map{flex:1;min-height:38vh;background:#151a15;position:relative}
+    .leaflet-control-attribution{font-size:9px!important}
+    .leaflet-control-layers{border:none!important;border-radius:10px!important;box-shadow:0 4px 18px rgba(0,0,0,.24)!important}
+    .bottom{background:var(--panel);border-top:1px solid #2a332b;z-index:900;padding:10px 12px var(--safe-bottom);max-height:46vh;overflow:auto}
+    .nav-card{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:stretch}
+    .arrow-box{background:#0d120e;border:1px solid #2d392f;border-radius:17px;display:flex;align-items:center;justify-content:center;min-height:108px}
+    .arrow{font-size:57px;line-height:1;font-weight:900;transform-origin:center;transition:transform .2s ease}
+    .nav-main{min-width:0}
+    .turn-lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
+    .lane{padding:7px 4px;text-align:center;border-radius:9px;background:#222b24;color:#7e8d81;font-size:12px;font-weight:700;border:1px solid transparent}
+    .lane.active{background:#f1f6f1;color:#102014;border-color:#f1f6f1}
+    #instruction{font-size:21px;font-weight:850;line-height:1.15;margin:2px 0 5px;letter-spacing:.1px}
+    #subInstruction{font-size:12px;color:var(--muted);line-height:1.45}
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+    .metric{background:var(--panel2);border-radius:11px;padding:8px 9px;min-width:0}
+    .metric b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .metric span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+    .actions{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}
+    .btn{border:0;border-radius:11px;padding:10px 5px;background:#2a342c;color:#eef4ee;font-size:12px;font-weight:700}
+    .btn.primary{background:#e8f5e9;color:#102114}.btn.warn{background:#5b4622;color:#ffe8b9}.btn.danger{background:#4a2628;color:#ffd8db}
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin:12px 1px 7px;font-size:12px;color:#c8d2c9;font-weight:750}
+    .poi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+    .poi{border:1px solid #334035;background:#1d251f;color:#dfe7df;border-radius:10px;padding:8px 4px;font-size:11px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .poi.found{border-color:#406b4d}.poi.missing{opacity:.52}
+    .notice{margin-top:10px;border-radius:11px;padding:9px 10px;background:#232a24;color:#bac4bb;font-size:11px;line-height:1.45}
+    .notice strong{color:#f0f4f0}
+    .leaflet-div-icon{background:transparent;border:0}
+    .me-dot{width:18px;height:18px;border-radius:50%;background:#2f95ff;border:3px solid white;box-shadow:0 0 0 6px rgba(47,149,255,.22),0 2px 10px rgba(0,0,0,.35)}
+    .poi-marker{min-width:28px;height:28px;border-radius:15px;background:#fff;color:#111;border:2px solid #1b231c;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:850;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    .poi-marker.target{background:#ffd36a}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:3000;display:none;align-items:center;justify-content:center;padding:calc(var(--safe-top) + 10px) 10px calc(var(--safe-bottom) + 10px)}
+    .modal.open{display:flex}.modal-card{width:min(760px,100%);max-height:100%;overflow:auto;background:#111713;border:1px solid #334034;border-radius:18px;padding:10px}
+    .modal-card img{display:block;width:100%;height:auto;border-radius:12px;background:#222}
+    .modal-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:2px 2px 10px}
+    .modal-bar b{font-size:14px}.close{border:0;background:#303a32;color:white;padding:8px 11px;border-radius:10px}
+    .small{font-size:11px;color:var(--muted);line-height:1.5;margin:8px 2px 2px}
+    .source-links a{color:#9fd3ff;text-decoration:none}
+    .toast{position:fixed;left:50%;bottom:calc(46vh + 12px);transform:translateX(-50%);z-index:2500;background:rgba(15,20,16,.94);color:#f5f7f5;border:1px solid #39433a;padding:9px 12px;border-radius:11px;font-size:12px;max-width:88vw;display:none;box-shadow:0 5px 20px rgba(0,0,0,.35)}
+    .toast.show{display:block}
+    .compass-pill{position:absolute;right:10px;top:10px;z-index:700;background:rgba(17,24,18,.9);border:1px solid #314033;border-radius:12px;padding:7px 9px;font-size:11px;color:#dbe5dc;backdrop-filter:blur(10px)}
+    @media(min-width:760px){#app{max-width:700px;margin:0 auto;border-left:1px solid #263028;border-right:1px solid #263028}.bottom{max-height:42vh}}
+  </style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="title-row">
+      <h1>八达岭红叶岭 · 实时步行导航</h1>
+      <span class="status-dot"><span id="dataDot" class="dot warn"></span><span id="dataText">加载步道…</span></span>
+    </div>
+    <div class="route-scroll" id="routeButtons">
+      <button class="chip active" data-route="classic">官方经典线</button>
+      <button class="chip" data-route="short">轻松短线</button>
+      <button class="chip" data-route="panorama">全景到佛手谷</button>
+      <button class="chip" data-route="return">从我这里返入口</button>
+    </div>
+  </header>
+
+  <div id="map"><div class="compass-pill" id="compassPill">指南针：未开启</div></div>
+
+  <div class="bottom">
+    <div class="nav-card">
+      <div class="arrow-box"><div id="bigArrow" class="arrow">↑</div></div>
+      <div class="nav-main">
+        <div class="turn-lanes">
+          <div id="laneLeft" class="lane">← 左</div>
+          <div id="laneStraight" class="lane active">↑ 直</div>
+          <div id="laneRight" class="lane">右 →</div>
+        </div>
+        <div id="instruction">先点“开启定位”</div>
+        <div id="subInstruction">先允许“位置”权限。拿到 GPS 后即可导航；指南针权限可随后单独开启。</div>
+        <div class="metrics">
+          <div class="metric"><b id="nextPoi">近枫台</b><span>下一景点</span></div>
+          <div class="metric"><b id="turnDist">—</b><span>下一动作</span></div>
+          <div class="metric"><b id="accuracy">—</b><span>GPS 精度</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="startBtn" class="btn primary">开启定位</button>
+      <button id="locateBtn" class="btn">定位到我</button>
+      <button id="manualBtn" class="btn">手动定位</button>
+      <button id="officialBtn" class="btn warn">官方导览牌</button>
+    </div>
+    <div class="actions">
+      <button id="googleBtn" class="btn">Google 地图</button>
+      <button id="amapBtn" class="btn">高德步行</button>
+      <button id="fitBtn" class="btn">看完整路线</button>
+      <button id="reloadBtn" class="btn">重载步道</button>
+    </div>
+
+    <div class="section-title"><span>直接去某个点</span><span id="poiFoundText">等待 OSM…</span></div>
+    <div class="poi-grid" id="poiGrid"></div>
+
+    <div class="notice" id="safetyNotice">
+      <strong>怎么用：</strong>先开启导航。地图上的绿线优先来自 OpenStreetMap 实际步道；页面会在真实步道岔口提示左 / 直 / 右。GPS 漂移、OSM 缺路或景区临时封闭时，以现场路牌、围挡和工作人员为准。<br>
+      <strong>路线来源：</strong>“官方经典线”按景区公开推荐序列；“短线”和“祥云台—腾龙台—佛手谷”来自近年官方/政府报道。页面不会把未核验的开放状态当成事实。
+    </div>
+  </div>
+</div>
+
+<div id="officialModal" class="modal">
+  <div class="modal-card">
+    <div class="modal-bar"><b>现场“红叶岭景区游览示意图”</b><button class="close" id="closeModal">关闭</button></div>
+    <img src="https://photo.tuchong.com/1132367/f/986270909.jpg" alt="红叶岭景区游览示意图现场照片" />
+    <div class="small">这是 2025 年游客拍到的景区现场导览牌照片，用来和你眼前的路牌互相核对；并非本文自行绘制。若图片加载失败，主地图和 GPS 导航仍可用。</div>
+    <div class="small source-links">
+      路线依据：
+      <a href="https://travel.cnr.cn/list/20221019/t20221019_526037909.shtml" target="_blank" rel="noopener">央广网 2022 官方推荐序列</a> ·
+      <a href="https://www.forestry.gov.cn/c/www/zrzrgy/646533.jhtml" target="_blank" rel="noopener">国家林草局 2025 赏红路线</a> ·
+      <a href="https://www.visitbeijing.com.cn/article/4RtXSmay8Hp" target="_blank" rel="noopener">2026 开园公告</a>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" onerror="this.onerror=null;this.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';"></script>
+<script>
+(() => {
+  'use strict';
+
+  const PARK = {lat:40.34743, lng:116.01704, name:'红叶岭入口/广场'};
+  const BBOX = {s:40.3390, w:116.0130, n:40.3528, e:116.0292};
+  const OFFICIAL_SIGN_IMG = 'https://photo.tuchong.com/1132367/f/986270909.jpg';
+
+  const ROUTES = {
+    classic: {
+      label:'官方经典线',
+      sequence:['入口','近枫台','菩提台','望龙台','祥云台','腾龙台','赤道','拥艳台','赤壁','回音壁'],
+      note:'官方推荐序列到回音壁'
+    },
+    short: {
+      label:'轻松短线',
+      sequence:['入口','近枫台','望龙台'],
+      note:'近枫台—望龙台短线'
+    },
+    panorama: {
+      label:'全景到佛手谷',
+      sequence:['入口','近枫台','望龙台','祥云台','腾龙台','佛手谷'],
+      note:'全景路线段：祥云台—腾龙台—佛手谷'
+    }
+  };
+
+  // 只有在在线 OSM 数据取不到时才用；这些是粗略兜底点，不用于宣称精确岔口。
+  const FALLBACK_POIS = {
+    '入口': [40.34743,116.01704],
+    '近枫台':[40.34685,116.01810],
+    '菩提台':[40.34655,116.01875],
+    '望龙台':[40.34615,116.01945],
+    '祥云台':[40.34700,116.02100],
+    '腾龙台':[40.34810,116.02160],
+    '赤道':[40.34790,116.02225],
+    '拥艳台':[40.34725,116.02300],
+    '赤壁':[40.34665,116.02375],
+    '回音壁':[40.34620,116.02448],
+    '佛手谷':[40.34970,116.02050]
+  };
+
+  const POI_NAMES = ['入口','近枫台','菩提台','望龙台','祥云台','腾龙台','赤道','拥艳台','赤壁','回音壁','佛手谷','忆詹台','旷逸台','揽月台'];
+  const nameAliases = {
+    '入口':['Entrance of Badaling Forest Park Red Leaves Ridge Scenic Area','红叶岭景区入口','红叶岭入口','Red Leaves Ridge Square'],
+    '近枫台':['近枫台'], '菩提台':['菩提台'], '望龙台':['望龙台'], '祥云台':['祥云台'], '腾龙台':['腾龙台'],
+    '赤道':['赤道','Red Path'], '拥艳台':['拥艳台'], '赤壁':['赤壁'], '回音壁':['回音壁'], '佛手谷':['佛手谷'],
+    '忆詹台':['忆詹台'], '旷逸台':['旷逸台'], '揽月台':['揽月台']
+  };
+
+  let map, routeLayer, routeOutline, userMarker, accuracyCircle, poiLayer;
+  let graph = new Map();            // nodeId -> Map(neighborId -> weight)
+  let nodes = new Map();            // nodeId -> {lat,lng}
+  let poi = {};                      // canonical name -> {lat,lng, source, nodeId?}
+  let route = [];                    // [{lat,lng,id?}]
+  let routeNodeIds = [];
+  let currentRouteKey = 'classic';
+  let currentPos = null;
+  let watchId = null;
+  let deviceHeading = null;
+  let manualMode = false;
+  let osmReady = false;
+  let dataMode = 'loading';
+  let nextWaypointIndex = 1;
+  let lastNearestIndex = 0;
+  let turnEvents = [];
+  let targetPoiName = null;
+  let markers = new Map();
+
+  const $ = id => document.getElementById(id);
+  const rad = d => d * Math.PI / 180;
+  const deg = r => r * 180 / Math.PI;
+  const norm360 = d => (d % 360 + 360) % 360;
+  const norm180 = d => ((d + 540) % 360) - 180;
+  const hav = (a,b) => {
+    const R=6371000, p1=rad(a.lat), p2=rad(b.lat), dp=rad(b.lat-a.lat), dl=rad(b.lng-a.lng);
+    const h=Math.sin(dp/2)**2+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
+    return 2*R*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));
+  };
+  const bearing = (a,b) => {
+    const p1=rad(a.lat), p2=rad(b.lat), dl=rad(b.lng-a.lng);
+    const y=Math.sin(dl)*Math.cos(p2), x=Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl);
+    return norm360(deg(Math.atan2(y,x)));
+  };
+  const fmtDist = m => !Number.isFinite(m) ? '—' : (m < 1000 ? `${Math.round(m)} m` : `${(m/1000).toFixed(1)} km`);
+  const toast = (msg, ms=2600) => { const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._to); t._to=setTimeout(()=>t.classList.remove('show'),ms); };
+  const setDataStatus = (kind,text) => { $('dataDot').className='dot '+kind; $('dataText').textContent=text; };
+
+  function initMap(){
+    if (!window.L) {
+      setDataStatus('bad','地图库加载失败');
+      $('instruction').textContent='地图组件没加载出来';
+      $('subInstruction').textContent='检查网络后点“重载步道”，或换浏览器打开。';
+      return;
+    }
+    map = L.map('map',{zoomControl:false,preferCanvas:true}).setView([PARK.lat,PARK.lng],17);
+    L.control.zoom({position:'bottomright'}).addTo(map);
+    const osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:20,attribution:'© OpenStreetMap contributors'}).addTo(map);
+    const satellite=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri'});
+    L.control.layers({'OSM 步道图':osm,'卫星图':satellite},null,{position:'topleft',collapsed:true}).addTo(map);
+    routeOutline=L.polyline([], {color:'#0b0d0b',weight:8,opacity:.68,lineJoin:'round'}).addTo(map);
+    routeLayer=L.polyline([], {color:'#46db7b',weight:5,opacity:.96,lineJoin:'round'}).addTo(map);
+    poiLayer=L.layerGroup().addTo(map);
+    map.on('click', e => {
+      if(!manualMode) return;
+      setManualPosition(e.latlng.lat,e.latlng.lng);
+      manualMode=false; $('manualBtn').textContent='手动定位';
+    });
+    renderPoiGrid();
+    renderFallbackRoute();
+    loadOSM();
+  }
+
+  function renderFallbackRoute(){
+    dataMode='fallback';
+    poi={};
+    for(const [k,v] of Object.entries(FALLBACK_POIS)) poi[k]={lat:v[0],lng:v[1],source:'粗略兜底'};
+    setDataStatus('warn','先显示粗略路线');
+    buildSelectedRoute(false);
+    drawPoiMarkers();
+  }
+
+  async function loadOSM(){
+    setDataStatus('warn','同步 OSM 步道…');
+    const q=`[out:json][timeout:25];(way["highway"~"^(path|footway|steps|pedestrian|track|service)$"](${BBOX.s},${BBOX.w},${BBOX.n},${BBOX.e});nwr["name"](${BBOX.s},${BBOX.w},${BBOX.n},${BBOX.e}););(._;>;);out body center tags;`;
+    const endpoints=[
+      'https://overpass-api.de/api/interpreter',
+      'https://overpass.kumi.systems/api/interpreter',
+      'https://overpass.nchc.org.tw/api/interpreter'
+    ];
+    let lastErr;
+    for(const ep of endpoints){
+      try{
+        const ctl=new AbortController(); const timer=setTimeout(()=>ctl.abort(),12000);
+        const res=await fetch(ep+'?data='+encodeURIComponent(q),{signal:ctl.signal,headers:{'Accept':'application/json'}}); clearTimeout(timer);
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const json=await res.json();
+        parseOSM(json);
+        osmReady=true; dataMode='osm';
+        setDataStatus('ok',`OSM 步道已加载`);
+        buildSelectedRoute(true);
+        drawPoiMarkers();
+        renderPoiGrid();
+        toast('已切换到 OSM 实际步道数据');
+        return;
+      }catch(e){ lastErr=e; }
+    }
+    console.warn('Overpass failed',lastErr);
+    osmReady=false; dataMode='fallback';
+    setDataStatus('warn','OSM 未连上 · 粗略模式');
+    $('subInstruction').textContent='在线步道数据没有加载成功；地图仍可定位，但左/直/右仅作粗略方向参考。';
+  }
+
+  function parseOSM(json){
+    graph=new Map(); nodes=new Map();
+    const elements=json.elements||[];
+    for(const e of elements){
+      if(e.type==='node' && Number.isFinite(e.lat) && Number.isFinite(e.lon)) nodes.set(e.id,{lat:e.lat,lng:e.lon});
+    }
+    const ways=[];
+    for(const e of elements){
+      if(e.type==='way' && e.tags && e.tags.highway && Array.isArray(e.nodes)) ways.push(e);
+    }
+    const add=(a,b,w)=>{ if(!graph.has(a)) graph.set(a,new Map()); const prev=graph.get(a).get(b); if(prev==null||w<prev) graph.get(a).set(b,w); };
+    for(const w of ways){
+      for(let i=0;i<w.nodes.length-1;i++){
+        const a=w.nodes[i],b=w.nodes[i+1],pa=nodes.get(a),pb=nodes.get(b); if(!pa||!pb) continue;
+        const d=hav(pa,pb); add(a,b,d); add(b,a,d);
+      }
+    }
+    const found={};
+    const candidates=[];
+    for(const e of elements){
+      if(!e.tags?.name) continue;
+      let p=null;
+      if(e.type==='node' && Number.isFinite(e.lat)) p={lat:e.lat,lng:e.lon};
+      else if(e.center && Number.isFinite(e.center.lat)) p={lat:e.center.lat,lng:e.center.lon};
+      if(p) candidates.push({name:e.tags.name,p,raw:e});
+    }
+    for(const canonical of POI_NAMES){
+      const aliases=nameAliases[canonical]||[canonical];
+      let c=candidates.find(x=>aliases.includes(x.name));
+      if(!c && canonical==='入口') c=candidates.find(x=>/Red Leaves Ridge Square|红叶岭.*(入口|广场)/i.test(x.name));
+      if(c){
+        const nodeId=nearestGraphNode(c.p,180);
+        found[canonical]={lat:c.p.lat,lng:c.p.lng,source:'OSM',nodeId:nodeId||undefined,osmName:c.name};
+      }
+    }
+    // Entrance is reliably known from the OSM Red Leaves Ridge square even if alias lookup misses.
+    if(!found['入口']) found['入口']={lat:PARK.lat,lng:PARK.lng,source:'OSM/known',nodeId:nearestGraphNode(PARK,220)||undefined};
+    // Keep fallback only for POIs absent in the live dataset, but mark them clearly.
+    for(const [k,v] of Object.entries(FALLBACK_POIS)) if(!found[k]) found[k]={lat:v[0],lng:v[1],source:'粗略兜底',nodeId:nearestGraphNode({lat:v[0],lng:v[1]},220)||undefined};
+    poi=found;
+    $('poiFoundText').textContent=`OSM 命中 ${Object.values(found).filter(x=>x.source==='OSM').length} 个`;
+  }
+
+  function nearestGraphNode(p,maxDist=Infinity){
+    let best=null,bd=Infinity;
+    for(const [id,n] of nodes){ const d=hav(p,n); if(d<bd){bd=d;best=id;} }
+    return bd<=maxDist?best:null;
+  }
+
+  class MinHeap{
+    constructor(){this.a=[]}
+    push(item){let a=this.a;a.push(item);let i=a.length-1;while(i>0){let p=(i-1)>>1;if(a[p][0]<=item[0])break;a[i]=a[p];i=p;}a[i]=item;}
+    pop(){const a=this.a;if(!a.length)return null;const root=a[0],x=a.pop();if(a.length){let i=0;while(true){let l=i*2+1,r=l+1;if(l>=a.length)break;let c=(r<a.length&&a[r][0]<a[l][0])?r:l;if(a[c][0]>=x[0])break;a[i]=a[c];i=c;}a[i]=x;}return root;}
+    get size(){return this.a.length}
+  }
+
+  function dijkstra(start,end){
+    if(start==null||end==null||!graph.has(start)||!graph.has(end)) return null;
+    const dist=new Map([[start,0]]), prev=new Map(), heap=new MinHeap(); heap.push([0,start]);
+    const visited=new Set();
+    while(heap.size){
+      const [d,u]=heap.pop(); if(visited.has(u)) continue; visited.add(u); if(u===end) break;
+      const adj=graph.get(u); if(!adj) continue;
+      for(const [v,w] of adj){ const nd=d+w; if(nd<(dist.get(v)??Infinity)){dist.set(v,nd);prev.set(v,u);heap.push([nd,v]);} }
+    }
+    if(!dist.has(end)) return null;
+    const out=[]; let u=end; while(u!=null){out.push(u);if(u===start)break;u=prev.get(u);} out.reverse();
+    return out[0]===start?out:null;
+  }
+
+  function buildSelectedRoute(fit=false){
+    if(currentRouteKey==='return') return buildReturnRoute(fit);
+    const cfg=ROUTES[currentRouteKey]||ROUTES.classic;
+    const seq=cfg.sequence;
+    const out=[],ids=[];
+    for(let i=0;i<seq.length-1;i++){
+      const a=poi[seq[i]],b=poi[seq[i+1]]; if(!a||!b) continue;
+      let pathIds=null;
+      if(osmReady){
+        const sa=a.nodeId||nearestGraphNode(a,220), sb=b.nodeId||nearestGraphNode(b,220);
+        if(sa!=null&&sb!=null) pathIds=dijkstra(sa,sb);
+      }
+      if(pathIds&&pathIds.length){
+        const pts=pathIds.map(id=>({...nodes.get(id),id}));
+        if(out.length && pts.length && out[out.length-1].id===pts[0].id) pts.shift();
+        out.push(...pts); ids.push(...pathIds.slice(ids.length?1:0));
+      }else{
+        if(!out.length) out.push({lat:a.lat,lng:a.lng});
+        out.push({lat:b.lat,lng:b.lng});
+      }
+    }
+    route=out; routeNodeIds=route.map(p=>p.id??null); nextWaypointIndex=1; lastNearestIndex=0;
+    drawRoute(fit); buildTurnEvents(); updateNav(); highlightTarget(null);
+  }
+
+  function buildReturnRoute(fit=false){
+    if(!currentPos){
+      $('instruction').textContent='先开启定位，再返入口';
+      $('subInstruction').textContent='拿到你的位置后，我会沿 OSM 步道算到红叶岭入口。';
+      route=[]; drawRoute(false); return;
+    }
+    const entrance=poi['入口']||{lat:PARK.lat,lng:PARK.lng};
+    let out=[];
+    if(osmReady){
+      const s=nearestGraphNode(currentPos,300), e=entrance.nodeId||nearestGraphNode(entrance,220), ids=(s&&e)?dijkstra(s,e):null;
+      if(ids) out=[{...currentPos,id:null},...ids.map(id=>({...nodes.get(id),id}))];
+    }
+    if(!out.length) out=[{...currentPos},{lat:entrance.lat,lng:entrance.lng}];
+    route=out;routeNodeIds=route.map(p=>p.id??null);targetPoiName='入口';lastNearestIndex=0;buildTurnEvents();drawRoute(fit);updateNav();highlightTarget('入口');
+  }
+
+  function drawRoute(fit=false){
+    if(!routeLayer||!routeOutline)return;
+    const ll=route.map(p=>[p.lat,p.lng]); routeOutline.setLatLngs(ll);routeLayer.setLatLngs(ll);
+    if(fit&&ll.length>1) map.fitBounds(L.latLngBounds(ll).pad(.14),{animate:true});
+  }
+
+  function drawPoiMarkers(){
+    if(!poiLayer||!window.L)return; poiLayer.clearLayers();markers.clear();
+    const activeSeq=new Set((ROUTES[currentRouteKey]?.sequence)||POI_NAMES);
+    let num=0;
+    for(const name of POI_NAMES){
+      const p=poi[name]; if(!p) continue; if(name==='入口'||activeSeq.has(name)) num++;
+      const label=name==='入口'?'入':String(num);
+      const icon=L.divIcon({className:'',html:`<div class="poi-marker" data-n="${name}">${label}</div>`,iconSize:[30,30],iconAnchor:[15,15]});
+      const m=L.marker([p.lat,p.lng],{icon}).addTo(poiLayer).bindPopup(`<b>${name}</b><br><small>${p.source==='OSM'?'OSM 定位点':'粗略兜底坐标'}</small><br><button onclick="window.__goPoi('${name}')">从我这里去这里</button>`);
+      markers.set(name,m);
+    }
+  }
+
+  function highlightTarget(name){
+    targetPoiName=name;
+    for(const [n,m] of markers){
+      const el=m.getElement()?.querySelector('.poi-marker'); if(!el) continue; el.classList.toggle('target',n===name);
+    }
+  }
+
+  function renderPoiGrid(){
+    const g=$('poiGrid'); g.innerHTML='';
+    for(const name of POI_NAMES.filter(x=>x!=='入口')){
+      const b=document.createElement('button'); b.className='poi '+(poi[name]?.source==='OSM'?'found':(poi[name]?'':'missing')); b.textContent=name;
+      b.onclick=()=>goToPoi(name); g.appendChild(b);
+    }
+  }
+
+  window.__goPoi = name => goToPoi(name);
+  function goToPoi(name){
+    if(!poi[name]){toast('这个点当前没有地图坐标');return;}
+    if(!currentPos){toast('先开启定位，再给你从当前位置算路');map.setView([poi[name].lat,poi[name].lng],18);return;}
+    let out=[];
+    if(osmReady){
+      const s=nearestGraphNode(currentPos,350), e=poi[name].nodeId||nearestGraphNode(poi[name],220), ids=(s&&e)?dijkstra(s,e):null;
+      if(ids) out=[{...currentPos},...ids.map(id=>({...nodes.get(id),id}))];
+    }
+    if(!out.length) out=[{...currentPos},{lat:poi[name].lat,lng:poi[name].lng}];
+    currentRouteKey='custom'; route=out;routeNodeIds=route.map(p=>p.id??null);lastNearestIndex=0;buildTurnEvents();drawRoute(true);highlightTarget(name);
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+    $('instruction').textContent=`正在去：${name}`;updateNav();
+  }
+
+  function buildTurnEvents(){
+    turnEvents=[]; if(route.length<3)return;
+    let cum=0; const cumulative=[0]; for(let i=1;i<route.length;i++){cum+=hav(route[i-1],route[i]);cumulative[i]=cum;}
+    for(let i=1;i<route.length-1;i++){
+      const id=route[i].id; const degNode=id!=null?(graph.get(id)?.size||0):0;
+      const inB=bearing(route[Math.max(0,i-1)],route[i]);
+      const outB=bearing(route[i],route[Math.min(route.length-1,i+1)]);
+      const delta=norm180(outB-inB);
+      if(degNode>=3 || Math.abs(delta)>=42){
+        let type=Math.abs(delta)<28?'straight':(delta>0?'right':'left');
+        turnEvents.push({index:i,type,delta,cum:cumulative[i],lat:route[i].lat,lng:route[i].lng,degree:degNode});
+      }
+    }
+  }
+
+  function nearestRouteIndex(p){
+    if(!route.length)return {index:0,dist:Infinity}; let bi=0,bd=Infinity;
+    // constrain search somewhat after progress, but permit recovery if GPS jumps
+    const start=Math.max(0,lastNearestIndex-35), end=Math.min(route.length,lastNearestIndex+180||route.length);
+    const ranges = (lastNearestIndex>0 && route.length>220) ? [[start,end],[0,route.length]] : [[0,route.length]];
+    for(const [s,e] of ranges){
+      for(let i=s;i<e;i++){const d=hav(p,route[i]);if(d<bd){bd=d;bi=i;}}
+      if(bd<80)break;
+    }
+    if(bi>=lastNearestIndex-8) lastNearestIndex=bi;
+    return {index:bi,dist:bd};
+  }
+
+  function routeDistance(a,b){
+    if(a>=b)return 0;let d=0;for(let i=a+1;i<=b&&i<route.length;i++)d+=hav(route[i-1],route[i]);return d;
+  }
+
+  function nearestNamedAhead(idx){
+    const names=(currentRouteKey==='classic'||currentRouteKey==='short'||currentRouteKey==='panorama') ? ROUTES[currentRouteKey].sequence : (targetPoiName?[targetPoiName]:[]);
+    if(!names.length)return targetPoiName||'终点';
+    let best=null,bd=Infinity;
+    for(const n of names){const p=poi[n];if(!p)continue; let ri=0,rd=Infinity;for(let i=idx;i<route.length;i++){const d=hav(p,route[i]);if(d<rd){rd=d;ri=i;}}if(ri>=idx&&ri-idx<bd){bd=ri-idx;best=n;}}
+    return best||names[names.length-1];
+  }
+
+  function updateNav(){
+    if(!currentPos){setTurnUI('straight');return;}
+    if(!route.length){$('instruction').textContent='还没有可导航路线';return;}
+    const nr=nearestRouteIndex(currentPos), idx=nr.index;
+    $('accuracy').textContent=currentPos.accuracy?`±${Math.round(currentPos.accuracy)}m`:'手动';
+    if(nr.dist>80){
+      $('instruction').textContent=`离当前路线约 ${fmtDist(nr.dist)}`;
+      $('subInstruction').textContent='可能是 GPS 漂移、你走到另一条步道，或路线数据有缺口。可直接点目标景点重新算路。';
+      setTurnUI('off'); $('turnDist').textContent=fmtDist(nr.dist); return;
+    }
+    let nextTurn=turnEvents.find(t=>t.index>idx+1);
+    const nextName=nearestNamedAhead(idx); $('nextPoi').textContent=nextName;
+    if(nextTurn){
+      const d=routeDistance(idx,nextTurn.index);
+      const label=nextTurn.type==='left'?'左转':nextTurn.type==='right'?'右转':'直行';
+      $('instruction').textContent=`${fmtDist(d)} 后 ${label}`;
+      $('turnDist').textContent=fmtDist(d);
+      const nextTarget=route[Math.min(route.length-1,nextTurn.index+2)];
+      const absB=bearing(currentPos,nextTarget); updateCompassArrow(absB);
+      $('subInstruction').textContent=`当前离路线约 ${Math.round(nr.dist)}m · ${dataMode==='osm'?'基于 OSM 实际步道岔口':'粗略模式，务必看现场路牌'}`;
+      setTurnUI(nextTurn.type);
+    }else{
+      const end=route[route.length-1], d=routeDistance(idx,route.length-1);
+      $('instruction').textContent=`继续前行 ${fmtDist(d)}`;
+      $('turnDist').textContent=fmtDist(d);
+      $('subInstruction').textContent=`目标：${targetPoiName||nextName||'路线终点'} · 当前离路线约 ${Math.round(nr.dist)}m`;
+      setTurnUI('straight'); updateCompassArrow(bearing(currentPos,end));
+      if(hav(currentPos,end)<18){ $('instruction').textContent='已到路线终点附近'; if(navigator.vibrate) navigator.vibrate([120,70,120]); }
+    }
+  }
+
+  function setTurnUI(type){
+    $('laneLeft').classList.toggle('active',type==='left'); $('laneStraight').classList.toggle('active',type==='straight'); $('laneRight').classList.toggle('active',type==='right');
+    if(type==='left') $('bigArrow').textContent='↰'; else if(type==='right') $('bigArrow').textContent='↱'; else if(type==='off') $('bigArrow').textContent='!'; else $('bigArrow').textContent='↑';
+    $('bigArrow').style.transform='rotate(0deg)';
+  }
+
+  function updateCompassArrow(absBearing){
+    if(deviceHeading==null){ $('compassPill').textContent=`目标方位 ${Math.round(absBearing)}°`; return; }
+    const rel=norm180(absBearing-deviceHeading); $('compassPill').textContent=`朝向 ${Math.round(deviceHeading)}° · 目标 ${rel>0?'+':''}${Math.round(rel)}°`;
+  }
+
+  function startLocationWatch(){
+    if(watchId!=null) navigator.geolocation.clearWatch(watchId);
+    watchId=navigator.geolocation.watchPosition(pos=>{
+      const c=pos.coords; currentPos={lat:c.latitude,lng:c.longitude,accuracy:c.accuracy,heading:c.heading,speed:c.speed};
+      updateUserMarker();
+      if(currentRouteKey==='return'&&route.length<2)buildReturnRoute(false);
+      updateNav();
+    },err=>{
+      toast('持续定位失败：'+err.message,4200);
+    },{enableHighAccuracy:true,maximumAge:2500,timeout:15000});
+  }
+
+  async function requestCompass(){
+    try{
+      if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
+        const p=await DeviceOrientationEvent.requestPermission();
+        if(p==='granted'){
+          enableOrientation();
+          $('startBtn').textContent='定位 + 指南针已开启';
+          toast('指南针已开启');
+        }else{
+          toast('指南针权限未开启；GPS 导航仍可正常使用');
+        }
+      }else{
+        enableOrientation();
+        $('startBtn').textContent='定位 + 指南针已开启';
+        toast('指南针已开启');
+      }
+    }catch(e){
+      console.warn(e);
+      toast('指南针权限没有开启；GPS 导航仍可使用');
+    }
+  }
+
+  function startNavigation(){
+    if(!map)return;
+    if(location.protocol!=='https:' && location.hostname!=='localhost'){
+      toast('iPhone 精确定位要求 HTTPS。请从 https://www.quarkspace.top/guide 打开。',4200);
+    }
+    if(!navigator.geolocation){
+      toast('这个浏览器不支持定位');
+      return;
+    }
+
+    $('instruction').textContent='正在申请位置权限…';
+    $('subInstruction').textContent='请在 Safari 弹窗中允许 quarkspace.top 使用“位置”，建议选择精确位置。';
+
+    // Deliberately request geolocation BEFORE any motion/orientation permission.
+    // getCurrentPosition forces the location permission prompt and gives immediate feedback;
+    // only after GPS succeeds do we start watchPosition. Compass becomes an optional second tap.
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const c=pos.coords;
+      currentPos={lat:c.latitude,lng:c.longitude,accuracy:c.accuracy,heading:c.heading,speed:c.speed};
+      updateUserMarker();
+      map.setView([currentPos.lat,currentPos.lng],18);
+      startLocationWatch();
+      if(currentRouteKey==='return'&&route.length<2)buildReturnRoute(false);
+      updateNav();
+      $('startBtn').textContent='开启指南针（可选）';
+      $('startBtn').classList.remove('primary');
+      $('startBtn').onclick=requestCompass;
+      toast('位置已开启；蓝点就是你。需要朝向箭头时再点“开启指南针”。',4200);
+    },err=>{
+      const reason = err.code===1 ? '位置权限被拒绝' : err.code===2 ? '暂时无法获取位置' : '定位请求超时';
+      $('instruction').textContent=reason;
+      $('subInstruction').textContent='iPhone：设置 → 隐私与安全性 → 定位服务 → Safari 网站 → 使用 App 期间，并开启“精确位置”。也可以先用“手动定位”。';
+      toast(reason+'：'+err.message,5200);
+    },{enableHighAccuracy:true,maximumAge:0,timeout:20000});
+  }
+
+  function enableOrientation(){
+    const handler=e=>{
+      let h=null;
+      if(Number.isFinite(e.webkitCompassHeading)) h=e.webkitCompassHeading;
+      else if(Number.isFinite(e.alpha)) h=norm360(360-e.alpha);
+      if(h!=null){deviceHeading=h; if(currentPos) updateNav();}
+    };
+    window.addEventListener('deviceorientationabsolute',handler,true); window.addEventListener('deviceorientation',handler,true);
+  }
+
+  function updateUserMarker(){
+    if(!map||!currentPos)return;
+    if(!userMarker){
+      const icon=L.divIcon({className:'',html:'<div class="me-dot"></div>',iconSize:[18,18],iconAnchor:[9,9]});
+      userMarker=L.marker([currentPos.lat,currentPos.lng],{icon,zIndexOffset:1000}).addTo(map);
+      accuracyCircle=L.circle([currentPos.lat,currentPos.lng],{radius:currentPos.accuracy||10,color:'#2f95ff',weight:1,fillColor:'#2f95ff',fillOpacity:.08}).addTo(map);
+    }else{userMarker.setLatLng([currentPos.lat,currentPos.lng]);accuracyCircle.setLatLng([currentPos.lat,currentPos.lng]);accuracyCircle.setRadius(currentPos.accuracy||10);}
+  }
+
+  function setManualPosition(lat,lng){ currentPos={lat,lng,accuracy:null,manual:true}; updateUserMarker(); updateNav(); map.panTo([lat,lng]); toast('已把这里设为你的位置'); }
+
+  function routeButtonClick(key,btn){
+    currentRouteKey=key; targetPoiName=null; document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===btn));
+    drawPoiMarkers(); buildSelectedRoute(true); renderPoiGrid();
+    const cfg=ROUTES[key]; if(cfg) toast(`${cfg.label}：${cfg.note}`);
+  }
+
+  function openGoogle(){
+    const dest=targetPoiName&&poi[targetPoiName]?poi[targetPoiName]:(route.length?route[route.length-1]:poi['入口']);
+    if(!dest)return; const q=`${dest.lat},${dest.lng}`; window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`,'_blank');
+  }
+
+  // WGS84 -> GCJ-02, used only for handing coordinates to AMap in mainland China.
+  function outOfChina(lat,lng){return lng<72.004||lng>137.8347||lat<0.8293||lat>55.8271}
+  function transformLat(x,y){let ret=-100+2*x+3*y+.2*y*y+.1*x*y+.2*Math.sqrt(Math.abs(x));ret+=(20*Math.sin(6*x*Math.PI)+20*Math.sin(2*x*Math.PI))*2/3;ret+=(20*Math.sin(y*Math.PI)+40*Math.sin(y/3*Math.PI))*2/3;ret+=(160*Math.sin(y/12*Math.PI)+320*Math.sin(y*Math.PI/30))*2/3;return ret}
+  function transformLng(x,y){let ret=300+x+2*y+.1*x*x+.1*x*y+.1*Math.sqrt(Math.abs(x));ret+=(20*Math.sin(6*x*Math.PI)+20*Math.sin(2*x*Math.PI))*2/3;ret+=(20*Math.sin(x*Math.PI)+40*Math.sin(x/3*Math.PI))*2/3;ret+=(150*Math.sin(x/12*Math.PI)+300*Math.sin(x/30*Math.PI))*2/3;return ret}
+  function wgsToGcj(lat,lng){if(outOfChina(lat,lng))return{lat,lng};const a=6378245,ee=.00669342162296594323,dLat=transformLat(lng-105,lat-35),dLng=transformLng(lng-105,lat-35),radLat=lat/180*Math.PI,magic=Math.sin(radLat),sqrtMagic=Math.sqrt(1-ee*magic*magic);const mgLat=lat+(dLat*180)/((a*(1-ee))/(magic*sqrtMagic)*Math.PI),mgLng=lng+(dLng*180)/(a/sqrtMagic*Math.cos(radLat)*Math.PI);return{lat:mgLat,lng:mgLng}}
+  function openAmap(){
+    const dest=targetPoiName&&poi[targetPoiName]?poi[targetPoiName]:(route.length?route[route.length-1]:poi['入口']); if(!dest)return;
+    const d=wgsToGcj(dest.lat,dest.lng); let url=`https://uri.amap.com/navigation?to=${d.lng},${d.lat},${encodeURIComponent(targetPoiName||'路线终点')}&mode=walk&policy=0&src=badaling-redleaf-nav&coordinate=gaode&callnative=1`;
+    if(currentPos){const s=wgsToGcj(currentPos.lat,currentPos.lng);url+=`&from=${s.lng},${s.lat},${encodeURIComponent('我的位置')}`;} window.open(url,'_blank');
+  }
+
+  document.querySelectorAll('.chip').forEach(btn=>btn.addEventListener('click',()=>routeButtonClick(btn.dataset.route,btn)));
+  $('startBtn').onclick=startNavigation;
+  $('locateBtn').onclick=()=>{if(currentPos&&map)map.setView([currentPos.lat,currentPos.lng],18);else toast('先开启定位');};
+  $('manualBtn').onclick=()=>{manualMode=!manualMode;$('manualBtn').textContent=manualMode?'点地图位置':'手动定位';toast(manualMode?'现在在地图上点你所在的位置':'已取消手动定位');};
+  $('officialBtn').onclick=()=>{$('officialModal').classList.add('open');};
+  $('closeModal').onclick=()=>{$('officialModal').classList.remove('open');};
+  $('officialModal').addEventListener('click',e=>{if(e.target===$('officialModal'))$('officialModal').classList.remove('open');});
+  $('googleBtn').onclick=openGoogle; $('amapBtn').onclick=openAmap;
+  $('fitBtn').onclick=()=>{if(map&&route.length)map.fitBounds(L.latLngBounds(route.map(p=>[p.lat,p.lng])).pad(.14));};
+  $('reloadBtn').onclick=()=>loadOSM();
+
+  // Leaflet script is external; wait briefly in case fallback CDN is used.
+  let tries=0; const wait=setInterval(()=>{tries++; if(window.L){clearInterval(wait);initMap();}else if(tries>40){clearInterval(wait);setDataStatus('bad','地图库加载失败');}},150);
+})();
+</script>
+</body>
+</html>

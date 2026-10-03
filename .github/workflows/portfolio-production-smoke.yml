@@ -15,7 +15,7 @@ on:
       - "app/site-beian.tsx"
       - "app/site-beian.module.css"
       - "app/guide/**"
-      - "public/badaling-redleaf-nav.html"
+      - "public/guide/index.html"
       - "data/career-public.json"
       - "scripts/check-mobile.mjs"
       - "scripts/check-resume-print.mjs"
@@ -53,7 +53,7 @@ jobs:
             zh="$(curl -fsSL --max-time 20 "$base/" || true)"
             en="$(curl -fsSL --max-time 20 "$base/en" || true)"
             guide="$(curl -fsSL --max-time 20 "$base/guide" || true)"
-            guide_app="$(curl -fsSL --max-time 20 "$base/badaling-redleaf-nav.html" || true)"
+            guide_app="$(curl -fsSL --max-time 20 "$base/guide/index.html" || true)"
             if grep -Fq '大模型评测' <<<"$zh" && \
                grep -Fq 'Reliable Agent Evaluation for Adaptive Agentic Systems' <<<"$en" && \
                grep -Fq '八达岭红叶岭实时步行导航' <<<"$guide" && \
@@ -97,7 +97,7 @@ jobs:
           check "/showcase" "什么时候值得为更昂贵的感知付费"
           check "/en/showcase" "When Is Expensive Perception Worth Paying For?"
           check "/guide" "八达岭红叶岭实时步行导航"
-          check "/badaling-redleaf-nav.html" "官方经典线"
+          check "/guide/index.html" "官方经典线"
 
           www_file="$(mktemp)"
           www_code="$(curl -sS -L --max-time 20 -o "$www_file" -w '%{http_code}' "https://www.quarkspace.top/guide")"
