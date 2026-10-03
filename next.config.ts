@@ -24,7 +24,6 @@ const nextConfig: NextConfig = {
       // EdgeOne/vinext does not preserve the Next rewrite to a public HTML file reliably in production.
       // Use the same proven static-file redirect pattern as the two games above. The destination is
       // still a top-level document, so iOS Safari can request precise geolocation directly.
-      { source: "/guide", destination: "/guide/index.html", permanent: false },
     ];
   },
 };
