@@ -1,4 +1,10 @@
-# AI Model Observatory · AI 模型观测站
+# QuarkSpace
+
+个人网站与长期复用的互联网门户：对外展示身份、作品与可公开体验的项目；对内提供通往个人服务的访问入口。
+长期方向与边界见 [docs/VISION.md](docs/VISION.md)。当前代码库内的个人网站、模型观测站和 Persona Lab
+保持各自的数据与权限边界；门户定位不表示所有私有服务已在此实现或公开。
+
+## AI Model Observatory · AI 模型观测站
 
 A bilingual, mobile-ready dashboard for comparing frontier AI models across versioned capability benchmarks, best-available agent systems, human-preference rankings, throughput, context windows, and token prices.
 
@@ -14,7 +20,7 @@ selecting one, and running direct probe experiments with observable reasoning tr
 
 For implementation details and AI-agent handoff, read [`AGENTS.md`](AGENTS.md) and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). The repository is maintained partly by a scheduled agent; its standing instructions are [`docs/AGENT-OPERATIONS.md`](docs/AGENT-OPERATIONS.md).
 
-## Features
+## Observatory features
 
 - 29 frontier and open-weight model families, each with its published operating points
 - Chinese / English interface with persistent language preference

@@ -1,4 +1,6 @@
-# AI Model Observatory — Agent Handoff
+# QuarkSpace — Agent Handoff
+
+Overall direction: `docs/VISION.md` — personal website, public project portal and authorized access hub. The observatory is one product surface, not the entire repository mission. Existing product/data/security contracts below remain in force.
 
 **Picking this up cold? Read `CHECKPOINT.md` first** — one page: where things stand, which
 scheduler runs what and when, the commands, and what to watch. Then `TODO.md` for what is next.
@@ -76,7 +78,7 @@ Four rules on it, all of them the kind that fail silently:
   `@media print`; the web filing must remain in the DOM and visible on screen. After changing
   root layout, filing CSS, resume print styles or print controls, run the print contract on both routes.
 
-## Mission
+## Observatory mission
 
 Maintain a bilingual, mobile-first AI model observatory with honest evidence semantics. The
 dashboard must separate model capability, best-system performance, human preference, speed
