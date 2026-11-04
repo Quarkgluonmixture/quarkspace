@@ -113,7 +113,7 @@ test("LiveBench reads the official release assets and treats a missing cost file
     }
     if (url === `${assetBase}/table_2026_06_25.csv`) {
       return new Response(
-        "model,AMPS_Hard,python\\r\\nclaude-opus-5-max-effort,99.5,80\\r\\ngpt-test,N/A,72\\r\\n",
+        "model,AMPS_Hard,python\r\nclaude-opus-5-max-effort,99.5,80\r\ngpt-test,N/A,72\r\n",
       );
     }
     if (url === `${assetBase}/categories_2026_06_25.json`) {
