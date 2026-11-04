@@ -14,11 +14,13 @@
 // One board now breaks that second sentence, and it is why the loop below skips instead of
 // throwing when a board with no catalog column has no island: `rsi_index` (first seen
 // 2026-08-14) is a client-only React component whose whole dataset — 3 models, 5 research
-// tasks, `score` 0-1, no `overall` — is bundled inside its JS chunk, `props="{}"`. Boards that
-// map to a catalog column still hard-fail on a missing island, because that is a restyle of a
-// board this project publishes.
+// tasks, `score` 0-1, no `overall` — is bundled inside its JS chunk, `props="{}"`.
+// Web Search is a different exception: its ScatterGraph island carries only `overall`, while
+// its ParetoCurve island carries the separately published `overall`, `finance` and `legal`
+// model maps. The latter two are the sub-task series batch 05 already archived.
+// Boards that map to a catalog column still hard-fail on a missing required island.
 //
-// What licensed replacing the transcription: batch 05 hand-read six CorpFin v2 rows —
+// // What licensed replacing the transcription: batch 05 hand-read six CorpFin v2 rows —
 // 73.19 / 71.83 / 71.56 / 71.29 / 68.57 / 68.53 — and this file's `overall` task gives
 // 73.194 / 71.834 / 71.562 / 71.29 / 68.57 / 68.532 for the same six models. Six of six, so
 // `overall` is the view the board shows by default and the one that was transcribed.
@@ -200,7 +202,45 @@ export const vals = {
       const view = unwrapAstroProps(props);
       const board = view.benchmarkView?.default ?? view.benchmarkView;
       const meta = board?.metadata ?? {};
-      const tasks = board?.tasks ?? {};
+      const tasks = { ...(board?.tasks ?? {}) };
+
+      if (slug === "web_search") {
+        // ScatterGraph's benchmarkView contains only "overall". The two named sub-task series
+        // are published separately in the page's ParetoCurve island, not in its task map.
+        const paretoProps = readAstroIslandProps(html, "data", "ParetoCurve");
+        if (!paretoProps) {
+          throw new Error("web_search: no ParetoCurve data island — the page changed shape");
+        }
+        const paretoData = unwrapAstroProps(paretoProps).data;
+        if (!paretoData || typeof paretoData !== "object") {
+          throw new Error("web_search: ParetoCurve has no data object");
+        }
+
+        // Cross-check the chart's overall scores against the canonical benchmarkView before
+        // using its finance/legal series. A mismatched pair of islands is a source-shape failure,
+        // not permission to combine two different snapshots.
+        const overall = tasks.overall ?? {};
+        const chartOverall = paretoData.overall ?? {};
+        const overallModels = Object.keys(overall).sort();
+        const chartModels = Object.keys(chartOverall).sort();
+        if (
+          overallModels.length === 0 ||
+          overallModels.length !== chartModels.length ||
+          overallModels.some((model, index) =>
+            model !== chartModels[index] ||
+            Number(overall[model]?.accuracy) !== Number(chartOverall[model]?.accuracy))
+        ) {
+          throw new Error("web_search: ParetoCurve overall does not match benchmarkView overall");
+        }
+
+        for (const task of ["finance", "legal"]) {
+          const entries = paretoData[task];
+          if (!entries || typeof entries !== "object" || Array.isArray(entries) || Object.keys(entries).length === 0) {
+            throw new Error(`web_search: ParetoCurve is missing the "${task}" task`);
+          }
+          tasks[task] = entries;
+        }
+      }
 
       const wanted = SUBTASKS.get(slug) ?? [["overall", KNOWN.get(slug) ?? `vals-${slug}`]];
       if (!KNOWN.has(slug) && !SUBTASKS.has(slug)) noColumn.push(`${slug} (${meta.benchmark ?? "?"})`);
@@ -292,8 +332,11 @@ export const vals = {
           "Read from the `props` attribute Astro server-renders onto each board's <astro-island>, " +
           "which is where the whole leaderboard lives — /benchmarks is an index with no scores, " +
           "and that page is what two earlier passes measured before recording Vals as publishing " +
-          "nothing machine-readable. score is the published `accuracy` (already 0-100). harness " +
-          "and reasoning_effort come from the row's own fields rather than from prose. " +
+          "nothing machine-readable. score is the published `accuracy` (already 0-100). On Web Search, `overall` " +
+          "is read from the benchmarkView island and the already-archived `finance` / `legal` " +
+          "subtasks from the page's ParetoCurve data island; their overall model set and accuracy " +
+          "are cross-checked before combining the views. harness and reasoning_effort come from " +
+          "each row's own fields rather than from prose. " +
           "evaluation_date is null on every row on purpose: Vals dates the BOARD, not the run. " +
           "model_raw is the published `provider/model` string, verbatim — attribution stays the " +
           "alias step's decision. source_kind is independent throughout: Vals is a third party " +
