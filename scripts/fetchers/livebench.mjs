@@ -1,9 +1,9 @@
 // LiveBench, read from the files the site itself loads.
 //
 // LiveBench renders client-side, so the leaderboard has no table text to transcribe — batch 05
-// recorded it as UNAVAILABLE for exactly that reason. The page fetches `./table_<release>.csv`,
-// `./categories_<release>.json` and `./cost_<release>.csv`, so those files are the published
-// numbers, not a rendering of them.
+// recorded it as UNAVAILABLE for exactly that reason. The published 1.0 release assets live in
+// the official livebench.github.io repository's public/ directory; the old livebench.ai asset
+// paths now return 404. The repository files are the published numbers, not a rendering of them.
 //
 // This is a transcription, mechanised. It copies cells and never computes one: LiveBench's
 // category and global averages are derived client-side from these task columns, so they are
@@ -50,7 +50,7 @@ const fetchText = async (url) => {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`${response.status} ${response.statusText} — ${url}`);
   const body = await response.text();
-  // A missing asset on GitHub Pages answers with the SPA shell or a 404 page, not an error.
+  // A missing raw asset must never be mistaken for a successful data response.
   if (body.trimStart().startsWith("<")) throw new Error(`not a data file (got HTML) — ${url}`);
   return body;
 };
