@@ -40,6 +40,12 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
+      # These readers are network-facing and own the interpretation of published source data.
+      # Replay their current response shapes offline so a URL or Astro-island change fails CI
+      # before the daily availability alarm has to discover it.
+      - name: Test scripted upstream source readers
+        run: npm run test:upstream-fetchers
+
       - name: Lint
         run: npm run lint
 
