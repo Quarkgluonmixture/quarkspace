@@ -41,10 +41,15 @@ const unescapeAttribute = (text) => text
  * selectors) and the one holding the leaderboard is the big one. Returns null when no island
  * matches, which callers should treat as a page restyle rather than as an empty board.
  */
-export const readAstroIslandProps = (html, key) => {
+export const readAstroIslandProps = (html, key, componentName = null) => {
   let best = null;
-  for (const tag of html.match(/<astro-island\b[^>]*>/g) ?? []) {
-    const attribute = /\bprops="([^"]*)"/.exec(tag);
+  for (const tag of html.match(/<astro-island\\b[^>]*>/g) ?? []) {
+    if (componentName) {
+      const componentUrl = /\\bcomponent-url="([^"]+)"/.exec(tag)?.[1] ?? "";
+      const filename = componentUrl.slice(componentUrl.lastIndexOf("/") + 1);
+      if (!filename.startsWith(`${componentName}.`)) continue;
+    }
+    const attribute = /\\bprops="([^"]*)"/.exec(tag);
     if (!attribute) continue;
     const raw = unescapeAttribute(attribute[1]);
     if (!raw.includes(`"${key}"`)) continue;
