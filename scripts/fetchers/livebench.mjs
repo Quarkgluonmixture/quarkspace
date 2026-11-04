@@ -10,7 +10,9 @@
 // deliberately not written here.
 
 const SITE = "https://livebench.ai";
-// The site's own asset directory, which is the authoritative list of published releases.
+// The official LiveBench 1.0 release repository is the source of the published CSV/JSON assets.
+// The legacy livebench.ai asset URLs now return 404 even though these files remain published.
+const ASSET_BASE = "https://raw.githubusercontent.com/LiveBench/livebench.github.io/main/public";
 const RELEASE_INDEX = "https://api.github.com/repos/LiveBench/livebench.github.io/contents/public";
 
 // Effort tokens LiveBench prints inside the model string. Only a token that literally
@@ -79,10 +81,18 @@ export const livebench = {
   archiveVersion: (rows) => rows[0].benchmark_version,
 
   latestVersion: async () => {
-    const listing = await (await fetch(RELEASE_INDEX)).json();
+    const response = await fetch(RELEASE_INDEX, {
+      headers: {
+        Accept: "application/vnd.github+json",
+        "User-Agent": "quarkspace-observatory",
+      },
+    });
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText} — ${RELEASE_INDEX}`);
+    const listing = await response.json();
+    if (!Array.isArray(listing)) throw new Error("LiveBench release index is not a file listing");
     const releases = listing
       .map((entry) => entry.name)
-      .filter((name) => /^table_\d{4}_\d{2}_\d{2}\.csv$/.test(name))
+      .filter((name) => /^table_\\d{4}_\\d{2}_\\d{2}\\.csv$/.test(name))
       .map((name) => name.slice("table_".length, -".csv".length).replaceAll("_", "-"))
       .sort();
     if (releases.length === 0) throw new Error("no table_*.csv in the LiveBench asset directory");
@@ -92,11 +102,17 @@ export const livebench = {
   async fetch(version) {
     const release = version ?? (await livebench.latestVersion());
     const slug = release.replaceAll("-", "_");
+    const urls = {
+      table: `${ASSET_BASE}/table_${slug}.csv`,
+      categories: `${ASSET_BASE}/categories_${slug}.json`,
+      cost: `${ASSET_BASE}/cost_${slug}.csv`,
+    };
 
     const [tableCsv, categoriesJson, costCsv] = await Promise.all([
-      fetchText(`${SITE}/table_${slug}.csv`),
-      fetchText(`${SITE}/categories_${slug}.json`),
-      fetchText(`${SITE}/cost_${slug}.csv`).catch(() => null),
+      fetchText(urls.table),
+      fetchText(urls.categories),
+      // Cost breakdowns are not published for every release; scores and categories are required.
+      fetchText(urls.cost).catch(() => null),
     ]);
 
     const table = parseCsv(tableCsv);
@@ -183,14 +199,17 @@ export const livebench = {
         filtered: false,
         release,
         sources: [
-          `${SITE}/table_${slug}.csv`,
-          `${SITE}/categories_${slug}.json`,
-          `${SITE}/cost_${slug}.csv`,
+          urls.table,
+          urls.categories,
+          ...(costCsv ? [urls.cost] : []),
         ],
         note:
           "LiveBench renders client-side and publishes no transcribable table, so this batch is " +
-          "fetched from the data files the page itself loads rather than read off the screen. " +
-          "Every row is one published task cell. LiveBench's category averages and Global Average " +
+          "fetched from the official LiveBench 1.0 release repository's public/ assets rather than " +
+          "read off the screen. The old livebench.ai/table_<release>.csv paths return 404; the " +
+          "repository's raw files remain published. Table and category files are required; cost " +
+          "breakdowns are optional and listed as a source only when present. Every row is one " +
+          "published task cell. LiveBench's category averages and Global Average " +
           "are computed in the browser from these same columns and are deliberately NOT archived: " +
           "they are derived, not published. reasoning_effort holds only an effort token that " +
           "literally appears in the model string (…-max-effort, …-xhigh); everything else is null. " +
