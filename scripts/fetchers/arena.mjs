@@ -34,7 +34,7 @@ const SITE = "https://arena.ai";
 const BOARDS = [
   {
     slug: "text-overall-style_control",
-    page: `${SITE}/leaderboard/text`,
+    page: `${SITE}/leaderboard/chat/text`,
     label: "LMArena Text Arena overall (style control)",
     field: "text_elo",
   },
@@ -178,7 +178,7 @@ export const arena = {
         collectedWith: "scripts/fetchers/arena.mjs",
         filtered: true,
         filterRule:
-          "Two of the boards arena.ai publishes. Measured 2026-08-07: /leaderboard/text carries " +
+          "Two of the boards arena.ai publishes. Measured 2026-08-07: /leaderboard/chat/text carries " +
           "text-overall-style_control, /leaderboard/code/webdev carries webdev-overall-raw, and two " +
           "more exist that this batch does NOT take — vision-overall-style_control and " +
           "text-hard_prompts-style_control. They are left because the catalog has nowhere to put " +
