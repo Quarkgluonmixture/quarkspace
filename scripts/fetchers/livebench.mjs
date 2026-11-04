@@ -92,7 +92,7 @@ export const livebench = {
     if (!Array.isArray(listing)) throw new Error("LiveBench release index is not a file listing");
     const releases = listing
       .map((entry) => entry.name)
-      .filter((name) => /^table_\\d{4}_\\d{2}_\\d{2}\\.csv$/.test(name))
+      .filter((name) => /^table_\d{4}_\d{2}_\d{2}\.csv$/.test(name))
       .map((name) => name.slice("table_".length, -".csv".length).replaceAll("_", "-"))
       .sort();
     if (releases.length === 0) throw new Error("no table_*.csv in the LiveBench asset directory");
