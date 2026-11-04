@@ -20,7 +20,7 @@
 // model maps. The latter two are the sub-task series batch 05 already archived.
 // Boards that map to a catalog column still hard-fail on a missing required island.
 //
-// // What licensed replacing the transcription: batch 05 hand-read six CorpFin v2 rows —
+// What licensed replacing the transcription: batch 05 hand-read six CorpFin v2 rows —
 // 73.19 / 71.83 / 71.56 / 71.29 / 68.57 / 68.53 — and this file's `overall` task gives
 // 73.194 / 71.834 / 71.562 / 71.29 / 68.57 / 68.532 for the same six models. Six of six, so
 // `overall` is the view the board shows by default and the one that was transcribed.
