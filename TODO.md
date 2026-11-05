@@ -7,6 +7,10 @@
 
 ---
 
+## P2 · QuarkSpace source availability (2026-11-05)
+
+- [ ] **LiveBench optional cost asset must treat only HTTP 404 as absent.** Stacked Draft PR adds `fetchOptionalCostText`: 404 → optional null; 403/429/5xx/network failure/HTML → source read failure. Added synthetic regressions; NOT_RUN. This does not prove the upstream source is currently readable.
+- [ ] **Issue #159 still OPEN.** Latest scheduled report (run `42036963313`) lists Artificial Analysis 410 Gone (1 run), LMArena 403 (24), LiveBench 404 (18), and Vals Web Search missing finance (34). PRs #162/#163 restore/change readers and add fail-closed Vals coverage, but a real scheduled source refresh is still required before closing the issue or claiming availability restored. Do not hand-transcribe or rewrite archives.
 ## Recruiter-facing portfolio
 
 - [ ] **可选项，不是发布阻塞项**：如果以后拿到一个明确、public-safe、可维护的 binary upload 路径，
