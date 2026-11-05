@@ -1,6 +1,84 @@
 # CHECKPOINT
 
-## 2026-09-21 · recruiter-facing portfolio audience split is released, production-smoked, and current
+## 2026-11-05 · 当前 QuarkSpace / Model Observatory 状态
+
+**本节是当前交接快照，优先于下方 2026-09-21 / 2026-08-26 的历史状态与数字。** Git 分支和 HEAD 不在这里固定；动手前仍以 GitHub 当前 main、PR、Issue 和工作流为准。
+
+### 产品边界与 Vision
+
+- 当前权威方向见 2026-10-31 更新的 docs/VISION.md：QuarkSpace 是个人网站、公开项目入口与授权个人服务入口组成的门户，不等同于单一模型观察站。
+- 三个产品面保持隔离：个人网站（六条中英文受众路由）、/models（AI Model Observatory）、/persona（Persona Lab）。各自保留数据、权限和运行时边界；不得因托管在同一仓库而合并数据源或权限。
+- VISION 已更新，本轮不改 VISION。
+
+### Observatory 当前基线
+
+- 最新可用的模型数据契约报告来自 PR #130 当前 head（该 PR 只改 AA 参数归档 batch-14，不改 observations 或 model-data）：29 个模型家族、76 个 benchmark、2,270 条 observation、1,448 / 2,204 个已填单元格（65.7%）；来源拆分为 benchmark 961、independent 1,082、vendor 227。下一次数据改动前仍应在最新 main 上重跑 npm run check:data，作为正式基线。
+- 2026-11-04 的 Issue #7 自动报告确认生产站与 main 一致：29 models × 76 benchmarks、10 个 chunk、约 1,753 KB；三个 host/route 探针均检测到 ICP filing。部署不是当前阻塞项。
+- scripts/fetchers/index.mjs 注册 18 个 fetcher。不要把“已注册”误写成“全部每日刷新”：各源的 versioning、触发方式和可读性不同；AA 参数刷新是按需触发，发布页采集也不是每日漂移任务。
+- .github/workflows/upstream.yml 每日 06:00 UTC 执行来源漂移、collection gaps、发布探针、部署与价格检查。它把 integrity 与 availability 分开处理：冻结源改写已发布数字仍是 integrity failure；来源不可读则进入独立 availability issue，不应把两者混成一个故障。
+- 当前模型目录的 50-cell 收录地板仍有效。上游已发布但证据不足的模型继续留在观察队列，不创建空目录记录，也不降低地板。
+
+### 当前开放 PR：逐项处理，不批量合并
+
+| PR | 当前内容与证据 | 决策 / 下一步 |
+| --- | --- | --- |
+| #130 | AA 参数 batch-14 更新到 intelligence index v5，retrievedDate 为 2026-11-04。PR body 的检查输出报告 31 项 catalog/archive 差异：22 项 speed/latency，另有 9 项 intelligence / costTask 冲突。 | HOLD。窄 reconciler 只允许 speed / latency，遇到非机械字段会整批拒绝；目前没有写回 model-data。GitHub run 41837723030 是 action_required 且没有 job 执行，不是 CI 绿灯。PR body 中的本地检查显示 check:models FAILED；不能合并来掩盖矛盾。 |
+| #151 | LiveBench 在 2026-09-29 曾从冻结版 2026-06-25 撤下 union-alpha 的 23 行，0 个分数变化。PR 提议在 withdrawnRows 中明确承认撤回；该模型没有目录 alias，相关行不进入已发布观察。CI 成功，但 tier-B 的 exemption 条件不通过（withdrawnRows 由 1 增至 2）。 | HOLD，等待 owner ruling。Issue #150 于 2026-10-19 自动关闭，但同日正是 Issue #159 记录 LiveBench 开始 404 的日期；不能把 #150 关闭解释为 union-alpha 已恢复或撤回问题已解决。先恢复可读性并复核，再决定是否接受这次撤回。 |
+| #152 | Claude Opus 5.5 发布表归档 8 行：terminal-40 66.4（xhigh）与 hle-tools 67.7（max）两行可作为未来候选；另外 6 行仅留作 note。竞品列被拒绝，GDPval-AA 不重复归档，价格只记在 meta。CI 成功。 | HOLD，保留证据但不创建 Opus 5.5 目录记录：目前只有 2 个可 carry 单元，远低于 50-cell floor。PR 自身也明确没有满足可自动合并条件，需审阅该 archive-only 边界。 |
+| #158 | /guide 对 Safari 站点级定位拒绝给出正确提示，并恢复重试入口；2 个文件，20 additions / 4 deletions。CI 成功。 | 与 Observatory 数据链无关，独立 UI 修复；不要把它和前三个数据 PR 捆绑处理。 |
+| #162 | 恢复 LMArena / LiveBench / Vals 三个 reader；LMArena 改到 `/leaderboard/chat/text`，LiveBench 读官方 GitHub Pages repo 的 release assets，Vals Web Search 读取页面的 ParetoCurve island。离线测试和真实 CI run `41874872601` 在精确 head `927e6ed2cce0eeece4783aaf44d289b8ab308ce2` 通过。 | Draft。无 live source request；需要在真实 scheduled refresh 中验证，不能用 mock CI 关闭 #159。 |
+| #163 | Vals Web Search fail-closed：整体/finance/legal 必须覆盖同一模型集合且 accuracy 是 finite number；Web Search 从 index 消失时整批失败。Reader tests 10/10，Actions run `42001495173` 在 head `f68058beec0ab918638bba2a08d0f6c4cbfaf0c8` 通过。 | Draft，stacked on #162。仍需真实 scheduled refresh；不要单独合并或将其解释为 Vals availability 已恢复。 |
+| #164 | LiveBench optional cost CSV 只允许 404 视为缺失；403/429/5xx/network/HTML 都应 fail closed。新增 5 个 synthetic failure cases。 | Draft，stacked on #163；尚无 CI receipt，不能合并。 |
+
+**#130 的 9 项非机械矛盾（catalog → archive）：**
+
+- gpt-5.6-terra / max：intelligence 56.6 → 32.3；costTask 0.526 → 3.7349。
+- qwen3.8-max / default：intelligence 58.1 → 33.7；costTask 0.9133 → 10.0239。
+- minimax-m3 / default：intelligence 45.4 → 18.9；costTask 0.14 → 1.2851。
+- inkling / xhigh：intelligence 42.3 → 12.5。
+- inkling-small / default：intelligence 41.2 → 12.9；costTask 0.07 → 0.2032。
+
+这些字段不是 AA 的 speed / latency 例行重测，不能由自动 reconciler 决定。先核对参数定义、单位、配置和归档证据，再决定哪一侧需要修正。不得手改 archive 行去迎合 catalog。
+
+### 未解决的数据源：Issue #159
+
+截至 2026-11-05 最新一次报告（Actions run `42036963313`），四个来源仍不可读：
+
+| Source | 首次不可读 | 连续失败 | 本次原因 |
+| --- | --- | ---: | --- |
+| Artificial Analysis benchmark evaluations | 2026-11-05 | 1 | 410 Gone：`/api/v2/data/llms/models` |
+| LMArena human preference Elo | 2026-10-13 | 24 | 403 Forbidden：`arena.ai/leaderboard/text` |
+| LiveBench | 2026-10-19 | 18 | 404 Not Found：旧 `livebench.ai/categories_2026_06_25.json` |
+| Vals AI | 2026-10-03 | 34 | 当前页面没有旧 reader 所要求的 finance task；#162/#163 改为从 Web Search 页面数据 island 读取并做覆盖校验。 |
+
+#162/#163 的离线 reader tests 与 CI 证明的是新解析逻辑对 fixture 的行为，不证明真实上游可读；#164 只修复 cost 404 optionality。**在真实 scheduled refresh 成功前，#159 保持 OPEN，不能宣称三源恢复。**
+
+- 每个 fetcher 独立执行，单源失败不应阻断其他来源的采集。
+- availability issue 在首次不可读时创建；连续两次不可读才触发微信通知。来源恢复后由自动化清理 issue。
+- 不手工重抄、不删除归档、不把 availability 当作 integrity。修复时分别处理权限/访问（LMArena）、数据文件路径或 release 结构（LiveBench）、task/schema 契约（Vals AI）。
+- Issue #150（LiveBench integrity）已于 2026-10-19 关闭；由于该日同时开始 LiveBench availability 失败，关闭只说明 integrity issue 被清理，不能证明源已恢复。
+
+### Collection gaps 与维护闭环
+
+- Issue #7 于 2026-11-04 更新，当前报告 71 个 gap 项目；24 个上游文本模型尚未进入目录，均未达到 50-cell floor（7 个已有部分证据、17 个暂无归档证据）。这不是要求立即添加 24 条模型记录。
+- 归档中约 6,600 行、来自 1,625 个发布模型字符串，等待目录模型或 alias；大量属于历史代际，不能把它们等同于当前可收录模型。
+- 同一报告列出多项来源超过 30 天未读，包括人工发布表与部分本应由脚本重读的来源；逐源区分“手工源缺少新采集”“脚本刷新未发生”“来源不可读”，不要用一个 stale 标签代替诊断。
+- 当前有一个 live-price lookup 仍指向已不存在的 qwen/qwen3.6-max-preview（目录键 qwen3.6-max）；应单独修复 provider id，不要混入 benchmark archive。
+- Issue #7 的 heartbeat 显示：最近 3.9 天只有自动化 Bot 修改 main；scheduled-agent 作者身份的最近一次 commit 已过去 37.1 天。它不能单独证明 Agent 停机（也可能是队列全部阻塞），但维护闭环的执行端尚未得到活性证明。下一步需检查调度器实际运行、队列阻塞原因与 agent-authored commit 证据。
+- Issue #7 同时报告 126 条 release posts、17 条 launch-like signals。发布探针有发现，不等于这些模型已满足收录门槛。
+
+### 文档一致性与接手顺序
+
+- CHECKPOINT 旧段落的 2026-09-21 个人站状态和 2026-08-26 Observatory 数字现已是历史快照；下文已标记为历史，冲突时以本节为准。
+- TODO.md 仍有大量 2026-08 至 2026-09 的旧任务，不能直接当作当前执行队列。例如 Issue #122 已于 2026-09-05 自动关闭；integrity / availability 分流已于 2026-09-04 实施；手工 production smoke 已被 2026-09-21 加入的 portfolio-production-smoke workflow 取代。TODO 需要逐条对照当前代码、Issue、PR 和 LOG 再清理；未复核条目不自动视为仍待办。
+- README.md 的来源数和观测统计也落后：README 仍写 16 个 scripted sources、2,224 observations / 1,405 of 2,117 cells / 66.4%；当前 fetcher registry 有 18 个 fetcher，最新可用契约报告为 2,270 observations / 1,448 of 2,204 cells / 65.7%。README 尚未在本次变更中改动。
+- 接手顺序：①恢复并分别验证 #159 三个来源；②拆解 #130 的 9 项语义矛盾，再处理可机械 reconciliate 的 speed / latency；③在 LiveBench 恢复可读后复核 #151 并取得 owner ruling；④审阅 #152 的 archive-only 边界；⑤诊断 scheduled agent 活性与 #7 队列；⑥单独清理 TODO / README。
+- 本次 checkpoint 更新不修改观测归档、model-data、alias、fetcher 或任何 PR 状态；不合并 #130 / #151 / #152 / #158。
+
+---
+
+
+## Historical snapshot · 2026-09-21 — recruiter-facing portfolio release (last verified 2026-09-21)
 
 The rebuild that started on 2026-09-20 is closed on production at `main@d2bb98cd74e51da4ebdeaa0177125fd19509e399` (PR #145).
 
@@ -120,7 +198,7 @@ Snapshot for the next session. One page. 现场状态在这里;**动手前的自
 
 ---
 
-## 现状（2026-08-26 实测）
+## Historical Observatory baseline · 2026-08-26 (superseded by 2026-11-04 snapshot above)
 
 | | |
 |---|---|
@@ -145,7 +223,7 @@ Snapshot for the next session. One page. 现场状态在这里;**动手前的自
 
 ---
 
-## 自动化链路：谁在什么时候跑什么
+## Historical automation snapshot (verify against current workflows before relying on it)
 
 | 时间（UTC） | 在哪 | 做什么 | 能不能自己合并 |
 |---|---|---|---|
@@ -205,7 +283,7 @@ node scripts/fetch-source.mjs arcprize # 单独重抓一个源（arcprize / arcp
 
 ---
 
-## 现在要盯的三件事
+## Historical watchlist from 2026-08-26 (superseded; use current action queue above)
 
 1. **`auto/refresh-aa` 的第一次真实自合**,以及 hermes 拿到新章程后的第一班。
    两件都只能在真跑里验:GitHub 的 step output 传递(`handsoff`/`escalated`/`moved`)本地验不了,
