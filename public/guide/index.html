@@ -607,8 +607,16 @@
     },err=>{
       const reason = err.code===1 ? '位置权限被拒绝' : err.code===2 ? '暂时无法获取位置' : '定位请求超时';
       $('instruction').textContent=reason;
-      $('subInstruction').textContent='iPhone：设置 → 隐私与安全性 → 定位服务 → Safari 网站 → 使用 App 期间，并开启“精确位置”。也可以先用“手动定位”。';
-      toast(reason+'：'+err.message,5200);
+      if(err.code===1){
+        $('subInstruction').textContent='Safari 已记住本站拒绝：点地址栏旁的“页面菜单/…” → 网站设置 → 位置 → 允许（或询问），刷新后再点“开启定位”。若网站设置里没有位置：设置 → 隐私与安全性 → 定位服务 → Safari 网站 → 使用 App 期间，并开启“精确位置”。';
+        $('startBtn').textContent='重新尝试定位';
+        $('startBtn').classList.add('primary');
+        $('startBtn').onclick=startNavigation;
+        toast('Safari 已记住 quarkspace.top 的位置拒绝；请先在本站“网站设置”里改成允许/询问。',6500);
+      }else{
+        $('subInstruction').textContent='确认手机定位服务已开启，并尽量在室外或靠窗位置重试；也可以先用“手动定位”。';
+        toast(reason+'：'+err.message,5200);
+      }
     },{enableHighAccuracy:true,maximumAge:0,timeout:20000});
   }
 
