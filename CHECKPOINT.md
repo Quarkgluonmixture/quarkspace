@@ -1,6 +1,6 @@
 # CHECKPOINT
 
-## 2026-11-04 · 当前 QuarkSpace / Model Observatory 状态
+## 2026-11-05 · 当前 QuarkSpace / Model Observatory 状态
 
 **本节是当前交接快照，优先于下方 2026-09-21 / 2026-08-26 的历史状态与数字。** Git 分支和 HEAD 不在这里固定；动手前仍以 GitHub 当前 main、PR、Issue 和工作流为准。
 
@@ -26,6 +26,9 @@
 | #151 | LiveBench 在 2026-09-29 曾从冻结版 2026-06-25 撤下 union-alpha 的 23 行，0 个分数变化。PR 提议在 withdrawnRows 中明确承认撤回；该模型没有目录 alias，相关行不进入已发布观察。CI 成功，但 tier-B 的 exemption 条件不通过（withdrawnRows 由 1 增至 2）。 | HOLD，等待 owner ruling。Issue #150 于 2026-10-19 自动关闭，但同日正是 Issue #159 记录 LiveBench 开始 404 的日期；不能把 #150 关闭解释为 union-alpha 已恢复或撤回问题已解决。先恢复可读性并复核，再决定是否接受这次撤回。 |
 | #152 | Claude Opus 5.5 发布表归档 8 行：terminal-40 66.4（xhigh）与 hle-tools 67.7（max）两行可作为未来候选；另外 6 行仅留作 note。竞品列被拒绝，GDPval-AA 不重复归档，价格只记在 meta。CI 成功。 | HOLD，保留证据但不创建 Opus 5.5 目录记录：目前只有 2 个可 carry 单元，远低于 50-cell floor。PR 自身也明确没有满足可自动合并条件，需审阅该 archive-only 边界。 |
 | #158 | /guide 对 Safari 站点级定位拒绝给出正确提示，并恢复重试入口；2 个文件，20 additions / 4 deletions。CI 成功。 | 与 Observatory 数据链无关，独立 UI 修复；不要把它和前三个数据 PR 捆绑处理。 |
+| #162 | 恢复 LMArena / LiveBench / Vals 三个 reader；LMArena 改到 `/leaderboard/chat/text`，LiveBench 读官方 GitHub Pages repo 的 release assets，Vals Web Search 读取页面的 ParetoCurve island。离线测试和真实 CI run `41874872601` 在精确 head `927e6ed2cce0eeece4783aaf44d289b8ab308ce2` 通过。 | Draft。无 live source request；需要在真实 scheduled refresh 中验证，不能用 mock CI 关闭 #159。 |
+| #163 | Vals Web Search fail-closed：整体/finance/legal 必须覆盖同一模型集合且 accuracy 是 finite number；Web Search 从 index 消失时整批失败。Reader tests 10/10，Actions run `42001495173` 在 head `f68058beec0ab918638bba2a08d0f6c4cbfaf0c8` 通过。 | Draft，stacked on #162。仍需真实 scheduled refresh；不要单独合并或将其解释为 Vals availability 已恢复。 |
+| #164 | LiveBench optional cost CSV 只允许 404 视为缺失；403/429/5xx/network/HTML 都应 fail closed。新增 5 个 synthetic failure cases。 | Draft，stacked on #163；尚无 CI receipt，不能合并。 |
 
 **#130 的 9 项非机械矛盾（catalog → archive）：**
 
@@ -39,13 +42,16 @@
 
 ### 未解决的数据源：Issue #159
 
-截至 2026-11-04 最新一次报告，三个来源仍不可读：
+截至 2026-11-05 最新一次报告（Actions run `42036963313`），四个来源仍不可读：
 
 | Source | 首次不可读 | 连续失败 | 本次原因 |
 | --- | --- | ---: | --- |
-| LMArena human preference Elo | 2026-10-13 | 23 | 403 Forbidden：arena.ai/leaderboard/text |
-| LiveBench | 2026-10-19 | 17 | 404 Not Found：table_2026_06_25.csv |
-| Vals AI | 2026-10-03 | 33 | fetcher 请求 web_search 的 finance task，但当前 board 只发布 overall；属于页面数据形状 / task 契约不匹配，不是简单网络超时。 |
+| Artificial Analysis benchmark evaluations | 2026-11-05 | 1 | 410 Gone：`/api/v2/data/llms/models` |
+| LMArena human preference Elo | 2026-10-13 | 24 | 403 Forbidden：`arena.ai/leaderboard/text` |
+| LiveBench | 2026-10-19 | 18 | 404 Not Found：旧 `livebench.ai/categories_2026_06_25.json` |
+| Vals AI | 2026-10-03 | 34 | 当前页面没有旧 reader 所要求的 finance task；#162/#163 改为从 Web Search 页面数据 island 读取并做覆盖校验。 |
+
+#162/#163 的离线 reader tests 与 CI 证明的是新解析逻辑对 fixture 的行为，不证明真实上游可读；#164 只修复 cost 404 optionality。**在真实 scheduled refresh 成功前，#159 保持 OPEN，不能宣称三源恢复。**
 
 - 每个 fetcher 独立执行，单源失败不应阻断其他来源的采集。
 - availability issue 在首次不可读时创建；连续两次不可读才触发微信通知。来源恢复后由自动化清理 issue。
