@@ -169,7 +169,7 @@ test("LiveBench fails closed when an optional cost asset is not a genuine 404", 
           ]);
         }
         if (url === `${assetBase}/table_2026_06_25.csv`) {
-          return new Response("model,AMPS_Hard\\r\\ngpt-test,80\\r\\n");
+          return new Response("model,AMPS_Hard\r\ngpt-test,80\r\n");
         }
         if (url === `${assetBase}/categories_2026_06_25.json`) {
           return jsonResponse({ Mathematics: ["AMPS_Hard"] });
