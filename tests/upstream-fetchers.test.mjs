@@ -147,8 +147,15 @@ test("LiveBench reads the official release assets and treats a missing cost file
   });
 });
 
-const webSearchHtml = ({ includePareto = true, mismatchOverall = false } = {}) => {
-  const overall = {
+const webSearchHtml = ({
+  includePareto = true,
+  mismatchOverall = false,
+  overall: overallOverride,
+  chartOverall: chartOverallOverride,
+  finance: financeOverride,
+  legal: legalOverride,
+} = {}) => {
+  const overall = overallOverride ?? {
     "openai/gpt-test": {
       accuracy: 49.076695,
       latency: 395.278729,
@@ -157,9 +164,9 @@ const webSearchHtml = ({ includePareto = true, mismatchOverall = false } = {}) =
       harness: "Keenable",
     },
   };
-  const chartOverall = mismatchOverall
+  const chartOverall = chartOverallOverride ?? (mismatchOverall
     ? { "openai/gpt-test": { ...overall["openai/gpt-test"], accuracy: 48 } }
-    : overall;
+    : overall);
   const benchmarkView = {
     metadata: astroValue({
       benchmark: "Vals Web Search Index",
@@ -190,7 +197,7 @@ const webSearchHtml = ({ includePareto = true, mismatchOverall = false } = {}) =
     islands.push(astroIsland("ParetoCurve", {
       data: astroValue({
         overall: astroValue(chartOverall),
-        finance: astroValue({
+        finance: astroValue(financeOverride ?? {
           "openai/gpt-test": {
             accuracy: 53.922621,
             latency: 316.600789,
@@ -200,7 +207,7 @@ const webSearchHtml = ({ includePareto = true, mismatchOverall = false } = {}) =
             reasoning_effort: "max",
           },
         }),
-        legal: astroValue({
+        legal: astroValue(legalOverride ?? {
           "openai/gpt-test": {
             accuracy: 44.230769,
             latency: 473.956668,
@@ -216,11 +223,11 @@ const webSearchHtml = ({ includePareto = true, mismatchOverall = false } = {}) =
   return islands.join("");
 };
 
-const runValsWithPage = async (html) =>
+const runValsWithPage = async (html, indexHtml = '<a href="/benchmarks/web_search">Web Search</a>') =>
   withFetch(async (input) => {
     const url = String(input);
     if (url === "https://www.vals.ai/benchmarks") {
-      return new Response('<a href="/benchmarks/web_search">Web Search</a>');
+      return new Response(indexHtml);
     }
     if (url === "https://www.vals.ai/benchmarks/web_search") return new Response(html);
     throw new Error(`Unexpected Vals URL: ${url}`);
@@ -256,5 +263,50 @@ test("Vals AI refuses mismatched overall snapshots across its two islands", asyn
   await assert.rejects(
     runValsWithPage(webSearchHtml({ mismatchOverall: true })),
     /ParetoCurve overall does not match benchmarkView overall/,
+  );
+});
+
+// Catches silent row loss when a Web Search subtask covers fewer models than overall.
+test("Vals AI rejects partial Web Search subtask model coverage", async () => {
+  const overall = {
+    "openai/gpt-test": { accuracy: 49 },
+    "google/gemini-test": { accuracy: 45 },
+  };
+  await assert.rejects(
+    runValsWithPage(webSearchHtml({
+      overall,
+      chartOverall: structuredClone(overall),
+      finance: { "openai/gpt-test": { accuracy: 53 } },
+    })),
+    /"finance" must match overall model coverage/,
+  );
+});
+
+// Catches Number(null), Number(""), and numeric strings being accepted as published scores.
+test("Vals AI rejects non-number Web Search overall accuracies", async () => {
+  for (const accuracy of [null, "", "49", undefined]) {
+    const overall = { "openai/gpt-test": { accuracy } };
+    await assert.rejects(
+      runValsWithPage(webSearchHtml({ overall, chartOverall: structuredClone(overall) })),
+      /finite numeric accuracies/,
+    );
+  }
+});
+
+// Catches a null subtask accuracy becoming a real zero-score observation.
+test("Vals AI rejects null Web Search subtask accuracy instead of publishing zero", async () => {
+  await assert.rejects(
+    runValsWithPage(webSearchHtml({
+      finance: { "openai/gpt-test": { accuracy: null } },
+    })),
+    /"finance" must match overall model coverage with finite numeric accuracies/,
+  );
+});
+
+// Catches an index parsing/change failure bypassing every per-board fail-closed check.
+test("Vals AI fails closed when Web Search disappears from the benchmark index", async () => {
+  await assert.rejects(
+    runValsWithPage("", '<a href="/benchmarks/corp_fin_v2">CorpFin</a>'),
+    /web_search: no link/,
   );
 });

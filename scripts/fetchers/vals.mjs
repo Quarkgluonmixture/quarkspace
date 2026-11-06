@@ -141,6 +141,9 @@ const SUBTASKS = new Map([
   ]],
 ]);
 
+const hasFiniteAccuracy = (cell) =>
+  typeof cell?.accuracy === "number" && Number.isFinite(cell.accuracy);
+
 const fetchText = async (url) => {
   const response = await fetch(url, {
     // Vals answers a bare programmatic client with an empty body on some paths; the site is
@@ -170,6 +173,9 @@ export const vals = {
     const index = await fetchText(INDEX);
     const slugs = [...new Set([...index.matchAll(/href="\/benchmarks\/([a-z0-9_-]+)"/g)].map((m) => m[1]))].sort();
     if (slugs.length === 0) throw new Error(`no /benchmarks/<slug> links on ${INDEX} — the index changed shape`);
+    if (!slugs.includes("web_search")) {
+      throw new Error(`web_search: no link on ${INDEX} — its published columns cannot be dropped silently`);
+    }
 
     const rows = [];
     const collected = [];
@@ -228,15 +234,24 @@ export const vals = {
           overallModels.length !== chartModels.length ||
           overallModels.some((model, index) =>
             model !== chartModels[index] ||
-            Number(overall[model]?.accuracy) !== Number(chartOverall[model]?.accuracy))
+            !hasFiniteAccuracy(overall[model]) ||
+            !hasFiniteAccuracy(chartOverall[model]) ||
+            overall[model].accuracy !== chartOverall[model].accuracy)
         ) {
-          throw new Error("web_search: ParetoCurve overall does not match benchmarkView overall");
+          throw new Error("web_search: ParetoCurve overall does not match benchmarkView overall with finite numeric accuracies");
         }
 
         for (const task of ["finance", "legal"]) {
           const entries = paretoData[task];
           if (!entries || typeof entries !== "object" || Array.isArray(entries) || Object.keys(entries).length === 0) {
             throw new Error(`web_search: ParetoCurve is missing the "${task}" task`);
+          }
+          const taskModels = Object.keys(entries).sort();
+          if (
+            taskModels.length !== overallModels.length ||
+            taskModels.some((model, index) => model !== overallModels[index] || !hasFiniteAccuracy(entries[model]))
+          ) {
+            throw new Error(`web_search: ParetoCurve "${task}" must match overall model coverage with finite numeric accuracies`);
           }
           tasks[task] = entries;
         }
@@ -250,8 +265,8 @@ export const vals = {
         if (!entries) throw new Error(`${slug}: no "${task}" task — it publishes ${Object.keys(tasks).join(", ")}`);
         let kept = 0;
         for (const [published, cell] of Object.entries(entries)) {
-          const score = Number(cell?.accuracy);
-          if (!Number.isFinite(score)) continue;
+          const score = cell?.accuracy;
+          if (typeof score !== "number" || !Number.isFinite(score)) continue;
           rows.push({
             // Verbatim, `provider/model` as Vals publishes it. Which catalog model this is stays
             // the alias step's decision — the same call batch 23 made for ARC's ids, and the
@@ -334,8 +349,9 @@ export const vals = {
           "and that page is what two earlier passes measured before recording Vals as publishing " +
           "nothing machine-readable. score is the published `accuracy` (already 0-100). On Web Search, `overall` " +
           "is read from the benchmarkView island and the already-archived `finance` / `legal` " +
-          "subtasks from the page's ParetoCurve data island; their overall model set and accuracy " +
-          "are cross-checked before combining the views. harness and reasoning_effort come from " +
+          "subtasks from the page's ParetoCurve data island; all three views must cover the same " +
+          "models with finite numeric accuracies, and overall values are cross-checked before combining " +
+          "the views. harness and reasoning_effort come from " +
           "each row's own fields rather than from prose. " +
           "evaluation_date is null on every row on purpose: Vals dates the BOARD, not the run. " +
           "model_raw is the published `provider/model` string, verbatim — attribution stays the " +
