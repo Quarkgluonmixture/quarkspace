@@ -46,13 +46,22 @@ const benchmarkId = (task) => `livebench-${task.toLowerCase().replaceAll("_", "-
 const AGENTIC_HARNESS = "mini-SWE-agent";
 const AGENTIC_CATEGORY = "Agentic Coding";
 
-const fetchText = async (url) => {
-  const response = await fetch(url);
+const readDataResponse = async (response, url) => {
   if (!response.ok) throw new Error(`${response.status} ${response.statusText} — ${url}`);
   const body = await response.text();
-  // A missing raw asset must never be mistaken for a successful data response.
+  // A missing raw asset or SPA shell must never be mistaken for a successful data response.
   if (body.trimStart().startsWith("<")) throw new Error(`not a data file (got HTML) — ${url}`);
   return body;
+};
+
+const fetchText = async (url) => readDataResponse(await fetch(url), url);
+
+// The cost breakdown is optional only when the release explicitly has no such file (404).
+// Rate limits, server errors, network failures and unexpected HTML indicate an unreadable source.
+const fetchOptionalCostText = async (url) => {
+  const response = await fetch(url);
+  if (response.status === 404) return null;
+  return readDataResponse(response, url);
 };
 
 const parseCsv = (text) => {
@@ -112,7 +121,7 @@ export const livebench = {
       fetchText(urls.table),
       fetchText(urls.categories),
       // Cost breakdowns are not published for every release; scores and categories are required.
-      fetchText(urls.cost).catch(() => null),
+      fetchOptionalCostText(urls.cost),
     ]);
 
     const table = parseCsv(tableCsv);

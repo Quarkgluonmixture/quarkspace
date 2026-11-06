@@ -7,6 +7,9 @@
 
 ---
 
+## P2 · QuarkSpace source availability (2026-11-06)
+
+- [ ] **Issue #159 remains OPEN.** Last observed scheduled report `42036963313` listed Artificial Analysis 410 Gone, LMArena 403, LiveBench 404, and Vals Web Search missing finance. Reader fixes are now merged: #162 at `fecdfa78cfba3f12e3ba23eaebac933dfc086b24` (Actions `42055322523` GREEN) and #163 at `eb3689b060974028567eb53f3e33fc9ba1057631` (Actions `42055413695` GREEN). #164's 404-only optional-cost fix is on head `74a3030563cb5e3ea6977bc92d55d4b598e78c42`; exact-head Actions `42055493382` GREEN, pending merge. Synthetic fixtures do not prove upstream availability. Await a controlled scheduled refresh, inspect actual source responses and archive diff, and only then close #159. Do not hand-transcribe or rewrite archives.
 ## Recruiter-facing portfolio
 
 - [ ] **可选项，不是发布阻塞项**：如果以后拿到一个明确、public-safe、可维护的 binary upload 路径，

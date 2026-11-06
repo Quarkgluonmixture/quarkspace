@@ -147,6 +147,42 @@ test("LiveBench reads the official release assets and treats a missing cost file
   });
 });
 
+test("LiveBench fails closed when an optional cost asset is not a genuine 404", async () => {
+  const releaseIndex = "https://api.github.com/repos/LiveBench/livebench.github.io/contents/public";
+  const assetBase = "https://raw.githubusercontent.com/LiveBench/livebench.github.io/main/public";
+  const cases = [
+    ["403", () => new Response("Forbidden", { status: 403, statusText: "Forbidden" }), /403 Forbidden/],
+    ["429", () => new Response("Rate limited", { status: 429, statusText: "Too Many Requests" }), /429 Too Many Requests/],
+    ["500", () => new Response("Server error", { status: 500, statusText: "Internal Server Error" }), /500 Internal Server Error/],
+    ["HTML 200", () => new Response("<html>temporary error</html>"), /not a data file/],
+    ["network failure", () => { throw new Error("socket reset"); }, /socket reset/],
+  ];
+
+  for (const [name, costResponse, expected] of cases) {
+    await assert.rejects(
+      withFetch(async (input) => {
+        const url = String(input);
+        if (url === releaseIndex) {
+          return jsonResponse([
+            { name: "table_2026_06_25.csv" },
+            { name: "categories_2026_06_25.json" },
+          ]);
+        }
+        if (url === `${assetBase}/table_2026_06_25.csv`) {
+          return new Response("model,AMPS_Hard\r\ngpt-test,80\r\n");
+        }
+        if (url === `${assetBase}/categories_2026_06_25.json`) {
+          return jsonResponse({ Mathematics: ["AMPS_Hard"] });
+        }
+        if (url === `${assetBase}/cost_2026_06_25.csv`) return costResponse();
+        throw new Error(`Unexpected LiveBench URL: ${url}`);
+      }, () => livebench.fetch()),
+      expected,
+      name,
+    );
+  }
+});
+
 const webSearchHtml = ({
   includePareto = true,
   mismatchOverall = false,
