@@ -949,3 +949,11 @@ document width = viewport width，两份 production CV 均打印契约通过。
 - Existing 404 optional test retained; added synthetic tests for 403, 429, 500, HTML 200 and network reset.
 - Tests are **NOT_RUN** in this session; this PR is stacked and cannot merge independently of #162/#163. No live source request, archive rewrite, scheduled refresh or production change occurred.
 - Latest Issue #159 report (Actions run `42036963313`) has four unreadable sources: AA 410, LMArena 403, LiveBench 404, Vals missing finance. A real scheduled refresh remains mandatory after the reader stack is reviewed/merged; CI mocks do not close availability.
+
+
+## 2026-11-06 — QuarkSpace reader stack re-bound after merge
+
+- PR #162 merged to main as `fecdfa78cfba3f12e3ba23eaebac933dfc086b24`; exact-head Actions run `42055322523` completed the full CI job successfully.
+- PR #163 was retargeted from the #162 branch to main after #162 merged, verified to contain only the Vals fail-closed delta, and merged as `eb3689b060974028567eb53f3e33fc9ba1057631`; exact-head Actions run `42055413695` completed the full CI job successfully.
+- PR #164 was retargeted from the #163 branch to main. Its remaining diff is the LiveBench optional-cost 404-only rule, regression tests, and this status sync. Exact-head Actions run `42055493382` completed the full CI job successfully; PR #164 remains open pending independent review/merge.
+- No live upstream refresh or archive rewrite occurred. Issue #159 stays OPEN until a controlled scheduled refresh confirms actual responses and archive diff.
