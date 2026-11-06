@@ -38,12 +38,18 @@ const unescapeAttribute = (text) => text
  * The parsed props of the largest `<astro-island>` whose props mention `key`.
  *
  * Largest, not first: a board page carries several islands (theme toggle, mailing list, the
- * selectors) and the one holding the leaderboard is the big one. Returns null when no island
- * matches, which callers should treat as a page restyle rather than as an empty board.
+ * selectors) and the one holding the leaderboard is the big one. Pass `componentName` when
+ * several chart islands share a prop key. Returns null when no island matches, which callers
+ * should treat as a page restyle rather than as an empty board.
  */
-export const readAstroIslandProps = (html, key) => {
+export const readAstroIslandProps = (html, key, componentName = null) => {
   let best = null;
   for (const tag of html.match(/<astro-island\b[^>]*>/g) ?? []) {
+    if (componentName) {
+      const componentUrl = /\bcomponent-url="([^"]+)"/.exec(tag)?.[1] ?? "";
+      const filename = componentUrl.slice(componentUrl.lastIndexOf("/") + 1);
+      if (!filename.startsWith(`${componentName}.`)) continue;
+    }
     const attribute = /\bprops="([^"]*)"/.exec(tag);
     if (!attribute) continue;
     const raw = unescapeAttribute(attribute[1]);
