@@ -84,7 +84,8 @@ export default function ResumePage() {
                 </div>
                 <p><strong>{academic.publication.authors}</strong></p>
                 <p className={r.status}>{academic.publication.status}</p>
-                <p>{academic.publication.secondaryStatus} · {academic.publication.preprint}</p>
+                <p className={r.status}>{academic.publication.secondaryStatus}</p>
+                <p>{academic.publication.preprint}</p>
                 <ul>
                   {research.points?.slice(0, 4).map((point) => <li key={point.en}>{point.en}</li>)}
                 </ul>
@@ -195,6 +196,7 @@ export default function ResumePage() {
                   <span>UCL MSc · 2026</span>
                 </div>
                 <p className={r.status}>{realm.status.zh}</p>
+                <p className={r.status}>{academic.publication.secondaryStatus}</p>
                 <ul>
                   {research.points?.slice(0, 3).map((point) => <li key={point.en}>{point.zh}</li>)}
                 </ul>

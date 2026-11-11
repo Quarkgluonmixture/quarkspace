@@ -1002,3 +1002,21 @@ owner 看过本地预览后定了两件事：第 06 节「站内入口」（含�
 已从 `app/page.tsx` 和 `home.module.css` 删掉那一节，主页回到 01–05 加结尾。上一条里关于第 06 节的那段到此作废。
 删后重跑：`lint`、`build`、`check:beian` 通过，`/` 与 `/en` 的 `check:mobile`（320 / 390 / 430 / 1440）通过，两条路由的 smoke marker 和 locale 链接仍在。
 
+
+## [2026-11-11 12:49 CST] 公开 manifest 的 VLM4RWD 状态落后上游 42 天，补上 `#incident` `#ship`
+
+owner 提到 REALM 和 NeurIPS workshop 两处都录用了。去上游核对：`JobFinder/00_总控/CURRENT_PROFILE.md`
+（as_of 2026-10-06）早就写着 **Accept (Poster) at NeurIPS 2026 Workshop VLM4RWD，decision observed 2026-09-30**，
+而这里的 `data/career-public.json` 还是「Submitted … under review」。上游没错，是公开投影没跟。
+
+**为什么零告警**：`check:career` 当时断言的恰好是旧状态本身（manifest 必须包含 under-review 那一句），
+所以它不但发现不了落后，还会把改对的人拦下来。它守的是「别被改掉」，不是「和上游一致」。
+现在断言改成新状态，并加了和 REALM 同形的守卫：写 NeurIPS 录用必须带 Workshop，否则会被读成主会。
+守卫用两条裸写法实测过会触发。⚠ 这仍然不是上游同步检查，下次上游状态再变，这里还是要人来改。
+
+**改了什么**：`secondaryStatus` 用上游 wording guard 的原话「Accepted as a poster at NeurIPS 2026 Workshop VLM4RWD」；
+中文主页 intro、UCL 那条经历、REALM 证据卡的正文补上第二处录用；两份简历都多一行状态。
+首屏的 `REALM ’26` 徽标、项目卡的 kicker 和 chip 没动，那是定位措辞，留给 owner。
+`verifiedAt` 没动：这次只核了 VLM4RWD、REALM、career epoch 和 dissertation 仍 pending 这几项，不是全量对账。
+中文简历加一行后仍是一页（`Page.printToPDF` 实测 1 页）。
+

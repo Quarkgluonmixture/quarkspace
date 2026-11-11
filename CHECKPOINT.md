@@ -112,7 +112,7 @@ Current public career projection:
 - epoch = `2026-09-20-post-holistic`, re-verified 2026-09-21;
 - Holistic AI fixed-term research internship completed 2026-09-18;
 - UCL Web-Agent paper = **accepted at EMNLP 2026 Workshop REALM**; accepted ≠ published and ≠ EMNLP main conference;
-- VLM4RWD = submitted / under review;
+- VLM4RWD = submitted / under review (as of 2026-09-21; superseded — accepted as a poster 2026-09-30, public manifest updated 2026-11-11);
 - UCL × Holistic final poster/showcase = 2026-09-16;
 - English research surface uses the current positioning **Reliable Agent Evaluation & Adaptive Agentic Systems**;
 - private employer/customer material remains excluded.
