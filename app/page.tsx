@@ -45,62 +45,6 @@ const CHAIN: Record<Lang, [string, string, string, string][]> = {
   ],
 };
 
-// What else lives on this domain (docs/VISION.md: the site is a portal, not only a portfolio).
-// These are routes, not career facts, so they live here rather than in the career manifest.
-// ⚠ No counts: a number copied from a live product drifts (AGENTS.md).
-type PortalItem = { name: string; href: string; tag: string; text: Localized; external?: boolean };
-const PORTAL: PortalItem[] = [
-  {
-    name: "AI Model Observatory",
-    href: "/models",
-    tag: "LIVE",
-    text: {
-      zh: "每条 observation 都带来源的模型观测台；缺失就是 N/A，不是 0。",
-      en: "A model observatory where every observation keeps its source. Missing evidence stays N/A, never zero.",
-    },
-  },
-  {
-    name: "Persona Lab",
-    href: "/persona",
-    tag: "ACCESS-GATED",
-    text: {
-      zh: "Persona 表征实验台：候选编译与直接探针。运行需要访问口令。",
-      en: "A persona-representation bench: candidate compiler and direct probes. Running it needs an access token.",
-    },
-  },
-  {
-    name: "Presentation Lab",
-    href: "/presentation",
-    tag: "EXPLAINERS · 中文",
-    text: {
-      zh: "用交互和可视化把一个概念讲清楚。",
-      en: "Interactive explainers that make one concept actually clear (in Chinese).",
-    },
-  },
-];
-const PLAYGROUND: PortalItem[] = [
-  {
-    name: "Ricochet Mech Arena",
-    href: "/ricochet-mech-arena",
-    tag: "PLAY",
-    external: true,
-    text: {
-      zh: "靠反弹弹道取胜的机甲对决：直射永远打不中。",
-      en: "A mech duel won with geometry: direct shots never land, banked ones do.",
-    },
-  },
-  {
-    name: "Strandbound · 弦缚",
-    href: "/deepseek",
-    tag: "PLAY · 中文",
-    external: true,
-    text: {
-      zh: "太空歌剧 · 生物收集 RPG，浏览器里直接运行。",
-      en: "A space-opera creature-collecting RPG that runs in the browser (in Chinese).",
-    },
-  },
-];
-
 function localizedHref(href: string, lang: Lang) {
   if (lang === "en" && href === "/showcase") return "/en/showcase";
   return href;
@@ -275,22 +219,6 @@ function LabRow({ item, lang }: { item: LabItem; lang: Lang }) {
     </>
   );
   return item.href ? <a href={item.href} rel="noreferrer">{body}</a> : <div>{body}</div>;
-}
-
-function PortalTile({ item, lang }: { item: PortalItem; lang: Lang }) {
-  const body = (
-    <>
-      <span className={s.portalTag}>{item.tag}</span>
-      <strong>{item.name}</strong>
-      <span className={s.portalText}>{tr(item.text, lang)}</span>
-      <span className={s.portalPath}>{item.href} →</span>
-    </>
-  );
-  // The two games are static files behind a redirect, not Next routes: a plain anchor, so the
-  // router does not try to prefetch them.
-  return item.external
-    ? <a className={s.portalTile} href={item.href}>{body}</a>
-    : <Link className={s.portalTile} href={item.href}>{body}</Link>;
 }
 
 function MeasurementChain({ lang }: { lang: Lang }) {
@@ -582,20 +510,6 @@ export default function Home() {
         />
         <div className={s.lab} data-reveal>
           {content.lab.map((item) => <LabRow key={item.name} item={item} lang={lang} />)}
-        </div>
-
-        <Section
-          no="06"
-          title={lang === "zh" ? "站内入口" : "On This Domain"}
-          count="quarkspace.top"
-          id="space"
-        />
-        <div className={s.portal} data-reveal>
-          {PORTAL.map((item) => <PortalTile key={item.href} item={item} lang={lang} />)}
-        </div>
-        <div className={s.play} data-reveal>
-          <span className={s.playLabel}>PLAYGROUND</span>
-          {PLAYGROUND.map((item) => <PortalTile key={item.href} item={item} lang={lang} />)}
         </div>
 
         <section className={s.closing} id="contact" data-reveal>

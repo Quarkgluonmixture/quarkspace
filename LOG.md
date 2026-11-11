@@ -995,3 +995,10 @@ measurement chain 的四层（target / harness / judge / evidence）：对撞抛
 和六条 locale 链接在本地构建上逐条 grep 到。
 未验证：真机、Windows 上的字体回退、EdgeOne 上的实际部署（分支没推）。
 
+
+## [2026-11-11 12:40 CST] owner 裁决：不加「站内入口」，分支推送 `#decision`
+
+owner 看过本地预览后定了两件事：第 06 节「站内入口」（含两个静态游戏）**不要**，分支可以推。
+已从 `app/page.tsx` 和 `home.module.css` 删掉那一节，主页回到 01–05 加结尾。上一条里关于第 06 节的那段到此作废。
+删后重跑：`lint`、`build`、`check:beian` 通过，`/` 与 `/en` 的 `check:mobile`（320 / 390 / 430 / 1440）通过，两条路由的 smoke marker 和 locale 链接仍在。
+

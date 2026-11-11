@@ -6,9 +6,9 @@
 
 ### 个人站重设计（2026-11-11，未合并）
 
-- 六条个人站路由整体换成 event-display 设计，在本地分支 `redesign/event-display-20261111` 上，**没推、没开 PR、线上没变**。分支进度现查 `git log --oneline main..redesign/event-display-20261111`。
-- 理由、范围和验证清单在 `LOG.md` 2026-11-11 那条。`/models`、`/persona` 没动。
-- 等 owner 定两件事：要不要推分支开 PR（仓库是 public，EdgeOne 合并即发布）；第 06 节把两个静态游戏挂上求职主页是否保留。
+- 六条个人站路由整体换成 event-display 设计，在分支 `redesign/event-display-20261111` 上，**线上没变**。分支与 PR 状态现查 `gh pr list --head redesign/event-display-20261111`。
+- 理由、范围和验证清单在 `LOG.md` 2026-11-11 的两条。`/models`、`/persona` 没动；owner 已裁决不加「站内入口」一节。
+- 合并即由 EdgeOne 发布，合并前读 CI，合并后看 `portfolio-production-smoke`。
 
 ### 产品边界与 Vision
 

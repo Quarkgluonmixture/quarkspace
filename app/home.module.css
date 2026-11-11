@@ -501,51 +501,6 @@
   .lab a:hover { padding-left: 0; }
 }
 
-/* 06 on this domain */
-.portal { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.portalTile {
-  position: relative; overflow: hidden; isolation: isolate;
-  display: flex; flex-direction: column; gap: 10px; min-height: 216px; padding: 26px 26px 22px;
-  border: 1px solid var(--h-void); border-radius: 16px; background: var(--h-void); color: var(--h-body-d);
-  transition: translate 0.25s ease, border-color 0.25s ease;
-}
-/* The detector, seen from the corner of a tile. */
-.portalTile::after {
-  content: ""; position: absolute; z-index: -1; right: -110px; bottom: -110px; width: 300px; height: 300px;
-  border-radius: 50%; opacity: 0.55;
-  background: repeating-radial-gradient(circle, transparent 0 33px, rgba(255, 255, 255, 0.16) 33px 34px);
-  -webkit-mask-image: radial-gradient(circle, #000 30%, transparent 70%);
-  mask-image: radial-gradient(circle, #000 30%, transparent 70%);
-  transition: opacity 0.3s ease, scale 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.portalTile:hover { translate: 0 -3px; border-color: var(--h-sig); }
-.portalTile:hover::after { opacity: 1; scale: 1.12; }
-.portalTag { font: 600 10px/1.4 var(--h-mono); letter-spacing: 0.13em; text-transform: uppercase; color: var(--h-sig); }
-.portalTile strong { font: 400 31px/1 var(--h-serif); letter-spacing: -0.012em; color: var(--h-tx-d); }
-.portalText { flex: 1; max-width: 34ch; font-size: 14px; line-height: 1.62; }
-.portalPath { font: 500 11px/1.4 var(--h-mono); letter-spacing: 0.06em; color: var(--h-tx-d); }
-.play { display: grid; grid-template-columns: auto repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
-.playLabel {
-  writing-mode: vertical-rl; rotate: 180deg; text-align: center; padding: 0 2px 0 10px;
-  border-right: 1px solid var(--h-hair2);
-  font: 500 10px/1 var(--h-mono); letter-spacing: 0.3em; color: var(--h-dim);
-}
-.play .portalTile {
-  min-height: 0; padding: 20px 22px 18px;
-  border-color: var(--h-hair); background: var(--h-card); color: var(--h-body);
-}
-.play .portalTile::after { display: none; }
-.play .portalTile:hover { border-color: var(--h-tx); }
-.play .portalTag { color: var(--h-acc); }
-.play .portalTile strong { font-size: 25px; color: var(--h-tx); }
-.play .portalPath { color: var(--h-tx); }
-@media (max-width: 980px) {
-  .portal { grid-template-columns: minmax(0, 1fr); }
-  .portalTile { min-height: 0; }
-  .play { grid-template-columns: minmax(0, 1fr); }
-  .playLabel { writing-mode: horizontal-tb; rotate: none; text-align: left; padding: 0 0 8px; border-right: 0; border-bottom: 1px solid var(--h-hair2); }
-}
-
 /* closing */
 .closing {
   position: relative; overflow: hidden; isolation: isolate;
