@@ -1,0 +1,118 @@
+/* Personal-site theme: the tokens and the handful of primitives shared by /, /resume and
+   /showcase (and their /en twins). One home for the palette, so the three surfaces cannot drift.
+
+   Every custom property is prefixed --h-* and hangs on .theme, never on :root or body, because
+   globals.css owns --ink / --sans / --mono for the observatory and styles bare elements
+   (header, h1). Nothing in this file may move into globals.css — see docs/UI.md.
+
+   The visual idea is an event display. You never see a quark: you see tracks in a detector, and
+   you have to trust the detector. A model score is the same kind of object, which is the whole
+   subject of this site — so the dark surfaces are the instrument and the paper is the write-up. */
+
+/* Instrument Serif, Latin subset only (OFL-1.1, self-hosted from public/fonts). It is used where
+   the text is known to be Latin: the name, numerals, and English-locale headings. Chinese
+   headings stay on the platform UI face — a Latin serif next to a CJK sans inside one heading
+   reads as two unrelated typefaces (docs/UI.md §2). */
+@font-face {
+  font-family: "QS Instrument Serif";
+  src: url("/fonts/instrument-serif-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "QS Instrument Serif";
+  src: url("/fonts/instrument-serif-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+.theme {
+  /* instrument (dark) */
+  --h-void: #08090d;
+  --h-void2: #0f1218;
+  --h-void3: #171b23;
+  --h-rule-d: rgba(255, 255, 255, 0.11);
+  --h-tx-d: #f3f1ea;
+  --h-body-d: #a9aab0;
+  --h-dim-d: #7b7d86;
+
+  /* paper (light) */
+  /* Paper is the observatory's --canvas on purpose: the ICP strip below every route sits on the
+     body background, and a near-miss between the two reads as a seam. */
+  --h-paper: #f4f3ee;
+  --h-card: #fcfbf7;
+  --h-tx: #111318;
+  --h-body: #3a3d44;
+  --h-dim: #6a6962;
+  --h-hair: #dedacd;
+  --h-hair2: #c9c4b3;
+
+  /* signal. --h-acc is the text-safe vermilion (4.9:1 on paper); --h-sig is the same hue at
+     full brightness and is for graphics and dark surfaces only. */
+  --h-acc: #c0321d;
+  --h-sig: #ff5436;
+  --h-au: #e9bb3f;
+  /* The three colour charges. Tracks in the detector carry them; nothing else should. */
+  --h-q1: #ff5a47;
+  --h-q2: #2fdc9e;
+  --h-q3: #5f8dff;
+
+  --h-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "PingFang SC",
+    "HarmonyOS Sans SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+  /* The CJK sans faces are named before the generic so a stray Chinese glyph in a serif heading
+     lands on the UI face, not on SimSun. */
+  --h-serif: "QS Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, "PingFang SC",
+    "Noto Sans SC", "Microsoft YaHei", serif;
+  --h-mono: var(--font-geist-mono, ui-monospace), "SF Mono", Menlo, Consolas, "PingFang SC",
+    "Noto Sans SC", "Microsoft YaHei", monospace;
+
+  font-family: var(--h-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.theme a { text-decoration: none; }
+.theme :focus-visible {
+  outline: 2px solid var(--h-sig);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.theme ::selection { background: var(--h-sig); color: #fff; }
+
+/* ── language switch: 中 / EN. The group is the 36px control; each half is a real link because
+   language is part of the URL here, not a localStorage toggle (AGENTS.md). ── */
+.lang {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--lang-rule, var(--h-hair2));
+  border-radius: 99px;
+}
+.lang a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 30px;
+  padding: 0 9px;
+  border-radius: 99px;
+  font: 600 11px/1 var(--h-mono);
+  letter-spacing: 0.06em;
+  color: var(--lang-ink, var(--h-dim));
+}
+.lang a:hover { color: var(--lang-ink-on, var(--h-tx)); }
+.lang a.on {
+  background: var(--lang-on-bg, var(--h-tx));
+  color: var(--lang-on-ink, var(--h-paper));
+}
+@media (max-width: 800px) {
+  .lang a { min-height: 36px; }
+}
+
+/* ── mono label: the instrument-readout voice ── */
+.label {
+  font: 500 11px/1.4 var(--h-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
