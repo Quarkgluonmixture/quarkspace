@@ -1042,3 +1042,27 @@ REALM 证据卡的标题没改，它链到的是 REALM 的 OpenReview 页。
 - 这次踩到的坑记成 `GOTCHAS.md` 55：公开投影落后上游零告警。
 - 下一步：合并后看 `portfolio-production-smoke`，再去线上读回。
 
+
+## [2026-11-11 13:38 CST] 个人站重设计上线；production smoke 从 10-03 起就是坏的 `#ship` `#measure` `#incident`
+
+**上线**：PR #167 于 2026-11-11 05:25 UTC 合并（owner 当轮说合并上线）。合并前 CI 在 PR 的 exact head 上通过；
+合并后 main 的 CI 通过（run `42965653840`）。EdgeOne 大约 10 分钟后开始供应新版。
+
+**线上读回**（2026-11-11 13:30 CST 前后，从本机 `curl https://quarkspace.top`，n = 6 条路由各 1 次）：
+- 六条路由都是 200，都带 ICP 备案号；`www` 与 `/models` 也是 200。
+- 新内容在：`/` 有 `REALM · VLM4RWD` 和 `UCL · Artificial Intelligence`，没有「站内入口」；两份简历有
+  `Accepted as a poster at NeurIPS 2026 Workshop VLM4RWD`，`/en/resume` 不再有 `under review`；
+  自托管字体 `/fonts/instrument-serif-400.woff2` 返回 21032 字节。
+- 六条 locale 链接都在。本机 Chrome 对线上六条路由跑 `check-mobile`（320 / 390 / 430）全过，
+  两份简历的 `check-resume-print` 通过。
+复现：`scripts/check-mobile.mjs https://quarkspace.top/<route>` 与 `scripts/check-resume-print.mjs https://quarkspace.top/resume`。
+
+**事故**：`portfolio-production-smoke` 这次是**红的**（run `42965653837`），而且和这次改动无关。
+它第一步等四个 marker，其中 `/guide` 那个写的是 `八达岭红叶岭实时步行导航`，页面标题实际是
+`八达岭红叶岭 · 实时步行导航`（中间有分隔符），所以永远等不到，后面的路由断言、手机探针、打印契约全被跳过。
+这个 marker 是 2026-10-03 加进 workflow 的，那天之后的三次运行（两次 10-03，一次今天）全红。
+⇒ `CHECKPOINT.md` 里「production smoke 是回归闸」那句话从 10-03 起不成立；今天的线上验证是我手工补跑的，不是那条 workflow 给的。
+没修：改 workflow 不在这次授权里，记在 `TODO.md` 等 owner 定。
+
+**另一处延误**（与产品无关）：等 CI 的轮询脚本在 zsh 里没做分词，CI 两分半就过了，脚本跑满 20 分钟上限才退出。上限起了作用。
+
