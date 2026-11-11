@@ -7,7 +7,8 @@
 ### 个人站（2026-11-11 重设计）
 
 - 六条个人站路由是 event-display 设计（PR #167）：首屏和方法论一栏的探测器画布是 `app/detector.tsx`，颜色令牌只有一个家 `app/site-theme.module.css`。画布是 PRNG 示意，不是数据。理由与验证清单在 `LOG.md` 2026-11-11 各条。`/models`、`/persona` 没动。
-- 线上是否就是这一版，现查，别信这一行：`gh run list --workflow portfolio-production-smoke.yml -L 3`，或 `curl -s https://quarkspace.top/ | grep -c 'REALM · VLM4RWD'`。
+- 2026-11-11 已合并并上线，线上读回的回执在 `LOG.md` 同日 13:38 那条。之后是否还是这一版，现查：`curl -s https://quarkspace.top/ | grep -c 'REALM · VLM4RWD'`。
+- ⚠ **`portfolio-production-smoke` 从 2026-10-03 起一直红，原因是 `/guide` 的 marker 写错，不是站坏了**，所以它现在挡不住任何回归；下文历史段里「production smoke 是回归闸」那句当前不成立。修法在 `TODO.md` 个人站一节，等 owner 定。在它修好之前，改完个人站要手工对线上跑 `check-mobile` 和 `check-resume-print`。
 - 公开职业事实：VLM4RWD 已按上游改成「accepted as a poster」，其余事实没有全量对账，`release.verifiedAt` 仍是 2026-09-21。下一步在 `TODO.md` 个人站一节；动 manifest 前读 `GOTCHAS.md` 55。
 - owner 裁决过、别重提的两件：主页不加「站内入口」一节；Personal Lab 暂不加别的仓库。
 
