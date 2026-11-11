@@ -47,6 +47,12 @@ have already been made here — all of which passed every automated check.
   contract (type floor, tap targets, safe areas — `docs/UI.md`). The personal site is scoped
   under `.home` in its own CSS module with `--h-*` prefixed properties, because globals.css
   styles bare elements (`header`, `h1`) and hangs `--ink` / `--sans` / `--mono` on `body`.
+  Those `--h-*` tokens have one home, `app/site-theme.module.css`, shared by the home, resume and
+  showcase routes; add a colour there, not in a route's module. For the same reason the personal
+  site uses no bare `<header>` element.
+- The hero and measurement-chain canvas (`app/detector.tsx`) is an **illustration drawn from a
+  PRNG**, and the page says so beside its readout. Do not feed it real numbers, and do not quote
+  its counts anywhere: they describe an animation.
 - ⚠ Do **not** copy volatile Observatory counts onto the personal homepage. The homepage should
   link to `/models` and describe the stable provenance contract instead. Exact model / benchmark /
   observation counts belong to the live product that derives them. This rule exists because copied
@@ -405,6 +411,7 @@ official pages for precision, not because LMArena is wrong.
 | `app/models/page.tsx` | Rankings, coverage semantics, radar, bilingual UI |
 | `app/upstream-variants.ts` | What upstream serves that is not a model (`:variant`, `(batch)`, `(Fast)`) — one home, imported by the live route and by two scripts. Import it with the `.ts` extension from `route.ts` |
 | `app/page.tsx`, `app/home-content.ts`, `app/home.module.css` | The personal site at `/` — no data files, see above |
+| `app/site-theme.module.css`, `app/detector.tsx` | The personal site's shared `--h-*` tokens, and its event-display canvas (illustration, not data) |
 | `app/persona/`, `app/api/persona/` | Persona Lab at `/persona`: Qwen candidate compiler, protected direct probes, browser-local history, and activation metrics |
 | `app/site-beian.tsx`, `app/site-beian.module.css` | The ICP filing footer, rendered from the root layout onto every route — see above and `docs/ARCHITECTURE.md` §6 |
 | `data/deployment.json` | Where production is, so `check:deployment` can verify it serves what `main` says |

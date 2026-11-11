@@ -957,3 +957,88 @@ document width = viewport width，两份 production CV 均打印契约通过。
 - PR #163 was retargeted from the #162 branch to main after #162 merged, verified to contain only the Vals fail-closed delta, and merged as `eb3689b060974028567eb53f3e33fc9ba1057631`; exact-head Actions run `42055413695` completed the full CI job successfully.
 - PR #164 was retargeted from the #163 branch to main. Its remaining diff is the LiveBench optional-cost 404-only rule, regression tests, and this status sync. Exact-head Actions run `42055493382` completed the full CI job successfully; PR #164 remains open pending independent review/merge.
 - No live upstream refresh or archive rewrite occurred. Issue #159 stays OPEN until a controlled scheduled refresh confirms actual responses and archive diff.
+
+
+## [2026-11-11 12:37 CST] 个人站六条路由整体重设计：event display `#decision` `#ship` `#measure`
+
+**需求**：owner 要求把整个网站重新设计成最有创造力、同时符合个人网站设定的样子。
+
+**决定的范围**：只动个人站——`/`、`/resume`、`/showcase` 和三个 `/en` 孪生。`/models` 和 `/persona`
+没动：它们是独立产品面，`/models` 的手机契约全在 `globals.css` 里（`docs/UI.md`），重画它是另一件事，
+不该混在一次视觉重做里。`/presentation` 本来就是纸色加墨色，和新样子接得上，也没动。
+
+**为什么是 event display**：站名是 quark，owner 的研究是「一个分数能不能信，取决于产生它的测量链」。
+夸克没人直接见过，见到的是探测器里的径迹，而且得先信探测器。所以首屏画了一个四层探测器，四层就是
+measurement chain 的四层（target / harness / judge / evidence）：对撞抛出的径迹有的在 harness 层被吸收，
+有的止于 judge 层，到达最外圈的才留下金色的 tower。同一个组件在方法论那一栏再出现一次，悬停某一步会点亮对应的环。
+⚠ 它是 PRNG 画的示意，不是数据，读数旁边写了「示意动画，不是实验数据」。别往里接真数字。
+
+**顺手修的三件**（都是改之前就在的）：
+- 中文简历打印成两页，第二页只有一行页脚。现在一页。复现：Chrome `Page.printToPDF` 对 `/resume`，
+  `preferCSSPageSize: true`，2026-11-11 改前 2 页、改后 1 页；英文简历前后都是 2 页。
+- 简历页眉用的是裸 `<header>`，被 `globals.css` 给观测台写的 `header{…}` 规则波及，
+  职位那行压在分隔线上。个人站现在不用裸 `<header>`。
+- 英文简历第一页下半空着（整节 `break-inside: avoid`）。改成按条目不拆。
+
+**结构上的变化**：
+- `--h-*` 令牌只有一个家 `app/site-theme.module.css`，三个页面共用。之前每个页面各写一套颜色。
+- `app/home-v2.module.css` 并回 `home.module.css` 后删除；production smoke 的 path filter 跟着改了。
+- 代表项目不再读 manifest 里的 `span`：有图或图表的卡片占整行，纯文字的两张并排。manifest 没动。
+- 新增第 06 节「站内入口」，列 `/models`、`/persona`、`/presentation` 和两个静态游戏。这是 VISION 里
+  「公开项目入口」那半，之前主页只在导航里挂了两个链接。⚠ 两个游戏出现在求职主页上是这次新加的内容决定，等 owner 确认。
+- 字体：自托管 Instrument Serif 的 Latin 子集（OFL-1.1，`public/fonts/`，两个文件 2026-11-11 `wc -c`
+  实测 21032 + 22128 字节），只用在确定是拉丁字的地方。中文标题仍走系统 UI 字体，理由见 `docs/UI.md` §2。
+
+**验证**（本机生产构建，2026-11-11）：`lint`、`check:career`（有一条 51 天未复核的警告，改前就有）、
+`build`、`check:beian`、`test:sites` 通过；`check:mobile` 在 `/models` 加六条路由的 320 / 390 / 430 全过，
+个人站四条路由另测了 900 / 1024 / 1440；两份简历的 print contract 通过；production smoke 的六个 marker
+和六条 locale 链接在本地构建上逐条 grep 到。
+未验证：真机、Windows 上的字体回退、EdgeOne 上的实际部署（分支没推）。
+
+
+## [2026-11-11 12:40 CST] owner 裁决：不加「站内入口」，分支推送 `#decision`
+
+owner 看过本地预览后定了两件事：第 06 节「站内入口」（含两个静态游戏）**不要**，分支可以推。
+已从 `app/page.tsx` 和 `home.module.css` 删掉那一节，主页回到 01–05 加结尾。上一条里关于第 06 节的那段到此作废。
+删后重跑：`lint`、`build`、`check:beian` 通过，`/` 与 `/en` 的 `check:mobile`（320 / 390 / 430 / 1440）通过，两条路由的 smoke marker 和 locale 链接仍在。
+
+
+## [2026-11-11 12:49 CST] 公开 manifest 的 VLM4RWD 状态落后上游 42 天，补上 `#incident` `#ship`
+
+owner 提到 REALM 和 NeurIPS workshop 两处都录用了。去上游核对：`JobFinder/00_总控/CURRENT_PROFILE.md`
+（as_of 2026-10-06）早就写着 **Accept (Poster) at NeurIPS 2026 Workshop VLM4RWD，decision observed 2026-09-30**，
+而这里的 `data/career-public.json` 还是「Submitted … under review」。上游没错，是公开投影没跟。
+
+**为什么零告警**：`check:career` 当时断言的恰好是旧状态本身（manifest 必须包含 under-review 那一句），
+所以它不但发现不了落后，还会把改对的人拦下来。它守的是「别被改掉」，不是「和上游一致」。
+现在断言改成新状态，并加了和 REALM 同形的守卫：写 NeurIPS 录用必须带 Workshop，否则会被读成主会。
+守卫用两条裸写法实测过会触发。⚠ 这仍然不是上游同步检查，下次上游状态再变，这里还是要人来改。
+
+**改了什么**：`secondaryStatus` 用上游 wording guard 的原话「Accepted as a poster at NeurIPS 2026 Workshop VLM4RWD」；
+中文主页 intro、UCL 那条经历、REALM 证据卡的正文补上第二处录用；两份简历都多一行状态。
+首屏的 `REALM ’26` 徽标、项目卡的 kicker 和 chip 没动，那是定位措辞，留给 owner。
+`verifiedAt` 没动：这次只核了 VLM4RWD、REALM、career epoch 和 dissertation 仍 pending 这几项，不是全量对账。
+中文简历加一行后仍是一页（`Page.printToPDF` 实测 1 页）。
+
+
+## [2026-11-11 12:51 CST] owner 裁决：徽标也带上 NeurIPS `#decision` `#ship`
+
+上一条留给 owner 的三处短标签，owner 定了都改：首屏那格 `REALM ’26` → `REALM · VLM4RWD`，
+下面的小字写明「EMNLP + NEURIPS 2026 WORKSHOP」；01 项目卡的 kicker 和 chip 改成 `REALM + VLM4RWD ’26`。
+短标签里用 workshop 自己的名字（VLM4RWD）而不是 NeurIPS，这样不会被读成主会；带 NeurIPS 的那一行同时带 WORKSHOP。
+REALM 证据卡的标题没改，它链到的是 REALM 的 OpenReview 页。
+改后 `check:career`、`lint`、`build` 通过，`/` 与 `/en` 的 `check:mobile`（320 / 390 / 430 / 1024 / 1440）通过。
+
+
+## [2026-11-11 13:01 CST] UCL 那条经历的标题改成「UCL · Artificial Intelligence」；owner 说合并上线 `#decision` `#ship`
+
+- owner：第二段别只写 CS，改成 UCL AI 之类。`org` 从 `UCL Computer Science` 改成 `UCL · Artificial Intelligence`。
+  没用「UCL AI」：那是 UCL Centre for Artificial Intelligence 的简称，上游的口径是「导师所属的中心，
+  不冒称本人是成员」，写成专业方向就没有这个问题。系名仍在英文简历的教育一栏里。
+- owner 同轮裁决：合并 PR #167 并上线，Personal Lab 暂不加别的仓库（我列过 evoshooter-arena、
+  evofootball-arena 等候选，owner 说先不加）。
+- 收尾时顺手删了一条 TODO：「镜像 showcase poster PDF」。`public/showcase/` 里已经有那份 PDF，
+  `/showcase` 首屏也链着它，这条早就做完了。
+- 这次踩到的坑记成 `GOTCHAS.md` 55：公开投影落后上游零告警。
+- 下一步：合并后看 `portfolio-production-smoke`，再去线上读回。
+

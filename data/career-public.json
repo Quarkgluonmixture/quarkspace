@@ -79,10 +79,10 @@
   },
   "proof": [
     {
-      "value": "REALM ’26",
+      "value": "REALM · VLM4RWD",
       "label": {
-        "zh": "已录用 · EMNLP WORKSHOP",
-        "en": "ACCEPTED · EMNLP WORKSHOP"
+        "zh": "已录用 · EMNLP + NEURIPS 2026 WORKSHOP",
+        "en": "ACCEPTED · EMNLP + NEURIPS 2026 WORKSHOPS"
       }
     },
     {
@@ -142,7 +142,7 @@
       "id": "holistic-ai"
     },
     {
-      "org": "UCL Computer Science",
+      "org": "UCL · Artificial Intelligence",
       "role": {
         "zh": "MSc Artificial Intelligence for Sustainable Development · 2025–2026",
         "en": "MSc Artificial Intelligence for Sustainable Development · 2025–2026"
@@ -153,8 +153,8 @@
       },
       "points": [
         {
-          "zh": "论文《Routing Is Least Learnable Where It Is Most Valuable》已被 EMNLP 2026 Workshop REALM 录用。",
-          "en": "“Routing Is Least Learnable Where It Is Most Valuable” was accepted at the EMNLP 2026 Workshop REALM."
+          "zh": "论文《Routing Is Least Learnable Where It Is Most Valuable》已被 EMNLP 2026 Workshop REALM 录用，并以 poster 被 NeurIPS 2026 Workshop VLM4RWD 录用。",
+          "en": "“Routing Is Least Learnable Where It Is Most Valuable” was accepted at the EMNLP 2026 Workshop REALM and as a poster at the NeurIPS 2026 Workshop VLM4RWD."
         },
         {
           "zh": "研究包含预注册、受控表征比较、task-level failure analysis、representation probes 与可恢复的异构算力实验系统。",
@@ -192,8 +192,8 @@
     {
       "slot": "01",
       "kicker": {
-        "zh": "UCL MSc Dissertation / REALM ’26 ACCEPTED",
-        "en": "UCL MSc Dissertation / REALM ’26 ACCEPTED"
+        "zh": "UCL MSc Dissertation / REALM + VLM4RWD ’26 ACCEPTED",
+        "en": "UCL MSc Dissertation / REALM + VLM4RWD ’26 ACCEPTED"
       },
       "title": {
         "zh": "Web Agent 表征路由：价值最高的地方，反而最难学",
@@ -209,8 +209,8 @@
           "en": "3 model families × 6 representations"
         },
         {
-          "zh": "REALM ’26 已录用",
-          "en": "REALM ’26 accepted"
+          "zh": "REALM + VLM4RWD ’26 已录用",
+          "en": "REALM + VLM4RWD ’26 accepted"
         }
       ],
       "lead": {
@@ -476,8 +476,8 @@
         "en": "ACCEPTED · EMNLP 2026 WORKSHOP REALM"
       },
       "text": {
-        "zh": "Routing Is Least Learnable Where It Is Most Valuable: Bounds on Representation Routing for Web Agents。录用不等于已发表，页面不把它写成 EMNLP 主会。",
-        "en": "Routing Is Least Learnable Where It Is Most Valuable: Bounds on Representation Routing for Web Agents. Accepted at the REALM workshop; not described here as an EMNLP main-conference acceptance or as published."
+        "zh": "Routing Is Least Learnable Where It Is Most Valuable: Bounds on Representation Routing for Web Agents。同一篇论文也以 poster 被 NeurIPS 2026 Workshop VLM4RWD 录用。两处都是 workshop 录用：录用不等于已发表，页面不把它写成 EMNLP 或 NeurIPS 主会。",
+        "en": "Routing Is Least Learnable Where It Is Most Valuable: Bounds on Representation Routing for Web Agents. Accepted at the REALM workshop, and as a poster at the NeurIPS 2026 Workshop VLM4RWD. Both are workshop acceptances; neither is described here as a main-conference acceptance or as published."
       },
       "href": "https://openreview.net/forum?id=EAplLx6gCD",
       "action": {
@@ -797,7 +797,7 @@
           "把模型和 Agent 的失败变成可测量、可复现、可诊断的问题。",
           "也把 judge、grader 和 benchmark 当作需要被验证的测量工具。"
         ],
-        "intro": "我主要面向大模型评测、红队、Agent 可靠性与 Web / Computer-Use Agent 研究工程岗位。Holistic AI 实习已完成；UCL Web-Agent 研究已被 EMNLP 2026 Workshop REALM 录用。下面只放能被论文、公开代码或真实交付支撑的证据。"
+        "intro": "我主要面向大模型评测、红队、Agent 可靠性与 Web / Computer-Use Agent 研究工程岗位。Holistic AI 实习已完成；UCL Web-Agent 研究已被 EMNLP 2026 Workshop REALM 与 NeurIPS 2026 Workshop VLM4RWD 录用。下面只放能被论文、公开代码或真实交付支撑的证据。"
       },
       "experienceIds": [
         "holistic-ai",
@@ -903,7 +903,7 @@
       "title": "Routing Is Least Learnable Where It Is Most Valuable: Bounds on Representation Routing for Web Agents",
       "authors": "Jiaming Wei, Zekun Wu, Adriano Koshiyama, María Pérez-Ortiz",
       "status": "Accepted at EMNLP 2026 Workshop REALM",
-      "secondaryStatus": "Submitted to NeurIPS 2026 Workshop VLM4RWD · under review",
+      "secondaryStatus": "Accepted as a poster at NeurIPS 2026 Workshop VLM4RWD",
       "preprint": "arXiv:2608.06171",
       "dissertationTitle": "When Is Expensive Perception Worth Paying For? Measuring the Ceiling, the Predictability and the Economics of Representation Routing in Web Agents"
     },

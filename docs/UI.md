@@ -110,7 +110,7 @@ Six guarantees. A change that breaks one of them is a regression even if it look
    *sibling* — repeats it through `:global(.shell) ~ .strip`, or the fixed rail would sit on top of
    the filing number at full scroll. The selector is scoped that way because `.shell` is a plain
    global class while `.home` is a CSS-module class whose emitted name is hashed; the personal site
-   has nothing fixed and needs no clearance. Anything else added after `{children}` in the root
+   has nothing fixed at the bottom (its one fixed element is the top bar) and needs no clearance. Anything else added after `{children}` in the root
    layout inherits this problem and does not inherit the fix.
 5. **Nothing absolutely positioned inside the header.** The header is static on a phone; the
    search sits in its own flow row. It used to be `position:absolute; top:72px` inside a sticky

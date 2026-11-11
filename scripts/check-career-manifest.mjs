@@ -63,6 +63,8 @@ const checkedFiles = [
 const banned = [
   "jimmyenglish@126.com",
   "REALM + NeurIPS VLM4RWD submitted",
+  // Stale since 2026-09-30, when the workshop accepted the paper as a poster.
+  "Submitted to NeurIPS 2026 Workshop VLM4RWD",
   "目前在 Holistic AI 做 Research Intern",
   "2 个 2026 workshop submission",
 ];
@@ -119,8 +121,13 @@ if (!serialized.includes("EMNLP 2026 Workshop REALM")) {
 if (serialized.includes("Accepted at EMNLP 2026\"") || serialized.includes("Accepted at EMNLP 2026,”")) {
   errors.push("REALM claim is ambiguous with EMNLP main-conference acceptance");
 }
-if (!serialized.includes("Submitted to NeurIPS 2026 Workshop VLM4RWD · under review")) {
-  errors.push("English research CV must preserve the current VLM4RWD under-review status");
+// Same guard as REALM, for the same reason: a workshop acceptance must name the workshop, or it
+// reads as the main conference. Wording follows the upstream guard in Career OS.
+if (!serialized.includes("Accepted as a poster at NeurIPS 2026 Workshop VLM4RWD")) {
+  errors.push("research CV must state the current VLM4RWD status: accepted as a workshop poster");
+}
+if (/Accepted (as a poster )?at NeurIPS 2026(?! Workshop)/.test(serialized)) {
+  errors.push("VLM4RWD claim is ambiguous with NeurIPS main-conference acceptance");
 }
 
 for (const warning of warnings) console.warn(`career manifest warning: ${warning}`);

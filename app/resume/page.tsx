@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { content, type Lang } from "../home-content";
+import t from "../site-theme.module.css";
 import r from "./resume.module.css";
 
 const LANGUAGE_KEY = "quarkspace-language";
@@ -40,13 +41,13 @@ export default function ResumePage() {
   const showcaseRoute = audience.showcaseRoute;
 
   return (
-    <main className={r.shell}>
+    <main className={`${t.theme} ${r.shell}`}>
       <div className={r.toolbar}>
         <Link href={audience.route} className={r.back}>← {lang === "zh" ? "主页" : "Research home"}</Link>
         <div className={r.toolbarRight}>
-          <div className={r.lang} aria-label="Language">
-            <Link href="/resume" aria-current={lang === "zh" ? "page" : undefined} className={lang === "zh" ? r.active : ""}>中</Link>
-            <Link href="/en/resume" aria-current={lang === "en" ? "page" : undefined} className={lang === "en" ? r.active : ""}>EN</Link>
+          <div className={t.lang} aria-label="Language">
+            <Link href="/resume" aria-current={lang === "zh" ? "page" : undefined} className={lang === "zh" ? t.on : ""}>中</Link>
+            <Link href="/en/resume" aria-current={lang === "en" ? "page" : undefined} className={lang === "en" ? t.on : ""}>EN</Link>
           </div>
           <button className={r.print} onClick={() => window.print()}>
             {lang === "zh" ? "打印 / 保存 PDF" : "Print / Save PDF"}
@@ -55,7 +56,8 @@ export default function ResumePage() {
       </div>
 
       <article className={r.paper}>
-        <header className={r.header}>
+        {/* A div, not <header>: globals.css styles the bare element for the observatory. */}
+        <div className={r.head}>
           <div>
             <p className={r.eyebrow}>{audience.resume.eyebrow}</p>
             <h1>{profile.name}</h1>
@@ -67,7 +69,7 @@ export default function ResumePage() {
             <a href={profile.github}>GitHub</a>
             <a href={profile.linkedin}>LinkedIn</a>
           </div>
-        </header>
+        </div>
 
         <p className={r.summary}>{audience.resume.summary}</p>
 
@@ -82,7 +84,8 @@ export default function ResumePage() {
                 </div>
                 <p><strong>{academic.publication.authors}</strong></p>
                 <p className={r.status}>{academic.publication.status}</p>
-                <p>{academic.publication.secondaryStatus} · {academic.publication.preprint}</p>
+                <p className={r.status}>{academic.publication.secondaryStatus}</p>
+                <p>{academic.publication.preprint}</p>
                 <ul>
                   {research.points?.slice(0, 4).map((point) => <li key={point.en}>{point.en}</li>)}
                 </ul>
@@ -193,6 +196,7 @@ export default function ResumePage() {
                   <span>UCL MSc · 2026</span>
                 </div>
                 <p className={r.status}>{realm.status.zh}</p>
+                <p className={r.status}>{academic.publication.secondaryStatus}</p>
                 <ul>
                   {research.points?.slice(0, 3).map((point) => <li key={point.en}>{point.zh}</li>)}
                 </ul>

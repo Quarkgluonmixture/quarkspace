@@ -261,7 +261,9 @@ app/
   persona/                     # Persona Lab UI, validation protocol, metrics, scoped styles
   page.tsx                     # the owner's personal site at / — no data files
   home-content.ts              # that site's copy; implementation authority (AGENTS.md)
-  home.module.css              # that site's styles, scoped under .home, --h-* properties
+  home.module.css              # that site's styles, scoped under .home
+  site-theme.module.css        # the --h-* tokens shared by /, /resume and /showcase (+ /en twins)
+  detector.tsx                 # the event-display canvas (hero + measurement chain): illustration, not data
 data/
   sources/*.jsonl              # append-only archive: one row per published result
   model-aliases.json           # every editorial decision, each with a written reason

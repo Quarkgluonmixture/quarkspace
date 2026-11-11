@@ -24,6 +24,7 @@
 | 一个「拒绝空过」的断言红了 | **44**(那是它在工作;给机制一个合成用例,别 skip) |
 | 改 `app/model-data.ts` 里一条记录 | **48**(注释写进 `[ … ]` 里 ⇒ `describe-change` 报「记录被移除」;解释写在 `m(` 上面) |
 | 判断「某个源/某个模型在等刷新」,或 refresh 红着而看板看着正常 | **41**(drift 读与 refresh 写是两个 job;还活着的只读通道能直接回答)· **47**(一个源把同一条测量发两遍 ⇒ 契约丢**整批**;折叠只到「字节级相同」为止) |
+| 改 `data/career-public.json`,或听说一条职业事实变了 | **55**(公开投影不会自己跟上游;守「当前值」的断言会拦住改对的人) |
 | 往 `public/` 放一个静态站/游戏,或加任何不走 `app/` 的路由 | **35**(目录不会被解析成路由 + 备案检查的分母会静默缩水) |
 
 **族**(同一个失败机制的多种形态,认出族比记住条目管用):
@@ -823,3 +824,19 @@ integrity failure **no written reason can excuse***(`withdrawnRows` 只赦免 va
 闸: scripts/check-exemptions-untouched.mjs — 它挡住「agent 自己写一条赦免」(HATCHES 已含
 `restatedRows`,self-test 从 HATCHES 派生、不再手写条数);⚠ 挡不住的那半是**人**判错该不该赦免,
 那要靠条目里的 reason 和两端值被钉死这件事本身。
+
+### 55. 公开职业投影落后上游时**零告警**,而守「当前值」的断言会反过来拦住改对的人
+2026-11-11。上游 `JobFinder/00_总控` 从 2026-09-30 起就记着 VLM4RWD 已录用(poster),
+这里的 `data/career-public.json` 写了 42 天「Submitted … under review」,直到 owner 口头提起才发现。
+
+- **症状**:`check:career` 一直绿。它当时的断言是「manifest **必须包含** under-review 那一句」。
+- **机制**:那条断言守的是「别被人改掉」,不是「和上游一致」。一条会随时间变的事实被钉成字面值,
+  结果有两个:① 上游变了它发现不了;② 有人把它改对,它反而红。上游在私有仓,CI 读不到,
+  所以这里**做不出**真正的同步检查。
+- **规则**:听说任何职业事实变了,先去上游读**原话和 wording guard**(`CURRENT_PROFILE.md` /
+  `APPLICATION_MASTER_PROFILE.json`),照着改 manifest,再把断言改成新值 —— 三件一笔做完。
+  ⛔ 别因为 `check:career` 绿就认为投影是新的;⛔ 改了一条事实不等于对过账,`release.verifiedAt`
+  只在全量对过之后才动。写录用状态必须带 workshop 名,否则会被读成主会(REALM、VLM4RWD 同形)。
+闸: scripts/check-career-manifest.mjs — 只守措辞(当前状态那一句在、裸写「Accepted at NeurIPS 2026 /
+EMNLP 2026」会红);⚠ 挡不住的那半是「上游变了这里没变」: 无 — 上游是私有仓,CI 够不到。
+

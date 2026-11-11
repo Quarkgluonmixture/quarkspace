@@ -4,6 +4,13 @@
 
 **本节是当前交接快照，优先于下方 2026-09-21 / 2026-08-26 的历史状态与数字。** Git 分支和 HEAD 不在这里固定；动手前仍以 GitHub 当前 main、PR、Issue 和工作流为准。
 
+### 个人站（2026-11-11 重设计）
+
+- 六条个人站路由是 event-display 设计（PR #167）：首屏和方法论一栏的探测器画布是 `app/detector.tsx`，颜色令牌只有一个家 `app/site-theme.module.css`。画布是 PRNG 示意，不是数据。理由与验证清单在 `LOG.md` 2026-11-11 各条。`/models`、`/persona` 没动。
+- 线上是否就是这一版，现查，别信这一行：`gh run list --workflow portfolio-production-smoke.yml -L 3`，或 `curl -s https://quarkspace.top/ | grep -c 'REALM · VLM4RWD'`。
+- 公开职业事实：VLM4RWD 已按上游改成「accepted as a poster」，其余事实没有全量对账，`release.verifiedAt` 仍是 2026-09-21。下一步在 `TODO.md` 个人站一节；动 manifest 前读 `GOTCHAS.md` 55。
+- owner 裁决过、别重提的两件：主页不加「站内入口」一节；Personal Lab 暂不加别的仓库。
+
 ### 产品边界与 Vision
 
 - 当前权威方向见 2026-10-31 更新的 docs/VISION.md：QuarkSpace 是个人网站、公开项目入口与授权个人服务入口组成的门户，不等同于单一模型观察站。
@@ -106,7 +113,7 @@ Current public career projection:
 - epoch = `2026-09-20-post-holistic`, re-verified 2026-09-21;
 - Holistic AI fixed-term research internship completed 2026-09-18;
 - UCL Web-Agent paper = **accepted at EMNLP 2026 Workshop REALM**; accepted ≠ published and ≠ EMNLP main conference;
-- VLM4RWD = submitted / under review;
+- VLM4RWD = submitted / under review (as of 2026-09-21; superseded — accepted as a poster 2026-09-30, public manifest updated 2026-11-11);
 - UCL × Holistic final poster/showcase = 2026-09-16;
 - English research surface uses the current positioning **Reliable Agent Evaluation & Adaptive Agentic Systems**;
 - private employer/customer material remains excluded.
