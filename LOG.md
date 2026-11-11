@@ -957,3 +957,41 @@ document width = viewport width，两份 production CV 均打印契约通过。
 - PR #163 was retargeted from the #162 branch to main after #162 merged, verified to contain only the Vals fail-closed delta, and merged as `eb3689b060974028567eb53f3e33fc9ba1057631`; exact-head Actions run `42055413695` completed the full CI job successfully.
 - PR #164 was retargeted from the #163 branch to main. Its remaining diff is the LiveBench optional-cost 404-only rule, regression tests, and this status sync. Exact-head Actions run `42055493382` completed the full CI job successfully; PR #164 remains open pending independent review/merge.
 - No live upstream refresh or archive rewrite occurred. Issue #159 stays OPEN until a controlled scheduled refresh confirms actual responses and archive diff.
+
+
+## [2026-11-11 12:37 CST] 个人站六条路由整体重设计：event display `#decision` `#ship` `#measure`
+
+**需求**：owner 要求把整个网站重新设计成最有创造力、同时符合个人网站设定的样子。
+
+**决定的范围**：只动个人站——`/`、`/resume`、`/showcase` 和三个 `/en` 孪生。`/models` 和 `/persona`
+没动：它们是独立产品面，`/models` 的手机契约全在 `globals.css` 里（`docs/UI.md`），重画它是另一件事，
+不该混在一次视觉重做里。`/presentation` 本来就是纸色加墨色，和新样子接得上，也没动。
+
+**为什么是 event display**：站名是 quark，owner 的研究是「一个分数能不能信，取决于产生它的测量链」。
+夸克没人直接见过，见到的是探测器里的径迹，而且得先信探测器。所以首屏画了一个四层探测器，四层就是
+measurement chain 的四层（target / harness / judge / evidence）：对撞抛出的径迹有的在 harness 层被吸收，
+有的止于 judge 层，到达最外圈的才留下金色的 tower。同一个组件在方法论那一栏再出现一次，悬停某一步会点亮对应的环。
+⚠ 它是 PRNG 画的示意，不是数据，读数旁边写了「示意动画，不是实验数据」。别往里接真数字。
+
+**顺手修的三件**（都是改之前就在的）：
+- 中文简历打印成两页，第二页只有一行页脚。现在一页。复现：Chrome `Page.printToPDF` 对 `/resume`，
+  `preferCSSPageSize: true`，2026-11-11 改前 2 页、改后 1 页；英文简历前后都是 2 页。
+- 简历页眉用的是裸 `<header>`，被 `globals.css` 给观测台写的 `header{…}` 规则波及，
+  职位那行压在分隔线上。个人站现在不用裸 `<header>`。
+- 英文简历第一页下半空着（整节 `break-inside: avoid`）。改成按条目不拆。
+
+**结构上的变化**：
+- `--h-*` 令牌只有一个家 `app/site-theme.module.css`，三个页面共用。之前每个页面各写一套颜色。
+- `app/home-v2.module.css` 并回 `home.module.css` 后删除；production smoke 的 path filter 跟着改了。
+- 代表项目不再读 manifest 里的 `span`：有图或图表的卡片占整行，纯文字的两张并排。manifest 没动。
+- 新增第 06 节「站内入口」，列 `/models`、`/persona`、`/presentation` 和两个静态游戏。这是 VISION 里
+  「公开项目入口」那半，之前主页只在导航里挂了两个链接。⚠ 两个游戏出现在求职主页上是这次新加的内容决定，等 owner 确认。
+- 字体：自托管 Instrument Serif 的 Latin 子集（OFL-1.1，`public/fonts/`，两个文件 2026-11-11 `wc -c`
+  实测 21032 + 22128 字节），只用在确定是拉丁字的地方。中文标题仍走系统 UI 字体，理由见 `docs/UI.md` §2。
+
+**验证**（本机生产构建，2026-11-11）：`lint`、`check:career`（有一条 51 天未复核的警告，改前就有）、
+`build`、`check:beian`、`test:sites` 通过；`check:mobile` 在 `/models` 加六条路由的 320 / 390 / 430 全过，
+个人站四条路由另测了 900 / 1024 / 1440；两份简历的 print contract 通过；production smoke 的六个 marker
+和六条 locale 链接在本地构建上逐条 grep 到。
+未验证：真机、Windows 上的字体回退、EdgeOne 上的实际部署（分支没推）。
+

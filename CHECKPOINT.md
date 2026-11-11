@@ -4,6 +4,12 @@
 
 **本节是当前交接快照，优先于下方 2026-09-21 / 2026-08-26 的历史状态与数字。** Git 分支和 HEAD 不在这里固定；动手前仍以 GitHub 当前 main、PR、Issue 和工作流为准。
 
+### 个人站重设计（2026-11-11，未合并）
+
+- 六条个人站路由整体换成 event-display 设计，在本地分支 `redesign/event-display-20261111` 上，**没推、没开 PR、线上没变**。分支进度现查 `git log --oneline main..redesign/event-display-20261111`。
+- 理由、范围和验证清单在 `LOG.md` 2026-11-11 那条。`/models`、`/persona` 没动。
+- 等 owner 定两件事：要不要推分支开 PR（仓库是 public，EdgeOne 合并即发布）；第 06 节把两个静态游戏挂上求职主页是否保留。
+
 ### 产品边界与 Vision
 
 - 当前权威方向见 2026-10-31 更新的 docs/VISION.md：QuarkSpace 是个人网站、公开项目入口与授权个人服务入口组成的门户，不等同于单一模型观察站。

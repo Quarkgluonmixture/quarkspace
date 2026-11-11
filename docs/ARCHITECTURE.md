@@ -52,6 +52,7 @@ run rather than hidden.
 | `app/models/page.tsx` | The observatory itself: client state, rankings, coverage, radar, line charts, tables, language switching |
 | `app/models/layout.tsx` | Its title — the page is a client component and cannot export metadata |
 | `app/page.tsx` + `app/home-content.ts` + `app/home.module.css` | The owner's personal site at `/`. Reads no data file; see AGENTS.md "Three product surfaces share this repo" |
+| `app/site-theme.module.css` + `app/detector.tsx` | The personal site's shared `--h-*` tokens (home, resume, showcase) and its event-display canvas. The canvas draws a PRNG illustration, never data |
 | `app/persona/` | Persona Lab at `/persona`: client workbench, protocol types, candidate validation, activation segmentation, and scoped styles |
 | `app/api/persona/` | Fail-closed Qwen compile/run/status routes. Server-side `QWEN_API_KEY`; separate `PERSONA_ACCESS_TOKEN`; no persistent server storage |
 | `app/layout.tsx` | Root layout: the one mono webfont, the viewport contract, and the ICP strip on every route |
@@ -417,11 +418,12 @@ by someone who never reads this section. That is the whole reason it is not a pe
 It reaches every route that goes **through that layout**; `/deepseek` does not, and the exception
 is recorded at the end of this section rather than left for `check:beian` to imply it away.
 The strip hardcodes its colours: it renders above both palettes (`--muted`/`--line` from
-globals.css, `--h-*` from `home.module.css`), and under `.home` the globals variables are still in
+globals.css, `--h-*` from `site-theme.module.css`), and under `.home` the globals variables are still in
 scope, so reading either set would paint it wrong on one of the two sites. Below 800px it clears
 the observatory's fixed bottom rail through `:global(.shell) ~ .strip` — `.shell` is a plain global
 class, whereas `.home` is a CSS-module class whose emitted name is hashed and cannot be matched
-that way (it does not need to be; the personal site has nothing fixed).
+that way (it does not need to be; the personal site's one fixed element is its top bar, which is
+nowhere near the strip).
 
 There is a **second filing**, and it is a different authority. The ICP filing above is MIIT; the
 公安联网备案 is the Ministry of Public Security, filed through `beian.gov.cn` and reviewed by the
