@@ -1020,3 +1020,12 @@ owner 提到 REALM 和 NeurIPS workshop 两处都录用了。去上游核对：`
 `verifiedAt` 没动：这次只核了 VLM4RWD、REALM、career epoch 和 dissertation 仍 pending 这几项，不是全量对账。
 中文简历加一行后仍是一页（`Page.printToPDF` 实测 1 页）。
 
+
+## [2026-11-11 12:51 CST] owner 裁决：徽标也带上 NeurIPS `#decision` `#ship`
+
+上一条留给 owner 的三处短标签，owner 定了都改：首屏那格 `REALM ’26` → `REALM · VLM4RWD`，
+下面的小字写明「EMNLP + NEURIPS 2026 WORKSHOP」；01 项目卡的 kicker 和 chip 改成 `REALM + VLM4RWD ’26`。
+短标签里用 workshop 自己的名字（VLM4RWD）而不是 NeurIPS，这样不会被读成主会；带 NeurIPS 的那一行同时带 WORKSHOP。
+REALM 证据卡的标题没改，它链到的是 REALM 的 OpenReview 页。
+改后 `check:career`、`lint`、`build` 通过，`/` 与 `/en` 的 `check:mobile`（320 / 390 / 430 / 1024 / 1440）通过。
+

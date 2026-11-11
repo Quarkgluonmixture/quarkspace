@@ -79,10 +79,10 @@
   },
   "proof": [
     {
-      "value": "REALM ’26",
+      "value": "REALM · VLM4RWD",
       "label": {
-        "zh": "已录用 · EMNLP WORKSHOP",
-        "en": "ACCEPTED · EMNLP WORKSHOP"
+        "zh": "已录用 · EMNLP + NEURIPS 2026 WORKSHOP",
+        "en": "ACCEPTED · EMNLP + NEURIPS 2026 WORKSHOPS"
       }
     },
     {
@@ -192,8 +192,8 @@
     {
       "slot": "01",
       "kicker": {
-        "zh": "UCL MSc Dissertation / REALM ’26 ACCEPTED",
-        "en": "UCL MSc Dissertation / REALM ’26 ACCEPTED"
+        "zh": "UCL MSc Dissertation / REALM + VLM4RWD ’26 ACCEPTED",
+        "en": "UCL MSc Dissertation / REALM + VLM4RWD ’26 ACCEPTED"
       },
       "title": {
         "zh": "Web Agent 表征路由：价值最高的地方，反而最难学",
@@ -209,8 +209,8 @@
           "en": "3 model families × 6 representations"
         },
         {
-          "zh": "REALM ’26 已录用",
-          "en": "REALM ’26 accepted"
+          "zh": "REALM + VLM4RWD ’26 已录用",
+          "en": "REALM + VLM4RWD ’26 accepted"
         }
       ],
       "lead": {
