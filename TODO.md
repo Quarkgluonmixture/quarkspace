@@ -78,8 +78,8 @@ real Chrome print-to-PDF contract 都已落地。**这一块不再有架构重�
       这一步只确认真实生产部署 / 外链 / 浏览器交互。
 - [ ] ⭐ **要你定：修 `portfolio-production-smoke` 的 `/guide` marker。** workflow 里等的是
       `八达岭红叶岭实时步行导航`，页面标题是 `八达岭红叶岭 · 实时步行导航`，所以第一步永远超时，
-      后面的断言全被跳过；2026-10-03 起三次运行全红（`LOG.md` 2026-11-11 13:38）。改法是把两处 marker
-      换成页面里真有的串（比如 `实时步行导航`），一个文件、三行。它是守线上的闸，所以没顺手改。
+      后面的断言全被跳过；2026-10-03 起三次运行全红（`LOG.md` 2026-11-11 13:38）。改法是把那个 marker
+      换成页面里真有的串（比如 `实时步行导航`），一个文件、三处。它是守线上的闸，所以没顺手改。
 - [ ] **把 `data/career-public.json` 和上游做一次全量对账，然后才动 `release.verifiedAt`。**
       2026-11-11 只对了 VLM4RWD、REALM、career epoch 和 dissertation 这几项（见 `GOTCHAS.md` 55）。
       上游 `APPLICATION_MASTER_PROFILE.json` 记着 `statement_of_award: 2026-11-19`：那天之后站上的
