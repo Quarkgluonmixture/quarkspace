@@ -1029,3 +1029,16 @@ owner 提到 REALM 和 NeurIPS workshop 两处都录用了。去上游核对：`
 REALM 证据卡的标题没改，它链到的是 REALM 的 OpenReview 页。
 改后 `check:career`、`lint`、`build` 通过，`/` 与 `/en` 的 `check:mobile`（320 / 390 / 430 / 1024 / 1440）通过。
 
+
+## [2026-11-11 13:01 CST] UCL 那条经历的标题改成「UCL · Artificial Intelligence」；owner 说合并上线 `#decision` `#ship`
+
+- owner：第二段别只写 CS，改成 UCL AI 之类。`org` 从 `UCL Computer Science` 改成 `UCL · Artificial Intelligence`。
+  没用「UCL AI」：那是 UCL Centre for Artificial Intelligence 的简称，上游的口径是「导师所属的中心，
+  不冒称本人是成员」，写成专业方向就没有这个问题。系名仍在英文简历的教育一栏里。
+- owner 同轮裁决：合并 PR #167 并上线，Personal Lab 暂不加别的仓库（我列过 evoshooter-arena、
+  evofootball-arena 等候选，owner 说先不加）。
+- 收尾时顺手删了一条 TODO：「镜像 showcase poster PDF」。`public/showcase/` 里已经有那份 PDF，
+  `/showcase` 首屏也链着它，这条早就做完了。
+- 这次踩到的坑记成 `GOTCHAS.md` 55：公开投影落后上游零告警。
+- 下一步：合并后看 `portfolio-production-smoke`，再去线上读回。
+

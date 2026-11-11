@@ -76,10 +76,10 @@ real Chrome print-to-PDF contract 都已落地。**这一块不再有架构重�
       `/resume`、`/showcase`：切一次中/英文；点 REALM / portfolio / repo 主要证据链接；
       在 `/resume` 用浏览器 Print / Save PDF 看最终版式。CI 已覆盖代码与 print media，
       这一步只确认真实生产部署 / 外链 / 浏览器交互。
-- [ ] **可选增强：镜像 canonical showcase poster PDF。** `/showcase` 已经重建 public-safe poster
-      case study、六条结论、公开 4-page portfolio 与 demo，recruiter 不缺信息。剩下只是“一键打开
-      原始最终 poster PDF”的便利性。只有拿到明确支持的 binary upload path 才做；
-      ⛔ 不用 private JobFinder raw URL 冒充公开资产。
+- [ ] **把 `data/career-public.json` 和上游做一次全量对账，然后才动 `release.verifiedAt`。**
+      2026-11-11 只对了 VLM4RWD、REALM、career epoch 和 dissertation 这几项（见 `GOTCHAS.md` 55）。
+      上游 `APPLICATION_MASTER_PROFILE.json` 记着 `statement_of_award: 2026-11-19`：那天之后站上的
+      「dissertation result pending」多半就过时了，而这里不会有任何告警。
 
 ## ⭐ 要你定:ProgramBench 这一列的口径(2026-08-15 又撞到一次)
 
