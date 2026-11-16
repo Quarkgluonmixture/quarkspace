@@ -1,0 +1,12 @@
+{
+  "batch": "52 · Claude Opus 5.5 release table",
+  "collectedWith": "curl + server-rendered HTML table extraction (Anthropic publishes a real <table> in the SSR HTML, unlike x.ai's CSS grids — see batch-51)",
+  "filtered": false,
+  "release": "opus55",
+  "sources": [
+    "https://www.anthropic.com/claude-opus-5-5"
+  ],
+  "note": "Claude Opus 5.5 发布页(2026-09-22)的基准表,逐格抄录 5 列(Opus 5.5 | Fable 5.1 | Opus 5 | GPT-6 Astra | GPT-5.6 Sol)× 9 个 benchmark。本批只收**自家模型(Opus 5.5)的 8 格**:2 个可 carry 格(terminal-40 66.4 xhigh、hle-tools 67.7 max)+ 6 个目录无列的格留档(frontiercode/cursorbench/automationbench/terminal-bench-science/osworld-2.1/chartography)。⚠ Opus 5.5 自身无 catalog record(gaps issue 里 needs 43 more cells 的下地板模型):2 个 carry 格留档等待 record,与 batch-51 Grok 4.7 同处置。竞品列(Fable 5.1 / Opus 5 / GPT-6 Astra / GPT-5.6 Sol)**不收录**:GDPval-AA 那一行五格全部已在归档(AA scripted 源,benchmark-native 优先级高于厂商发布材料,逐位一致:Opus 5.5 1846 / Fable 5.1 1735 / Opus 5 1708 / GPT-6 Astra 1542 / GPT-5.6 Sol 1588);Terminal-Bench 4.0 / HLE 的竞品格要么已由官方榜覆盖、要么无锚点,且厂商对竞品不声明 harness/effort/版本细节(先例 batch-17/32/38/39/47/50/51)。交叉验证:GDPval-AA 五格与 AA 归档逐位一致(强锚);Terminal-Bench 4.0 的 GPT-6 Astra(high)57.9 与官方榜 57.88 一致;⚠ Fable 5.1 的 Terminal-Bench 4.0 55.8 与官方榜(high 54.55 / xhigh·max 57.88)不逐位吻合,因属竞品列未收录、且不影响 carry 格,记录在此备查。GDPval-AA 行标注 v2.1 但值与 AA 归档的 GDPval-AA v2 逐位一致,判定为同一块板(Anthropic 的标签),未重复收录。页面脚注:除另有说明外所有 Opus 5.5 结果 adaptive thinking max effort;Terminal-Bench 4.0 在 xhigh(Opus 5.5)与 high(GPT-6 Astra, OpenAI 自报)。",
+  "retrievedDate": "2026-10-01",
+  "priceNote": "Claude Opus 5.5: input $4/M, output $20/M, cache reads $0.20/M, cache writes $5/M (同页定价表;对比 Opus 5: $5/$25/$0.50/$6.25)。不进观测行,备查。"
+}
